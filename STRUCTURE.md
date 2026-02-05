@@ -6,7 +6,7 @@ Clean, organized repository for the FantasyTrader platform.
 
 ```
 FantasyTrader/
-├── pages/              # 🌐 Website source files (Cloudflare serves this)
+├── / (root)           # 🌐 Website source files (GitHub Pages serves from here)
 │   ├── index.html      # Landing page
 │   ├── app.html        # Main application
 │   ├── education.html  # Learning content
@@ -19,9 +19,8 @@ FantasyTrader/
 │   ├── beginner-path.html
 │   ├── beginner-course.html
 │   ├── career-education.html
-│   ├── js/             # JavaScript modules
-│   │   └── supabase.js # Backend integration
-│   └── images/         # Website assets
+│   └── js/             # JavaScript modules
+│       └── supabase.js # Backend integration
 │
 ├── docs/               # 📚 Documentation
 │   ├── BACKEND_SETUP.md
@@ -37,16 +36,21 @@ FantasyTrader/
 │
 ├── images/             # 🖼️ Original image assets (shared)
 │
-├── CNAME              # Cloudflare domain configuration
+├── CNAME              # GitHub Pages custom domain
 ├── README.md          # Project overview
 └── .gitignore         # Git ignore rules
 ```
 
-## Cloudflare Configuration
+## Deployment Configuration
 
-**Build Settings:**
-- Build output directory: `/pages`
-- All website files are served from the `pages/` directory
+**Hosting:** GitHub Pages  
+**DNS Provider:** Cloudflare  
+**Custom Domain:** www.fantasy-trader.com
+
+**GitHub Pages Settings:**
+- Branch: `main`
+- Folder: `/` (root)
+- GitHub Pages only supports serving from `/` (root) or `/docs`
 
 ## Tech Stack
 
