@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Investment Survey - Fantasy Trader</title>
+    <style>
+        :root {
+            --primary: #1E3888;
+            --secondary: #47A992;
+            --accent: #FFB100;
+            --background: #0B1622;
+            --surface: #162A3D;
+            --success: #00FF88;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, var(--background) 0%, #0A1128 100%);
+            color: #ffffff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .survey-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            background: rgba(22, 42, 61, 0.7);
+            border-radius: 20px;
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.2);
+            backdrop-filter: blur(10px);
+            margin-top: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .survey-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .survey-title {
+            font-size: 3rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #ffffff 0%, var(--success) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+
+        .survey-subtitle {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+        }
+
+        .question-section {
+            margin-bottom: 3rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 2rem;
+            border: 1px solid rgba(0, 255, 136, 0.1);
+        }
+
+        .question-title {
+            font-size: 1.8rem;
+            color: var(--accent);
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .question-description {
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 1.5rem;
+            font-size: 1rem;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .option-card {
+            background: var(--surface);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .option-card:hover {
+            transform: translateY(-3px);
+            border-color: var(--accent);
+            box-shadow: 0 8px 25px rgba(255, 177, 0, 0.2);
+        }
+
+        .option-card.selected {
+            border-color: var(--success);
+            background: rgba(0, 255, 136, 0.15);
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+        }
+
+        .option-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+
+        .option-description {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+        }
+
+        .sectors-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 0.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .sector-button {
+            background: var(--surface);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 0.8rem 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.8);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .sector-button:hover {
+            transform: translateY(-2px);
+            border-color: var(--accent);
+            box-shadow: 0 4px 15px rgba(255, 177, 0, 0.2);
+        }
+
+        .sector-button.selected {
+            border-color: var(--success);
+            background: rgba(0, 255, 136, 0.15);
+            color: var(--success);
+            box-shadow: 0 0 15px rgba(0, 255, 136, 0.3);
+        }
+
+        .submit-section {
+            text-align: center;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .submit-button {
+            background: linear-gradient(135deg, var(--success) 0%, var(--secondary) 100%);
+            border: none;
+            color: #000;
+            padding: 1.2rem 3rem;
+            font-size: 1.3rem;
+            font-weight: 700;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            box-shadow: 0 8px 25px rgba(0, 255, 136, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .submit-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .submit-button:hover::before {
+            left: 100%;
+        }
+
+        .submit-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(0, 255, 136, 0.4);
+        }
+
+        .error-message {
+            color: #ff4444;
+            text-align: center;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .selection-info {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="survey-container">
+        <div class="survey-header">
+            <h1 class="survey-title">Investment Survey</h1>
+            <p class="survey-subtitle">Let's personalize your experience to help you achieve your investment goals.</p>
+        </div>
+
+        <!-- Investment Experience Section -->
+        <div class="question-section">
+            <h2 class="question-title">What's your investment experience?</h2>
+            <p class="question-description">Select your current level of investment knowledge and experience.</p>
+            <div class="options-grid" id="experienceGrid">
+                <div class="option-card" data-value="beginner">
+                    <div class="option-name">Beginner</div>
+                    <div class="option-description">New to investing</div>
+                </div>
+                <div class="option-card" data-value="intermediate">
+                    <div class="option-name">Intermediate</div>
+                    <div class="option-description">Some trading experience</div>
+                </div>
+                <div class="option-card" data-value="advanced">
+                    <div class="option-name">Advanced</div>
+                    <div class="option-description">Experienced trader</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Trading Style Section -->
+        <div class="question-section">
+            <h2 class="question-title">What's your trading style?</h2>
+            <p class="question-description">Choose the investment approach that best matches your strategy.</p>
+            <div class="options-grid" id="tradingStyleGrid">
+                <div class="option-card" data-value="long-term">
+                    <div class="option-name">Long-term Investor</div>
+                    <div class="option-description">Buy and hold strategy</div>
+                </div>
+                <div class="option-card" data-value="day-trader">
+                    <div class="option-name">Day Trader</div>
+                    <div class="option-description">Active daily trading</div>
+                </div>
+                <div class="option-card" data-value="swing">
+                    <div class="option-name">Swing Trader</div>
+                    <div class="option-description">Short to medium term trades</div>
+                </div>
+                <div class="option-card" data-value="passive">
+                    <div class="option-name">Passive Investor</div>
+                    <div class="option-description">Index and ETF focus</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sectors Section -->
+        <div class="question-section">
+            <h2 class="question-title">Select your preferred sectors</h2>
+            <p class="question-description">Choose up to 5 sectors that interest you most. <span class="selection-info">Selected: <span id="sectorCount">0</span>/5</span></p>
+            <div class="sectors-grid" id="sectorsGrid">
+                <div class="sector-button" data-value="FINANCE">Finance</div>
+                <div class="sector-button" data-value="TECHNOLOGY">Technology</div>
+                <div class="sector-button" data-value="HEALTHCARE">Healthcare</div>
+                <div class="sector-button" data-value="CONSUMER">Consumer</div>
+                <div class="sector-button" data-value="INDUSTRIAL">Industrial</div>
+                <div class="sector-button" data-value="ENERGY">Energy</div>
+                <div class="sector-button" data-value="MATERIALS">Materials</div>
+                <div class="sector-button" data-value="UTILITIES">Utilities</div>
+                <div class="sector-button" data-value="REAL_ESTATE">Real Estate</div>
+                <div class="sector-button" data-value="TELECOM">Telecom</div>
+                <div class="sector-button" data-value="AI">AI</div>
+                <div class="sector-button" data-value="BIOTECH">Biotech</div>
+                <div class="sector-button" data-value="CRYPTO">Crypto</div>
+                <div class="sector-button" data-value="GREEN">Green Energy</div>
+                <div class="sector-button" data-value="AEROSPACE">Aerospace</div>
+                <div class="sector-button" data-value="AGRICULTURE">Agriculture</div>
+                <div class="sector-button" data-value="ENTERTAINMENT">Entertainment</div>
+                <div class="sector-button" data-value="RETAIL">Retail</div>
+                <div class="sector-button" data-value="AUTOMOTIVE">Automotive</div>
+                <div class="sector-button" data-value="GAMING">Gaming</div>
+            </div>
+        </div>
+
+        <!-- Submit Section -->
+        <div class="submit-section">
+            <button class="submit-button" id="submitButton">Continue to Stock Selection</button>
+            <div class="error-message" id="errorMessage"></div>
+        </div>
+    </div>
+
+    <script>
+        let selectedExperience = null;
+        let selectedTradingStyle = null;
+        let selectedSectors = [];
+
+        function initializeSurvey() {
+            // Investment Experience Selection
+            document.querySelectorAll('#experienceGrid .option-card').forEach(card => {
+                card.addEventListener('click', () => {
+                    document.querySelectorAll('#experienceGrid .option-card').forEach(c => c.classList.remove('selected'));
+                    card.classList.add('selected');
+                    selectedExperience = card.dataset.value;
+                });
+            });
+
+            // Trading Style Selection
+            document.querySelectorAll('#tradingStyleGrid .option-card').forEach(card => {
+                card.addEventListener('click', () => {
+                    document.querySelectorAll('#tradingStyleGrid .option-card').forEach(c => c.classList.remove('selected'));
+                    card.classList.add('selected');
+                    selectedTradingStyle = card.dataset.value;
+                });
+            });
+
+            // Sectors Selection
+            document.querySelectorAll('#sectorsGrid .sector-button').forEach(button => {
+                button.addEventListener('click', () => {
+                    const sector = button.dataset.value;
+                    const index = selectedSectors.indexOf(sector);
+                    
+                    if (index === -1) {
+                        if (selectedSectors.length < 5) {
+                            selectedSectors.push(sector);
+                            button.classList.add('selected');
+                        }
+                    } else {
+                        selectedSectors.splice(index, 1);
+                        button.classList.remove('selected');
+                    }
+                    
+                    updateSectorCount();
+                });
+            });
+
+            // Submit Button
+            document.getElementById('submitButton').addEventListener('click', () => {
+                if (!selectedExperience || !selectedTradingStyle || selectedSectors.length === 0) {
+                    document.getElementById('errorMessage').textContent = 'Please complete all sections before continuing.';
+                    document.getElementById('errorMessage').style.display = 'block';
+                    return;
+                }
+
+                if (selectedSectors.length > 5) {
+                    document.getElementById('errorMessage').textContent = 'Please select no more than 5 sectors.';
+                    document.getElementById('errorMessage').style.display = 'block';
+                    return;
+                }
+
+                // Save preferences and proceed
+                const preferences = {
+                    experience: selectedExperience,
+                    tradingStyle: selectedTradingStyle,
+                    sectors: selectedSectors
+                };
+                
+                localStorage.setItem('userPreferences', JSON.stringify(preferences));
+                window.location.href = 'stockpicker.html';
+            });
+        }
+
+        function updateSectorCount() {
+            document.getElementById('sectorCount').textContent = selectedSectors.length;
+        }
+
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', initializeSurvey);
+    </script>
+</body>
+</html>

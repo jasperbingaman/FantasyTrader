@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beginner Course - Module 3: Buying and Selling</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1E3888;
+            --secondary: #47A992;
+            --accent: #FFB100;
+            --success: #00FF88;
+            --background: #0B1622;
+            --surface: #162A3D;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: var(--background);
+            color: #ffffff;
+            line-height: 1.6;
+        }
+
+        .header {
+            background: rgba(22, 42, 61, 0.95);
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid rgba(0, 255, 136, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .back-button {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .back-button:hover {
+            background: rgba(0, 255, 136, 0.1);
+            border-color: var(--success);
+        }
+
+        .progress-bar {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .progress-text {
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .progress-track {
+            width: 200px;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--success);
+            width: 60%; /* Module 3 = 60% */
+            transition: width 0.3s ease;
+        }
+
+        .main-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .module-title {
+            color: var(--accent);
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .module-subtitle {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1.2rem;
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .content-section {
+            background: rgba(22, 42, 61, 0.8);
+            border: 1px solid rgba(0, 255, 136, 0.1);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            color: var(--success);
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .content-text {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.1rem;
+            line-height: 1.7;
+            margin-bottom: 1.5rem;
+        }
+
+        .step-box {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+        }
+
+        .step-number {
+            background: var(--accent);
+            color: var(--background);
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            margin-right: 1rem;
+        }
+
+        .step-title {
+            color: var(--success);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .highlight-box {
+            background: rgba(255, 177, 0, 0.1);
+            border: 1px solid rgba(255, 177, 0, 0.3);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .highlight-title {
+            color: var(--accent);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .example-trade {
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .example-title {
+            color: var(--success);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .navigation-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 3rem;
+        }
+
+        .nav-button {
+            background: rgba(22, 42, 61, 0.95);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            color: var(--success);
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .nav-button:hover {
+            background: rgba(0, 255, 136, 0.1);
+            border-color: var(--success);
+            transform: translateY(-2px);
+        }
+
+        .quiz-section {
+            background: rgba(22, 42, 61, 0.8);
+            border: 1px solid rgba(255, 177, 0, 0.2);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+
+        .quiz-question {
+            color: var(--accent);
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .quiz-option {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .quiz-option:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: var(--accent);
+        }
+
+        .quiz-option.correct {
+            background: rgba(0, 255, 136, 0.1);
+            border-color: var(--success);
+        }
+
+        .quiz-option.incorrect {
+            background: rgba(255, 68, 68, 0.1);
+            border-color: #ff4444;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="learn.html" class="back-button">← Back to Learning</a>
+        <div class="progress-bar">
+            <span class="progress-text">Module 3 of 5</span>
+            <div class="progress-track">
+                <div class="progress-fill"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="main-container">
+        <h1 class="module-title">Module 3: Buying and Selling Stocks</h1>
+        <p class="module-subtitle">Learn the fundamentals of executing trades</p>
+
+        <div class="content-section">
+            <h2 class="section-title">How to Buy Stocks</h2>
+            <p class="content-text">
+                Buying stocks is the process of purchasing shares of a company. Here's how it works:
+            </p>
+
+            <div class="step-box">
+                <div class="step-number">1</div>
+                <div class="step-title">Choose a Stock</div>
+                <p>Research and select a company you want to invest in based on your analysis.</p>
+            </div>
+
+            <div class="step-box">
+                <div class="step-number">2</div>
+                <div class="step-title">Decide How Many Shares</div>
+                <p>Determine how many shares you want to buy based on your budget and strategy.</p>
+            </div>
+
+            <div class="step-box">
+                <div class="step-number">3</div>
+                <div class="step-title">Place Your Order</div>
+                <p>Submit a buy order through your trading platform at the current market price.</p>
+            </div>
+
+            <div class="step-box">
+                <div class="step-number">4</div>
+                <div class="step-title">Order Execution</div>
+                <p>Your order is matched with a seller and the trade is completed.</p>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">How to Sell Stocks</h2>
+            <p class="content-text">
+                Selling stocks is how you realize profits or cut losses. The process is similar to buying:
+            </p>
+
+            <div class="step-box">
+                <div class="step-number">1</div>
+                <div class="step-title">Choose What to Sell</div>
+                <p>Select which stocks in your portfolio you want to sell.</p>
+            </div>
+
+            <div class="step-box">
+                <div class="step-number">2</div>
+                <div class="step-title">Decide How Many Shares</div>
+                <p>Choose whether to sell all your shares or just a portion.</p>
+            </div>
+
+            <div class="step-box">
+                <div class="step-number">3</div>
+                <div class="step-title">Place Your Order</div>
+                <p>Submit a sell order at the current market price.</p>
+            </div>
+
+            <div class="step-box">
+                <div class="step-number">4</div>
+                <div class="step-title">Order Execution</div>
+                <p>Your order is matched with a buyer and the trade is completed.</p>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">Understanding Order Types</h2>
+            
+            <div class="highlight-box">
+                <div class="highlight-title">Market Order</div>
+                <p>Buy or sell immediately at the current market price. This is the most common type of order for beginners.</p>
+            </div>
+
+            <div class="highlight-box">
+                <div class="highlight-title">Limit Order</div>
+                <p>Set a specific price you're willing to pay (buy) or accept (sell). The order only executes if that price is reached.</p>
+            </div>
+
+            <div class="highlight-box">
+                <div class="highlight-title">Stop Loss Order</div>
+                <p>Automatically sell a stock if it falls to a certain price, helping to limit potential losses.</p>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">Example Trade</h2>
+            <div class="example-trade">
+                <div class="example-title">Buying Apple Stock</div>
+                <p><strong>Current Price:</strong> $150 per share</p>
+                <p><strong>Your Budget:</strong> $1,500</p>
+                <p><strong>Shares You Can Buy:</strong> 10 shares ($1,500 ÷ $150)</p>
+                <p><strong>Total Investment:</strong> $1,500</p>
+                <p style="margin-top: 1rem; color: var(--accent);">
+                    <strong>Note:</strong> In real trading, you'd also pay small fees called commissions.
+                </p>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">Important Trading Concepts</h2>
+            
+            <div class="highlight-box">
+                <div class="highlight-title">Bid vs Ask</div>
+                <p><strong>Bid:</strong> The highest price a buyer is willing to pay<br>
+                <strong>Ask:</strong> The lowest price a seller is willing to accept<br>
+                <strong>Spread:</strong> The difference between bid and ask prices</p>
+            </div>
+
+            <div class="highlight-box">
+                <div class="highlight-title">Market Hours</div>
+                <p>Stock markets are typically open Monday-Friday, 9:30 AM - 4:00 PM Eastern Time. Trades can only be executed during these hours.</p>
+            </div>
+        </div>
+
+        <div class="quiz-section">
+            <h3 class="quiz-question">Quick Quiz: What is a market order?</h3>
+            <div class="quiz-options">
+                <div class="quiz-option" onclick="checkAnswer(this, 'correct')">
+                    An order to buy or sell immediately at the current market price
+                </div>
+                <div class="quiz-option" onclick="checkAnswer(this, 'incorrect')">
+                    An order that only executes at a specific price you set
+                </div>
+                <div class="quiz-option" onclick="checkAnswer(this, 'incorrect')">
+                    An order to automatically sell if the price drops
+                </div>
+                <div class="quiz-option" onclick="checkAnswer(this, 'incorrect')">
+                    An order that can only be placed during market hours
+                </div>
+            </div>
+        </div>
+
+        <div class="navigation-buttons">
+            <a href="beginner-course-2.html" class="nav-button">← Previous Module</a>
+            <button class="nav-button" onclick="completeModule()">Complete Module</button>
+            <a href="beginner-course-4.html" class="nav-button">Next Module →</a>
+        </div>
+    </div>
+
+    <script>
+        function checkAnswer(option, result) {
+            // Remove previous selections
+            document.querySelectorAll('.quiz-option').forEach(opt => {
+                opt.classList.remove('correct', 'incorrect');
+            });
+            
+            // Add result class
+            option.classList.add(result);
+            
+            // Show feedback
+            if (result === 'correct') {
+                setTimeout(() => {
+                    alert('Correct! A market order executes immediately at the current market price.');
+                }, 500);
+            } else {
+                setTimeout(() => {
+                    alert('Not quite right. A market order is an order to buy or sell immediately at the current market price.');
+                }, 500);
+            }
+        }
+
+        function completeModule() {
+            localStorage.setItem('module3Completed', 'true');
+            alert('Excellent! You\'ve completed Module 3. You now understand how to buy and sell stocks.');
+        }
+    </script>
+</body>
+</html> 

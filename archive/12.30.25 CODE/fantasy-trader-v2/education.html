@@ -1,0 +1,1082 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learn Center — FantasyTrader</title>
+    <meta name="description" content="Learn investing from MIT, Rice University, and expert-curated courses. Free financial learning from world-class institutions.">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="images/logo.png">
+    
+    <style>
+        :root {
+            --bg-dark: #0a0a0f;
+            --bg-card: #12121a;
+            --bg-card-hover: #1a1a25;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0b0;
+            --text-muted: #606070;
+            --accent-green: #00ff88;
+            --accent-green-dim: #00cc6a;
+            --accent-red: #ff4444;
+            --accent-orange: #ff6b35;
+            --accent-blue: #3b82f6;
+            --accent-purple: #a855f7;
+            --accent-yellow: #fbbf24;
+            --accent-mit: #a31f34;
+            --accent-rice: #00205b;
+            --gradient-hero: linear-gradient(135deg, #00ff88 0%, #00cc6a 50%, #3b82f6 100%);
+            --border-subtle: rgba(255,255,255,0.06);
+            --border-accent: rgba(0,255,136,0.3);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Archivo Black', sans-serif;
+            font-weight: 400;
+            letter-spacing: -0.02em;
+            line-height: 1.1;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .text-gradient {
+            background: var(--gradient-hero);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 20px 0;
+            background: rgba(10, 10, 15, 0.9);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .nav-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+
+        .logo-img {
+            height: 48px;
+            width: auto;
+        }
+
+        .logo-text {
+            font-family: 'Archivo Black', sans-serif;
+            font-size: 20px;
+            color: var(--text-primary);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 32px;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-primary);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.2s;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-primary {
+            background: var(--accent-green);
+            color: var(--bg-dark);
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-green-dim);
+            transform: translateY(-2px);
+        }
+
+        /* Hero */
+        .hero {
+            padding: 160px 0 80px;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: clamp(40px, 5vw, 56px);
+            margin-bottom: 24px;
+        }
+
+        .hero p {
+            font-size: 18px;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto 32px;
+        }
+
+        .partner-logos {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 48px;
+            margin-top: 48px;
+            flex-wrap: wrap;
+        }
+
+        .partner-logo {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            opacity: 0.7;
+            transition: opacity 0.2s;
+        }
+
+        .partner-logo:hover {
+            opacity: 1;
+        }
+
+        .partner-logo-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .partner-logo-icon.mit {
+            background: var(--accent-mit);
+            color: white;
+        }
+
+        .partner-logo-icon.rice {
+            background: var(--accent-rice);
+            color: white;
+        }
+
+        .partner-logo span {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        /* Section */
+        .section {
+            padding: 80px 0;
+        }
+
+        .section-header {
+            margin-bottom: 48px;
+        }
+
+        .section-label {
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--accent-green);
+            margin-bottom: 16px;
+        }
+
+        .section-title {
+            font-size: clamp(32px, 4vw, 42px);
+            margin-bottom: 16px;
+        }
+
+        .section-subtitle {
+            font-size: 17px;
+            color: var(--text-secondary);
+            max-width: 600px;
+        }
+
+        /* Course Grid */
+        .course-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+            gap: 24px;
+        }
+
+        .course-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+
+        .course-card:hover {
+            border-color: var(--border-accent);
+            transform: translateY(-4px);
+        }
+
+        .course-header {
+            padding: 28px;
+            position: relative;
+        }
+
+        .course-header.mit {
+            background: linear-gradient(135deg, rgba(163, 31, 52, 0.2), rgba(163, 31, 52, 0.05));
+        }
+
+        .course-header.rice {
+            background: linear-gradient(135deg, rgba(0, 32, 91, 0.2), rgba(0, 32, 91, 0.05));
+        }
+
+        .course-header.beginner {
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.15), rgba(0, 255, 136, 0.02));
+        }
+
+        .course-header.intermediate {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.15), rgba(59, 130, 246, 0.02));
+        }
+
+        .course-header.advanced {
+            background: linear-gradient(135deg, rgba(255, 107, 53, 0.15), rgba(255, 107, 53, 0.02));
+        }
+
+        .course-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            border-radius: 100px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 16px;
+        }
+
+        .course-badge.mit {
+            background: var(--accent-mit);
+            color: white;
+        }
+
+        .course-badge.rice {
+            background: var(--accent-rice);
+            color: white;
+        }
+
+        .course-badge.beginner {
+            background: rgba(0, 255, 136, 0.2);
+            color: var(--accent-green);
+        }
+
+        .course-badge.intermediate {
+            background: rgba(59, 130, 246, 0.2);
+            color: var(--accent-blue);
+        }
+
+        .course-badge.advanced {
+            background: rgba(255, 107, 53, 0.2);
+            color: var(--accent-orange);
+        }
+
+        .course-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            line-height: 1.3;
+        }
+
+        .course-instructor {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .course-body {
+            padding: 28px;
+        }
+
+        .course-description {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+            line-height: 1.7;
+        }
+
+        .course-topics {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .course-topic {
+            padding: 6px 12px;
+            background: var(--bg-dark);
+            border-radius: 100px;
+            font-size: 11px;
+            color: var(--text-secondary);
+        }
+
+        .course-meta {
+            display: flex;
+            gap: 20px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-subtle);
+        }
+
+        .course-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .course-link {
+            display: block;
+            width: 100%;
+            padding: 14px;
+            background: transparent;
+            border: 1px solid var(--border-accent);
+            border-radius: 10px;
+            color: var(--accent-green);
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            text-align: center;
+            transition: all 0.2s;
+            margin-top: 20px;
+        }
+
+        .course-link:hover {
+            background: rgba(0, 255, 136, 0.1);
+        }
+
+        /* Stats */
+        .stats-section {
+            padding: 80px 0;
+            background: var(--bg-card);
+            border-top: 1px solid var(--border-subtle);
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 40px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-family: 'Archivo Black', sans-serif;
+            font-size: 48px;
+            background: var(--gradient-hero);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-top: 8px;
+        }
+
+        /* Learning Paths */
+        .path-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 20px;
+            padding: 32px;
+            margin-bottom: 24px;
+        }
+
+        .path-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .path-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .path-icon.beginner {
+            background: rgba(0, 255, 136, 0.1);
+        }
+
+        .path-icon.intermediate {
+            background: rgba(59, 130, 246, 0.1);
+        }
+
+        .path-icon.advanced {
+            background: rgba(255, 107, 53, 0.1);
+        }
+
+        .path-title {
+            font-size: 24px;
+        }
+
+        .path-description {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        .path-courses {
+            display: grid;
+            gap: 12px;
+        }
+
+        .path-course-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px;
+            background: var(--bg-dark);
+            border-radius: 12px;
+            transition: all 0.2s;
+        }
+
+        .path-course-item:hover {
+            background: var(--bg-card-hover);
+        }
+
+        .path-course-number {
+            width: 32px;
+            height: 32px;
+            background: var(--border-subtle);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 13px;
+        }
+
+        .path-course-info {
+            flex: 1;
+        }
+
+        .path-course-title {
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .path-course-meta {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        /* Footer */
+        footer {
+            padding: 60px 0 40px;
+            border-top: 1px solid var(--border-subtle);
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-copy {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .course-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .partner-logos {
+                gap: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="container nav-inner">
+            <a href="index.html" class="logo">
+                <img src="images/logo.png" alt="FantasyTrader" class="logo-img">
+                <span class="logo-text">FantasyTrader</span>
+            </a>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="how-it-works.html">How It Works</a>
+                <a href="features.html">Features</a>
+                <a href="education.html" style="color: var(--accent-green);">Learn</a>
+                <a href="app.html" class="btn btn-primary">Open App</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="container">
+            <h1>Learn From <span class="text-gradient">The Best</span></h1>
+            <p>Access world-class finance courses from MIT OpenCourseWare and Rice University — all integrated into your FantasyTrader experience.</p>
+            
+            <div class="partner-logos">
+                <div class="partner-logo">
+                    <div class="partner-logo-icon mit">MIT</div>
+                    <span>OpenCourseWare</span>
+                </div>
+                <div class="partner-logo">
+                    <div class="partner-logo-icon rice">RICE</div>
+                    <span>Jones School of Business</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats -->
+    <section class="stats-section">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-number">25+</div>
+                    <div class="stat-label">Expert Courses</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">120+</div>
+                    <div class="stat-label">Learning Modules</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">50+</div>
+                    <div class="stat-label">Hours of Content</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">100%</div>
+                    <div class="stat-label">Free Access</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- MIT Courses -->
+    <section class="section" id="mit">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-label">MIT OpenCourseWare</div>
+                <h2 class="section-title">Finance Theory from MIT Sloan</h2>
+                <p class="section-subtitle">Learn the foundations of modern finance from Professor Andrew Lo and other MIT faculty.</p>
+            </div>
+
+            <div class="course-grid">
+                <div class="course-card">
+                    <div class="course-header mit">
+                        <span class="course-badge mit">MIT OCW</span>
+                        <h3 class="course-title">Finance Theory I: Present Value Relations</h3>
+                        <p class="course-instructor">Prof. Andrew Lo • MIT Sloan</p>
+                    </div>
+                    <div class="course-body">
+                        <p class="course-description">Master the time value of money, present value calculations, and fundamental valuation principles that form the basis of all financial analysis.</p>
+                        <div class="course-topics">
+                            <span class="course-topic">Time Value of Money</span>
+                            <span class="course-topic">Present Value</span>
+                            <span class="course-topic">Compounding</span>
+                            <span class="course-topic">Discounting</span>
+                        </div>
+                        <div class="course-meta">
+                            <span class="course-meta-item">📚 4 modules</span>
+                            <span class="course-meta-item">⏱️ 2 hours</span>
+                            <span class="course-meta-item">🎥 Video lectures</span>
+                        </div>
+                        <a href="https://ocw.mit.edu/courses/15-401-finance-theory-i-fall-2008/pages/video-lectures-and-slides/present-value-relations/" target="_blank" class="course-link">
+                            Open Course →
+                        </a>
+                    </div>
+                </div>
+
+                <div class="course-card">
+                    <div class="course-header mit">
+                        <span class="course-badge mit">MIT OCW</span>
+                        <h3 class="course-title">Finance Theory I: Equities</h3>
+                        <p class="course-instructor">Prof. Andrew Lo • MIT Sloan</p>
+                    </div>
+                    <div class="course-body">
+                        <p class="course-description">Comprehensive look at stock valuation methods including dividend discount models, growth stock analysis, and market efficiency concepts.</p>
+                        <div class="course-topics">
+                            <span class="course-topic">Stock Valuation</span>
+                            <span class="course-topic">Dividend Models</span>
+                            <span class="course-topic">Growth Stocks</span>
+                            <span class="course-topic">Market Efficiency</span>
+                        </div>
+                        <div class="course-meta">
+                            <span class="course-meta-item">📚 4 modules</span>
+                            <span class="course-meta-item">⏱️ 2 hours</span>
+                            <span class="course-meta-item">🎥 Video lectures</span>
+                        </div>
+                        <a href="https://ocw.mit.edu/courses/15-401-finance-theory-i-fall-2008/pages/video-lectures-and-slides/equities/" target="_blank" class="course-link">
+                            Open Course →
+                        </a>
+                    </div>
+                </div>
+
+                <div class="course-card">
+                    <div class="course-header mit">
+                        <span class="course-badge mit">MIT OCW</span>
+                        <h3 class="course-title">Finance Theory I: Portfolio Theory</h3>
+                        <p class="course-instructor">Prof. Andrew Lo • MIT Sloan</p>
+                    </div>
+                    <div class="course-body">
+                        <p class="course-description">Learn Modern Portfolio Theory including diversification, the efficient frontier, and optimal portfolio construction strategies.</p>
+                        <div class="course-topics">
+                            <span class="course-topic">Diversification</span>
+                            <span class="course-topic">Efficient Frontier</span>
+                            <span class="course-topic">Mean-Variance</span>
+                            <span class="course-topic">Optimization</span>
+                        </div>
+                        <div class="course-meta">
+                            <span class="course-meta-item">📚 6 modules</span>
+                            <span class="course-meta-item">⏱️ 3 hours</span>
+                            <span class="course-meta-item">🎥 Video lectures</span>
+                        </div>
+                        <a href="https://ocw.mit.edu/courses/15-401-finance-theory-i-fall-2008/pages/video-lectures-and-slides/portfolio-theory/" target="_blank" class="course-link">
+                            Open Course →
+                        </a>
+                    </div>
+                </div>
+
+                <div class="course-card">
+                    <div class="course-header mit">
+                        <span class="course-badge mit">MIT OCW</span>
+                        <h3 class="course-title">Finance Theory I: CAPM & APT</h3>
+                        <p class="course-instructor">Prof. Andrew Lo • MIT Sloan</p>
+                    </div>
+                    <div class="course-body">
+                        <p class="course-description">Master the Capital Asset Pricing Model and Arbitrage Pricing Theory — essential frameworks for understanding risk and expected returns.</p>
+                        <div class="course-topics">
+                            <span class="course-topic">CAPM</span>
+                            <span class="course-topic">Beta</span>
+                            <span class="course-topic">Security Market Line</span>
+                            <span class="course-topic">Factor Models</span>
+                        </div>
+                        <div class="course-meta">
+                            <span class="course-meta-item">📚 5 modules</span>
+                            <span class="course-meta-item">⏱️ 2.5 hours</span>
+                            <span class="course-meta-item">🎥 Video lectures</span>
+                        </div>
+                        <a href="https://ocw.mit.edu/courses/15-401-finance-theory-i-fall-2008/pages/video-lectures-and-slides/the-capm-and-apt/" target="_blank" class="course-link">
+                            Open Course →
+                        </a>
+                    </div>
+                </div>
+
+                <div class="course-card">
+                    <div class="course-header mit">
+                        <span class="course-badge mit">MIT OCW</span>
+                        <h3 class="course-title">Finance Theory I: Options</h3>
+                        <p class="course-instructor">Prof. Andrew Lo • MIT Sloan</p>
+                    </div>
+                    <div class="course-body">
+                        <p class="course-description">Introduction to options pricing, strategies, and the Black-Scholes model — the foundation of derivatives markets.</p>
+                        <div class="course-topics">
+                            <span class="course-topic">Options Basics</span>
+                            <span class="course-topic">Black-Scholes</span>
+                            <span class="course-topic">Greeks</span>
+                            <span class="course-topic">Strategies</span>
+                        </div>
+                        <div class="course-meta">
+                            <span class="course-meta-item">📚 6 modules</span>
+                            <span class="course-meta-item">⏱️ 3 hours</span>
+                            <span class="course-meta-item">🎥 Video lectures</span>
+                        </div>
+                        <a href="https://ocw.mit.edu/courses/15-401-finance-theory-i-fall-2008/pages/video-lectures-and-slides/options/" target="_blank" class="course-link">
+                            Open Course →
+                        </a>
+                    </div>
+                </div>
+
+                <div class="course-card">
+                    <div class="course-header mit">
+                        <span class="course-badge mit">MIT OCW</span>
+                        <h3 class="course-title">FinTech: Shaping the Financial World</h3>
+                        <p class="course-instructor">Prof. Gary Gensler • MIT Sloan</p>
+                    </div>
+                    <div class="course-body">
+                        <p class="course-description">Explore how AI, blockchain, and technology are transforming finance — taught by former SEC Chairman Gary Gensler.</p>
+                        <div class="course-topics">
+                            <span class="course-topic">AI in Finance</span>
+                            <span class="course-topic">Blockchain</span>
+                            <span class="course-topic">Robo-Advisors</span>
+                            <span class="course-topic">Trading Tech</span>
+                        </div>
+                        <div class="course-meta">
+                            <span class="course-meta-item">📚 6 modules</span>
+                            <span class="course-meta-item">⏱️ 3 hours</span>
+                            <span class="course-meta-item">🎥 Video lectures</span>
+                        </div>
+                        <a href="https://ocw.mit.edu/courses/15-s08-fintech-shaping-the-financial-world-spring-2020/" target="_blank" class="course-link">
+                            Open Course →
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Rice Courses -->
+    <section class="section" id="rice" style="background: var(--bg-card);">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-label">Rice University</div>
+                <h2 class="section-title">Investment & Portfolio Management</h2>
+                <p class="section-subtitle">Practical investing skills from the Jones Graduate School of Business at Rice University.</p>
+            </div>
+
+            <div class="course-grid">
+                <div class="course-card">
+                    <div class="course-header rice">
+                        <span class="course-badge rice">Rice University</span>
+                        <h3 class="course-title">Global Financial Markets & Instruments</h3>
+                        <p class="course-instructor">Dr. Arzu Ozoguz • Rice Business</p>
+                    </div>
+                    <div class="course-body">
+                        <p class="course-description">Understand how global financial markets actually operate, including trading mechanisms, dark pools, and algorithmic trading.</p>
+                        <div class="course-topics">
+                            <span class="course-topic">Market Structure</span>
+                            <span class="course-topic">Dark Pools</span>
+                            <span class="course-topic">Algo Trading</span>
+                            <span class="course-topic">Short Selling</span>
+                        </div>
+                        <div class="course-meta">
+                            <span class="course-meta-item">📚 6 modules</span>
+                            <span class="course-meta-item">⏱️ 3 hours</span>
+                            <span class="course-meta-item">🎓 Certificate</span>
+                        </div>
+                        <a href="https://online.rice.edu/courses/global-financial-markets-and-instruments" target="_blank" class="course-link">
+                            Open Course →
+                        </a>
+                    </div>
+                </div>
+
+                <div class="course-card">
+                    <div class="course-header rice">
+                        <span class="course-badge rice">Rice University</span>
+                        <h3 class="course-title">Portfolio Construction & Analysis</h3>
+                        <p class="course-instructor">Prof. Jill Foote • Rice Business</p>
+                    </div>
+                    <div class="course-body">
+                        <p class="course-description">Learn to construct and analyze investment portfolios using modern techniques, from asset allocation to performance attribution.</p>
+                        <div class="course-topics">
+                            <span class="course-topic">Asset Allocation</span>
+                            <span class="course-topic">Risk Analysis</span>
+                            <span class="course-topic">Performance</span>
+                            <span class="course-topic">Rebalancing</span>
+                        </div>
+                        <div class="course-meta">
+                            <span class="course-meta-item">📚 6 modules</span>
+                            <span class="course-meta-item">⏱️ 3 hours</span>
+                            <span class="course-meta-item">🎓 Certificate</span>
+                        </div>
+                        <a href="https://online.rice.edu/courses/investment-portfolio-management" target="_blank" class="course-link">
+                            Open Course →
+                        </a>
+                    </div>
+                </div>
+
+                <div class="course-card">
+                    <div class="course-header rice">
+                        <span class="course-badge rice">Rice University</span>
+                        <h3 class="course-title">Behavioral Finance & Cognitive Biases</h3>
+                        <p class="course-instructor">Dr. Arzu Ozoguz • Rice Business</p>
+                    </div>
+                    <div class="course-body">
+                        <p class="course-description">Discover how psychological biases affect investment decisions and learn to recognize irrational behavior in markets.</p>
+                        <div class="course-topics">
+                            <span class="course-topic">Cognitive Biases</span>
+                            <span class="course-topic">Overconfidence</span>
+                            <span class="course-topic">Loss Aversion</span>
+                            <span class="course-topic">Herd Behavior</span>
+                        </div>
+                        <div class="course-meta">
+                            <span class="course-meta-item">📚 5 modules</span>
+                            <span class="course-meta-item">⏱️ 2.5 hours</span>
+                            <span class="course-meta-item">🎓 Certificate</span>
+                        </div>
+                        <a href="https://online.rice.edu/courses/investment-portfolio-management" target="_blank" class="course-link">
+                            Open Course →
+                        </a>
+                    </div>
+                </div>
+
+                <div class="course-card">
+                    <div class="course-header rice">
+                        <span class="course-badge rice">Rice University</span>
+                        <h3 class="course-title">Investment Strategies & Performance</h3>
+                        <p class="course-instructor">Prof. Jill Foote • Rice Business</p>
+                    </div>
+                    <div class="course-body">
+                        <p class="course-description">Master various investment strategies from value to momentum, and learn to evaluate performance using industry-standard metrics.</p>
+                        <div class="course-topics">
+                            <span class="course-topic">Value Investing</span>
+                            <span class="course-topic">Momentum</span>
+                            <span class="course-topic">Factor Investing</span>
+                            <span class="course-topic">Attribution</span>
+                        </div>
+                        <div class="course-meta">
+                            <span class="course-meta-item">📚 6 modules</span>
+                            <span class="course-meta-item">⏱️ 3 hours</span>
+                            <span class="course-meta-item">🎓 Certificate</span>
+                        </div>
+                        <a href="https://online.rice.edu/courses/investment-strategies-portfolio-analysis" target="_blank" class="course-link">
+                            Open Course →
+                        </a>
+                    </div>
+                </div>
+
+                <div class="course-card">
+                    <div class="course-header rice">
+                        <span class="course-badge rice">Rice University</span>
+                        <h3 class="course-title">Finance for Non-Finance Professionals</h3>
+                        <p class="course-instructor">Prof. James Weston • Rice Business</p>
+                    </div>
+                    <div class="course-body">
+                        <p class="course-description">MBA-level finance fundamentals covering valuation, capital budgeting, and financial analysis — perfect for beginners.</p>
+                        <div class="course-topics">
+                            <span class="course-topic">Valuation</span>
+                            <span class="course-topic">Capital Budgeting</span>
+                            <span class="course-topic">Cash Flow</span>
+                            <span class="course-topic">DCF</span>
+                        </div>
+                        <div class="course-meta">
+                            <span class="course-meta-item">📚 8 modules</span>
+                            <span class="course-meta-item">⏱️ 4 hours</span>
+                            <span class="course-meta-item">🎓 Certificate</span>
+                        </div>
+                        <a href="https://www.coursera.org/learn/finance-for-non-finance" target="_blank" class="course-link">
+                            Open Course →
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Learning Paths -->
+    <section class="section" id="paths">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-label">Learning Paths</div>
+                <h2 class="section-title">Structured Learning Journeys</h2>
+                <p class="section-subtitle">Follow our curated paths from beginner to advanced investor.</p>
+            </div>
+
+            <div class="path-card">
+                <div class="path-header">
+                    <div class="path-icon beginner">🌱</div>
+                    <div>
+                        <h3 class="path-title">Beginner Path</h3>
+                        <p class="path-description">New to investing? Start here.</p>
+                    </div>
+                </div>
+                <div class="path-courses">
+                    <div class="path-course-item">
+                        <div class="path-course-number">1</div>
+                        <div class="path-course-info">
+                            <div class="path-course-title">Market Fundamentals</div>
+                            <div class="path-course-meta">FantasyTrader • 45 min • 5 modules</div>
+                        </div>
+                    </div>
+                    <div class="path-course-item">
+                        <div class="path-course-number">2</div>
+                        <div class="path-course-info">
+                            <div class="path-course-title">Introduction to Investing</div>
+                            <div class="path-course-meta">FantasyTrader • 1 hour • 6 modules</div>
+                        </div>
+                    </div>
+                    <div class="path-course-item">
+                        <div class="path-course-number">3</div>
+                        <div class="path-course-info">
+                            <div class="path-course-title">Finance for Non-Finance Professionals</div>
+                            <div class="path-course-meta">Rice University • 4 hours • 8 modules</div>
+                        </div>
+                    </div>
+                    <div class="path-course-item">
+                        <div class="path-course-number">4</div>
+                        <div class="path-course-info">
+                            <div class="path-course-title">Understanding Financial Statements</div>
+                            <div class="path-course-meta">FantasyTrader • 1.5 hours • 6 modules</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="path-card">
+                <div class="path-header">
+                    <div class="path-icon intermediate">📈</div>
+                    <div>
+                        <h3 class="path-title">Intermediate Path</h3>
+                        <p class="path-description">Ready to level up your skills.</p>
+                    </div>
+                </div>
+                <div class="path-courses">
+                    <div class="path-course-item">
+                        <div class="path-course-number">1</div>
+                        <div class="path-course-info">
+                            <div class="path-course-title">Finance Theory I: Present Value</div>
+                            <div class="path-course-meta">MIT OCW • 2 hours • 4 modules</div>
+                        </div>
+                    </div>
+                    <div class="path-course-item">
+                        <div class="path-course-number">2</div>
+                        <div class="path-course-info">
+                            <div class="path-course-title">Finance Theory I: Equities</div>
+                            <div class="path-course-meta">MIT OCW • 2 hours • 4 modules</div>
+                        </div>
+                    </div>
+                    <div class="path-course-item">
+                        <div class="path-course-number">3</div>
+                        <div class="path-course-info">
+                            <div class="path-course-title">Global Financial Markets & Instruments</div>
+                            <div class="path-course-meta">Rice University • 3 hours • 6 modules</div>
+                        </div>
+                    </div>
+                    <div class="path-course-item">
+                        <div class="path-course-number">4</div>
+                        <div class="path-course-info">
+                            <div class="path-course-title">Technical Analysis Fundamentals</div>
+                            <div class="path-course-meta">FantasyTrader • 2 hours • 6 modules</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="path-card">
+                <div class="path-header">
+                    <div class="path-icon advanced">🚀</div>
+                    <div>
+                        <h3 class="path-title">Advanced Path</h3>
+                        <p class="path-description">Master professional-level concepts.</p>
+                    </div>
+                </div>
+                <div class="path-courses">
+                    <div class="path-course-item">
+                        <div class="path-course-number">1</div>
+                        <div class="path-course-info">
+                            <div class="path-course-title">Finance Theory I: Portfolio Theory</div>
+                            <div class="path-course-meta">MIT OCW • 3 hours • 6 modules</div>
+                        </div>
+                    </div>
+                    <div class="path-course-item">
+                        <div class="path-course-number">2</div>
+                        <div class="path-course-info">
+                            <div class="path-course-title">Finance Theory I: CAPM & APT</div>
+                            <div class="path-course-meta">MIT OCW • 2.5 hours • 5 modules</div>
+                        </div>
+                    </div>
+                    <div class="path-course-item">
+                        <div class="path-course-number">3</div>
+                        <div class="path-course-info">
+                            <div class="path-course-title">Finance Theory I: Options</div>
+                            <div class="path-course-meta">MIT OCW • 3 hours • 6 modules</div>
+                        </div>
+                    </div>
+                    <div class="path-course-item">
+                        <div class="path-course-number">4</div>
+                        <div class="path-course-info">
+                            <div class="path-course-title">Investment Strategies & Performance</div>
+                            <div class="path-course-meta">Rice University • 3 hours • 6 modules</div>
+                        </div>
+                    </div>
+                    <div class="path-course-item">
+                        <div class="path-course-number">5</div>
+                        <div class="path-course-info">
+                            <div class="path-course-title">FinTech: Shaping the Financial World</div>
+                            <div class="path-course-meta">MIT OCW • 3 hours • 6 modules</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="section" style="text-align: center;">
+        <div class="container">
+            <h2 style="font-size: 36px; margin-bottom: 16px;">Ready to Start Learning?</h2>
+            <p style="color: var(--text-secondary); margin-bottom: 32px; max-width: 500px; margin-left: auto; margin-right: auto;">
+                Access all courses directly in the FantasyTrader app and track your progress.
+            </p>
+            <a href="app.html" class="btn btn-primary" style="padding: 16px 40px; font-size: 16px;">
+                Open Learn Center →
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container footer-content">
+            <a href="index.html" class="logo">
+                <img src="images/logo.png" alt="FantasyTrader" class="logo-img">
+                <span class="logo-text">FantasyTrader</span>
+            </a>
+            <div class="footer-copy">© 2025 FantasyTrader. Built at UNC. Learning content from MIT OCW and Rice University.</div>
+        </div>
+    </footer>
+</body>
+</html>

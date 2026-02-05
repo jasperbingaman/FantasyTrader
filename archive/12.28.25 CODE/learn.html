@@ -1,0 +1,1681 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Stock League - Learning Hub</title>
+    <style>
+        /* Modern Typography */
+        @import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&display=swap');
+
+        :root {
+            --primary: #1E3888;
+            --secondary: #47A992;
+            --accent: #FFB100;
+            --background: #0B1622;
+            --surface: #162A3D;
+            --up-green: #00C853;
+            --down-red: #FF3D00;
+            --glow-green: #00ff8850;
+            --success: #00ff88;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #0B1622;
+            color: #ffffff;
+            min-height: 100vh;
+            padding: 1rem 2rem;
+        }
+
+        .navbar {
+            background: var(--surface);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .learning-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .learning-paths {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin: 2rem auto;
+            max-width: 1400px;
+        }
+
+        .path-card {
+            background: rgba(11, 22, 34, 0.95);
+            border-radius: 15px;
+            padding: 2rem;
+            height: 320px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            border: 1px solid rgba(0, 255, 136, 0.1);
+        }
+
+        .level-title {
+            font-size: 2rem;
+            font-weight: 600;
+            margin: 0 0 1.5rem 0;
+        }
+
+        .green { color: #00FF88; }
+        .yellow { color: #FFB100; }
+        .red { color: #FF4444; }
+
+        .progress-ring {
+            width: 100px;
+            height: 100px;
+            margin: 1rem 0;
+        }
+
+        .ring-bg {
+            fill: none;
+            stroke: rgba(255, 255, 255, 0.1);
+            stroke-width: 2.5;
+        }
+
+        .ring-progress {
+            fill: none;
+            stroke-width: 2.5;
+            stroke-linecap: round;
+            transform: rotate(-90deg);
+            transform-origin: 50% 50%;
+        }
+
+        .green-progress { stroke: #00FF88; }
+        .yellow-progress { stroke: #FFB100; }
+        .red-progress { stroke: #FF4444; }
+
+        .ring-text {
+            fill: #fff;
+            font-size: 0.6rem;
+            text-anchor: middle;
+            dominant-baseline: middle;
+        }
+
+        .level-description {
+            color: rgba(255, 255, 255, 0.8);
+            margin: 1.5rem 0;
+            font-size: 1rem;
+            line-height: 1.4;
+        }
+
+        .level-button {
+            padding: 1rem 2.5rem;
+            border-radius: 12px;
+            border: none;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+            margin-top: auto;
+            background: rgba(30, 56, 136, 0.15);
+            color: #fff;
+            box-shadow: 0 4px 24px 0 rgba(0,255,136,0.08), 0 1.5px 6px 0 rgba(0,0,0,0.10);
+            backdrop-filter: blur(6px);
+            transition: background 0.2s, color 0.2s, transform 0.2s, box-shadow 0.2s;
+            outline: none;
+        }
+
+        .green-button {
+            background: rgba(0, 255, 136, 0.18);
+            color: #00FF88;
+            box-shadow: 0 2px 12px 0 rgba(0,255,136,0.10);
+        }
+
+        .yellow-button {
+            background: rgba(255, 177, 0, 0.18);
+            color: #FFB100;
+            box-shadow: 0 2px 12px 0 rgba(255,177,0,0.10);
+        }
+
+        .red-button {
+            background: rgba(255, 68, 68, 0.18);
+            color: #FF4444;
+            box-shadow: 0 2px 12px 0 rgba(255,68,68,0.10);
+        }
+
+        .level-button:hover:not(:disabled) {
+            background: rgba(0,255,136,0.22);
+            color: #fff;
+            transform: translateY(-3px) scale(1.04);
+            box-shadow: 0 6px 32px 0 rgba(0,255,136,0.18);
+        }
+
+        .level-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            background: rgba(255,255,255,0.08);
+            color: #aaa;
+            box-shadow: none;
+        }
+
+        .arrow {
+            font-size: 1.2rem;
+        }
+
+        /* Career Education Section - Sleek Single Button */
+        .career-education {
+            background: rgba(11, 22, 34, 0.95);
+            border: 1px solid rgba(255, 177, 0, 0.2);
+            border-radius: 20px;
+            padding: 2rem;
+            margin: 2rem auto;
+            max-width: 1400px;
+            text-align: center;
+        }
+
+        .career-title {
+            color: var(--accent);
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .career-description {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+        }
+
+        .career-button {
+            background: linear-gradient(45deg, var(--accent), #FFD700);
+            color: var(--background);
+            border: none;
+            padding: 1rem 3rem;
+            border-radius: 12px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .career-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 25px rgba(255, 177, 0, 0.4);
+        }
+
+        /* Quiz Center Section */
+        .quiz-center {
+            background: rgba(11, 22, 34, 0.95);
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            border-radius: 20px;
+            padding: 2rem;
+            margin: 2rem auto;
+            max-width: 1400px;
+        }
+
+        .quiz-title {
+            color: var(--success);
+            font-size: 2rem;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .quiz-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            border-radius: 10px;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--success);
+        }
+
+        .stat-label {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 1rem 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--success), #00ffee);
+            transition: width 0.3s ease;
+        }
+
+        /* All Courses Section */
+        .all-courses-section {
+            background: rgba(11, 22, 34, 0.95);
+            border-radius: 20px;
+            padding: 3rem;
+            margin: 2rem auto;
+            max-width: 1400px;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            text-align: center;
+        }
+
+        .all-courses-content h2 {
+            color: #fff;
+            font-size: 2.5rem;
+            margin: 0 0 1rem 0;
+            font-weight: 700;
+        }
+
+        .all-courses-content p {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
+        }
+
+        .keep-learning-progress {
+            width: 120px;
+            height: 120px;
+            margin: 1.5rem auto;
+        }
+
+        .keep-learning-progress .ring-bg {
+            fill: none;
+            stroke: rgba(16, 185, 129, 0.2);
+            stroke-width: 3;
+        }
+
+        .keep-learning-progress .ring-progress {
+            fill: none;
+            stroke-width: 3;
+            stroke-linecap: round;
+            transform: rotate(-90deg);
+            transform-origin: 50% 50%;
+            stroke: #10b981;
+        }
+
+        .keep-learning-progress .ring-text {
+            fill: #fff;
+            font-size: 0.8rem;
+            text-anchor: middle;
+            dominant-baseline: middle;
+            font-weight: 600;
+        }
+
+        .all-courses-btn {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            border: none;
+            padding: 1.2rem 3rem;
+            font-size: 1.2rem;
+            font-weight: 700;
+            border-radius: 15px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.3);
+        }
+
+        .all-courses-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(16, 185, 129, 0.4);
+        }
+
+        /* Enhanced Features Section */
+        .features-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin: 2rem auto;
+            max-width: 1400px;
+            padding: 0 2rem;
+        }
+
+        .feature-card {
+            background: rgba(11, 22, 34, 0.95);
+            border-radius: 16px;
+            padding: 2.5rem;
+            text-align: center;
+            border: 1px solid rgba(0, 255, 136, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--success), #00ffee);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .feature-card:hover::before {
+            opacity: 1;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--success);
+            box-shadow: 0 10px 30px rgba(0, 255, 136, 0.1);
+        }
+
+        .feature-icon {
+            margin-bottom: 1.5rem;
+            color: var(--success);
+        }
+
+        .feature-card h2 {
+            color: #fff;
+            font-size: 1.8rem;
+            margin: 0 0 1rem 0;
+            font-weight: 600;
+        }
+
+        .feature-card p {
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 2rem;
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        .feature-stats {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-number {
+            display: block;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--success);
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.6);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .feature-button {
+            background: rgba(0, 255, 136, 0.1);
+            color: var(--success);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            width: 100%;
+            padding: 1rem;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .feature-button:hover {
+            background: rgba(0, 255, 136, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 255, 136, 0.2);
+        }
+
+        .quiz-card {
+            border-color: rgba(0, 255, 136, 0.2);
+        }
+
+        .career-card {
+            border-color: rgba(255, 177, 0, 0.2);
+        }
+
+        .career-card .feature-icon {
+            color: var(--accent);
+        }
+
+        .career-card .feature-button {
+            background: rgba(255, 177, 0, 0.1);
+            color: var(--accent);
+            border-color: rgba(255, 177, 0, 0.3);
+        }
+
+        .career-card .feature-button:hover {
+            background: rgba(255, 177, 0, 0.2);
+            box-shadow: 0 5px 15px rgba(255, 177, 0, 0.2);
+        }
+
+        /* Module Modal Styles */
+        .module-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .module-content {
+            background: var(--surface);
+            border: 2px solid var(--success);
+            border-radius: 15px;
+            padding: 2rem;
+            max-width: 800px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .module-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            color: var(--accent);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .module-title {
+            color: var(--success);
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .module-section {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+        }
+
+        .module-section h3 {
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
+
+        .quiz-question {
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+        }
+
+        .quiz-options {
+            display: grid;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .quiz-option {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .quiz-option:hover {
+            background: rgba(0, 255, 136, 0.1);
+            border-color: var(--success);
+        }
+
+        .quiz-option.selected {
+            background: rgba(0, 255, 136, 0.2);
+            border-color: var(--success);
+        }
+
+        .quiz-option.correct {
+            background: rgba(0, 255, 136, 0.3);
+            border-color: var(--success);
+        }
+
+        .quiz-option.incorrect {
+            background: rgba(255, 68, 68, 0.3);
+            border-color: #ff4444;
+        }
+
+        .module-nav {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+        }
+
+        .nav-button {
+            background: var(--success);
+            color: var(--background);
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .nav-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 15px rgba(0, 255, 136, 0.3);
+        }
+
+        .nav-button:disabled {
+            background: rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.5);
+            cursor: not-allowed;
+        }
+
+        /* Module Selection Styles */
+        .module-selection {
+            padding: 1rem 0;
+        }
+
+        .module-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .module-option {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .module-option:hover {
+            background: rgba(0, 255, 136, 0.1);
+            border-color: var(--success);
+            transform: translateY(-2px);
+        }
+
+        .module-option.completed {
+            border-color: var(--success);
+            background: rgba(0, 255, 136, 0.05);
+        }
+
+        .module-number {
+            width: 40px;
+            height: 40px;
+            background: var(--success);
+            color: var(--background);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+
+        .module-option h4 {
+            color: #fff;
+            margin: 0 0 1rem 0;
+            font-size: 1.1rem;
+        }
+
+        .module-progress {
+            margin-top: 1rem;
+        }
+
+        .progress-text {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-top: 0.5rem;
+            display: block;
+        }
+
+        .completion-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            width: 24px;
+            height: 24px;
+            background: var(--success);
+            color: var(--background);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.8rem;
+        }
+
+        /* Cool Facts Banner */
+        .facts-banner {
+            width: 100%;
+            text-align: center;
+            padding: 1rem 0;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+        }
+
+        .fact-text {
+            margin: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        /* Title styling */
+        .title-container {
+            text-align: center;
+            padding: 1rem 0;
+            margin-bottom: 2rem;
+        }
+
+        .main-title {
+            font-size: 5rem;
+            font-weight: 800;
+            line-height: 1;
+            margin: 0;
+            padding: 0;
+            letter-spacing: 2px;
+        }
+
+        .learning {
+            background: linear-gradient(90deg, #00FF88 0%, #48ff00 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+        }
+
+        .hub {
+            background: linear-gradient(90deg, #48ff00 0%, #FFB100 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 20px rgba(255, 177, 0, 0.3);
+            margin-left: 20px;
+        }
+
+        .dashboard-btn {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(0, 255, 136, 0.1));
+            color: white;
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin: 1rem;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+
+        .dashboard-btn:hover {
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.2), rgba(255, 177, 0, 0.2));
+            border-color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        .menu-icon {
+            font-size: 1.2rem;
+        }
+
+        @media (max-width: 768px) {
+            .main-title {
+                font-size: 3rem;
+            }
+            .learning-paths {
+                grid-template-columns: 1fr;
+            }
+            .markets-grid {
+                grid-template-columns: 1fr;
+            }
+            .features-section {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <button class="dashboard-btn" onclick="window.location.href='dashboard.html'">
+        <span class="menu-icon">≡</span>
+        Dashboard
+    </button>
+
+    <!-- Cool Facts Banner -->
+    <div class="facts-banner">
+        <p id="fact-text" class="fact-text"></p>
+    </div>
+
+    <div class="title-container">
+        <h1 class="main-title">
+            <span class="learning">LEARNING</span>
+            <span class="hub">HUB</span>
+        </h1>
+    </div>
+
+    <div class="learning-container">
+        <!-- Learning Paths -->
+        <div class="learning-paths">
+            <div class="path-card">
+                <h2 class="level-title green">BEGINNER</h2>
+                <div class="progress-ring">
+                    <svg viewBox="0 0 36 36">
+                        <circle class="ring-bg" cx="18" cy="18" r="15.91549430918954"/>
+                        <circle class="ring-progress green-progress" cx="18" cy="18" r="15.91549430918954" stroke-dasharray="0 100"/>
+                        <text x="18" y="18.5" class="ring-text">0%</text>
+                    </svg>
+                </div>
+                <p class="level-description">Market fundamentals, basic terminology, and building your first portfolio.</p>
+                <button class="level-button green-button" onclick="window.location.href='beginner-path.html'">
+                    START LEARNING
+                    <span class="arrow">→</span>
+                </button>
+            </div>
+
+            <div class="path-card">
+                <h2 class="level-title yellow">INTERMEDIATE</h2>
+                <div class="progress-ring">
+                    <svg viewBox="0 0 36 36">
+                        <circle class="ring-bg" cx="18" cy="18" r="15.91549430918954"/>
+                        <circle class="ring-progress yellow-progress" cx="18" cy="18" r="15.91549430918954" stroke-dasharray="0 100"/>
+                        <text x="18" y="18.5" class="ring-text">0%</text>
+                    </svg>
+                </div>
+                <p class="level-description">Advanced analysis, chart patterns, and proven trading strategies.</p>
+                <button class="level-button yellow-button" onclick="window.location.href='intermediate-path.html'">
+                    START LEARNING
+                    <span class="arrow">→</span>
+                </button>
+            </div>
+
+            <div class="path-card">
+                <h2 class="level-title red">ADVANCED</h2>
+                <div class="progress-ring">
+                    <svg viewBox="0 0 36 36">
+                        <circle class="ring-bg" cx="18" cy="18" r="15.91549430918954"/>
+                        <circle class="ring-progress red-progress" cx="18" cy="18" r="15.91549430918954" stroke-dasharray="0 100"/>
+                        <text x="18" y="18.5" class="ring-text">0%</text>
+                    </svg>
+                </div>
+                <p class="level-description">Expert-level concepts, risk management, and complex trading techniques.</p>
+                <button class="level-button red-button" onclick="window.location.href='advanced-path.html'">
+                    START LEARNING
+                    <span class="arrow">→</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Keep Learning Section -->
+        <div class="all-courses-section">
+            <div class="all-courses-content">
+                <h2>Keep Learning</h2>
+                <div class="keep-learning-progress">
+                    <svg viewBox="0 0 36 36">
+                        <circle class="ring-bg" cx="18" cy="18" r="15.91549430918954"/>
+                        <circle class="ring-progress" cx="18" cy="18" r="15.91549430918954" stroke-dasharray="0 100"/>
+                        <text x="18" y="18.5" class="ring-text">0%</text>
+                    </svg>
+                </div>
+                <p>Master the art of trading with our comprehensive course library including the Master Trading Course and specialized modules.</p>
+                <button class="all-courses-btn" onclick="window.location.href='all-courses.html'">Explore All Courses</button>
+            </div>
+        </div>
+
+        <!-- Enhanced Features Section -->
+        <div class="features-section">
+            <div class="feature-card quiz-card">
+                <div class="feature-icon">
+                    <svg viewBox="0 0 24 24" width="48" height="48">
+                        <path fill="currentColor" d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                    </svg>
+                </div>
+                <h2>Knowledge Assessment</h2>
+                <p>Test your understanding with interactive quizzes and earn certificates to showcase your expertise.</p>
+                <div class="feature-stats">
+                    <div class="stat">
+                        <span class="stat-number" id="quizProgress">0%</span>
+                        <span class="stat-label">Progress</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number" id="certificates">0</span>
+                        <span class="stat-label">Certificates</span>
+                    </div>
+                </div>
+                <button class="feature-button" onclick="openQuizCenter()">
+                    <span>Start Assessment</span>
+                    <svg viewBox="0 0 24 24" width="16" height="16">
+                        <path fill="currentColor" d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="feature-card career-card">
+                <div class="feature-icon">
+                    <svg viewBox="0 0 24 24" width="48" height="48">
+                        <path fill="currentColor" d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-5 14H4V6h11v12zm5 0h-3V6h3v12z"/>
+                    </svg>
+                </div>
+                <h2>Career Pathways</h2>
+                <p>Explore high-finance career paths including M&A, Private Equity, Venture Capital, and Investment Banking.</p>
+                <div class="feature-stats">
+                    <div class="stat">
+                        <span class="stat-number">6</span>
+                        <span class="stat-label">Paths</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">5</span>
+                        <span class="stat-label">Unlocked</span>
+                    </div>
+                </div>
+                <button class="feature-button" onclick="window.location.href='career-education.html'">
+                    <span>Explore Careers</span>
+                    <svg viewBox="0 0 24 24" width="16" height="16">
+                        <path fill="currentColor" d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+
+
+
+    </div>
+
+    <!-- Module Modal -->
+    <div class="module-modal" id="moduleModal">
+        <div class="module-content">
+            <button class="module-close" onclick="closeModule()">&times;</button>
+            <h2 class="module-title" id="moduleTitle">Module Title</h2>
+            <div id="moduleContent"></div>
+        </div>
+    </div>
+
+    <script>
+        // Cool Facts - Randomized
+        document.addEventListener('DOMContentLoaded', () => {
+            const factElement = document.getElementById('fact-text');
+            const facts = [
+                "The S&P 500 has averaged a 10.7% annual return since 1957.",
+                "Warren Buffett made 99% of his wealth after his 50th birthday.",
+                "Time in the market beats timing the market.",
+                "The rule of 72: Divide 72 by your return rate to estimate years to double your money.",
+                "90% of successful trades come from market momentum.",
+                "Compound interest is the 8th wonder of the world.",
+                "The average investor underperforms the market by 2-3% annually.",
+                "Markets are efficient in the long run, but inefficient in the short run.",
+                "Diversification is the only free lunch in investing.",
+                "Fear and greed drive market cycles more than fundamentals."
+            ];
+
+            // Shuffle facts array
+            function shuffleArray(array) {
+                for (let i = array.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [array[i], array[j]] = [array[j], array[i]];
+                }
+                return array;
+            }
+
+            const shuffledFacts = shuffleArray([...facts]);
+            let currentIndex = 0;
+
+            function updateFact() {
+                if (factElement) {
+                    factElement.style.opacity = '0';
+                    setTimeout(() => {
+                        factElement.textContent = shuffledFacts[currentIndex];
+                        factElement.style.opacity = '1';
+                        currentIndex = (currentIndex + 1) % shuffledFacts.length;
+                    }, 500);
+                }
+            }
+
+            updateFact();
+            setInterval(updateFact, 10000);
+        });
+
+        // Quiz and Module Data
+        const beginnerModules = [
+            {
+                title: "Module 1: Market Fundamentals",
+                sections: [
+                    {
+                        title: "What is the Stock Market?",
+                        content: "The stock market is a marketplace where shares of publicly traded companies are bought and sold. It allows companies to raise capital and investors to own a piece of successful businesses."
+                    },
+                    {
+                        title: "Key Terms",
+                        content: "• Stock: A share of ownership in a company\n• Portfolio: A collection of investments\n• Bull Market: When prices are rising\n• Bear Market: When prices are falling\n• Dividend: A portion of company profits paid to shareholders"
+                    }
+                ],
+                quiz: [
+                    {
+                        question: "What is a stock?",
+                        options: [
+                            "A type of bond",
+                            "A share of ownership in a company",
+                            "A government security",
+                            "A cryptocurrency"
+                        ],
+                        correct: 1
+                    },
+                    {
+                        question: "What is a bull market?",
+                        options: [
+                            "When prices are falling",
+                            "When prices are rising",
+                            "When the market is closed",
+                            "When there's high volatility"
+                        ],
+                        correct: 1
+                    },
+                    {
+                        question: "What is a dividend?",
+                        options: [
+                            "A type of tax",
+                            "A portion of company profits paid to shareholders",
+                            "A trading fee",
+                            "A market index"
+                        ],
+                        correct: 1
+                    }
+                ]
+            },
+            {
+                title: "Module 2: Reading Stock Charts",
+                sections: [
+                    {
+                        title: "Understanding Chart Basics",
+                        content: "Stock charts show price movements over time. The x-axis represents time, and the y-axis represents price. Charts help identify trends, support/resistance levels, and potential entry/exit points."
+                    },
+                    {
+                        title: "Chart Types",
+                        content: "• Line Chart: Shows closing prices over time\n• Candlestick Chart: Shows open, high, low, and close prices\n• Bar Chart: Similar to candlestick but with different visual style\n• Volume: Number of shares traded, shown as bars below price chart"
+                    },
+                    {
+                        title: "Key Chart Patterns",
+                        content: "• Support: Price level where stock tends to stop falling\n• Resistance: Price level where stock tends to stop rising\n• Trend Lines: Lines connecting highs or lows to show direction\n• Moving Averages: Average price over a period, helps identify trends"
+                    }
+                ],
+                quiz: [
+                    {
+                        question: "What does the x-axis on a stock chart represent?",
+                        options: [
+                            "Price",
+                            "Time",
+                            "Volume",
+                            "Market cap"
+                        ],
+                        correct: 1
+                    },
+                    {
+                        question: "What is a support level?",
+                        options: [
+                            "A price level where stock tends to stop rising",
+                            "A price level where stock tends to stop falling",
+                            "A technical indicator",
+                            "A type of chart pattern"
+                        ],
+                        correct: 1
+                    },
+                    {
+                        question: "What does volume represent?",
+                        options: [
+                            "The stock price",
+                            "The number of shares traded",
+                            "The market cap",
+                            "The dividend yield"
+                        ],
+                        correct: 1
+                    }
+                ]
+            },
+            {
+                title: "Module 3: Building Your Portfolio",
+                sections: [
+                    {
+                        title: "Diversification Basics",
+                        content: "Diversification means spreading your investments across different assets to reduce risk. Don't put all your eggs in one basket - invest in various sectors, company sizes, and geographic regions."
+                    },
+                    {
+                        title: "Asset Allocation",
+                        content: "• Stocks: Growth potential but higher risk\n• Bonds: Lower risk, steady income\n• ETFs: Diversified baskets of stocks/bonds\n• Cash: Safety net for opportunities\n• Real Estate: Tangible assets with income potential"
+                    },
+                    {
+                        title: "Risk Management",
+                        content: "• Never invest more than you can afford to lose\n• Set stop-loss orders to limit downside\n• Rebalance your portfolio regularly\n• Consider your time horizon and goals\n• Keep emergency funds separate from investments"
+                    }
+                ],
+                quiz: [
+                    {
+                        question: "What is diversification?",
+                        options: [
+                            "Investing all your money in one stock",
+                            "Spreading investments across different assets",
+                            "Only investing in bonds",
+                            "Trading frequently"
+                        ],
+                        correct: 1
+                    },
+                    {
+                        question: "Which asset typically has the highest risk?",
+                        options: [
+                            "Government bonds",
+                            "Individual stocks",
+                            "Cash savings",
+                            "Real estate"
+                        ],
+                        correct: 1
+                    },
+                    {
+                        question: "What is a stop-loss order?",
+                        options: [
+                            "An order to buy more shares",
+                            "An order to sell if price falls below a level",
+                            "A type of dividend",
+                            "A market index"
+                        ],
+                        correct: 1
+                    }
+                ]
+            },
+            {
+                title: "Module 4: Fundamental Analysis",
+                sections: [
+                    {
+                        title: "Understanding Company Financials",
+                        content: "Fundamental analysis examines a company's financial health and business model. Key metrics include revenue, earnings, debt levels, and growth rates."
+                    },
+                    {
+                        title: "Key Financial Ratios",
+                        content: "• P/E Ratio: Price divided by earnings per share\n• Debt-to-Equity: Company's debt relative to shareholder equity\n• Return on Equity: How efficiently company uses shareholder money\n• Current Ratio: Ability to pay short-term obligations\n• Profit Margins: Percentage of revenue that becomes profit"
+                    },
+                    {
+                        title: "Growth vs Value Investing",
+                        content: "• Growth: Invest in companies with high growth potential\n• Value: Invest in undervalued companies with strong fundamentals\n• Blend: Combine both approaches for balanced portfolio\n• Consider your risk tolerance and investment goals"
+                    }
+                ],
+                quiz: [
+                    {
+                        question: "What does P/E ratio measure?",
+                        options: [
+                            "Company debt levels",
+                            "Price relative to earnings",
+                            "Revenue growth",
+                            "Dividend yield"
+                        ],
+                        correct: 1
+                    },
+                    {
+                        question: "What is value investing?",
+                        options: [
+                            "Only investing in growth stocks",
+                            "Finding undervalued companies",
+                            "Trading frequently",
+                            "Only investing in bonds"
+                        ],
+                        correct: 1
+                    },
+                    {
+                        question: "What does ROE stand for?",
+                        options: [
+                            "Return on Earnings",
+                            "Return on Equity",
+                            "Rate of Exchange",
+                            "Revenue on Equity"
+                        ],
+                        correct: 1
+                    }
+                ]
+            },
+            {
+                title: "Module 5: Trading Strategies",
+                sections: [
+                    {
+                        title: "Buy and Hold Strategy",
+                        content: "Buy quality stocks and hold them for the long term. This strategy benefits from compound growth and avoids short-term market volatility. Warren Buffett is a famous proponent."
+                    },
+                    {
+                        title: "Dollar-Cost Averaging",
+                        content: "Invest a fixed amount regularly regardless of market conditions. This reduces the impact of market timing and can lower your average purchase price over time."
+                    },
+                    {
+                        title: "Setting Investment Goals",
+                        content: "• Define your financial goals (retirement, house, education)\n• Set realistic timeframes\n• Determine your risk tolerance\n• Create a plan and stick to it\n• Review and adjust periodically"
+                    }
+                ],
+                quiz: [
+                    {
+                        question: "What is dollar-cost averaging?",
+                        options: [
+                            "Investing all money at once",
+                            "Investing fixed amounts regularly",
+                            "Only buying on dips",
+                            "Trading daily"
+                        ],
+                        correct: 1
+                    },
+                    {
+                        question: "Who is famous for buy-and-hold investing?",
+                        options: [
+                            "Warren Buffett",
+                            "George Soros",
+                            "Jim Cramer",
+                            "Peter Lynch"
+                        ],
+                        correct: 0
+                    },
+                    {
+                        question: "What is compound growth?",
+                        options: [
+                            "Earnings on your original investment only",
+                            "Earnings on both original investment and previous earnings",
+                            "A type of dividend",
+                            "A trading strategy"
+                        ],
+                        correct: 1
+                    }
+                ]
+            }
+        ];
+
+        let currentModule = 0;
+        let currentQuiz = 0;
+        let quizScore = 0;
+        let totalQuestions = 0;
+
+        // Load user progress
+        function loadProgress() {
+            const progress = JSON.parse(localStorage.getItem('learningProgress') || '{}');
+            updateProgressDisplay(progress);
+        }
+
+        function updateProgressDisplay(progress) {
+            const quizProgress = progress.quizProgress || 0;
+            const avgScore = progress.avgScore || 0;
+            const quizzesTaken = progress.quizzesTaken || 0;
+            const certificates = progress.certificates || 0;
+
+            document.getElementById('quizProgress').textContent = quizProgress + '%';
+            document.getElementById('avgScore').textContent = avgScore + '%';
+            document.getElementById('quizzesTaken').textContent = quizzesTaken;
+            document.getElementById('certificates').textContent = certificates;
+            document.getElementById('progressFill').style.width = quizProgress + '%';
+        }
+
+        function openModule(level) {
+            if (level === 'beginner') {
+                currentModule = 0;
+                displayModuleSelection();
+            }
+        }
+
+        function displayModuleSelection() {
+            document.getElementById('moduleTitle').textContent = 'Beginner Learning Path';
+            
+            let content = `
+                <div class="module-selection">
+                    <h3 style="color: var(--success); margin-bottom: 2rem; text-align: center;">Choose Your Module</h3>
+                    <div class="module-grid">
+            `;
+            
+            beginnerModules.forEach((module, index) => {
+                const isCompleted = localStorage.getItem(`module_${index}_completed`) === 'true';
+                const progress = localStorage.getItem(`module_${index}_progress`) || 0;
+                
+                content += `
+                    <div class="module-option ${isCompleted ? 'completed' : ''}" onclick="selectModule(${index})">
+                        <div class="module-number">${index + 1}</div>
+                        <h4>${module.title}</h4>
+                        <div class="module-progress">
+                            <div class="progress-bar" style="width: 100%; height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px;">
+                                <div class="progress-fill" style="width: ${progress}%; height: 100%; background: var(--success); border-radius: 2px;"></div>
+                            </div>
+                            <span class="progress-text">${progress}% Complete</span>
+                        </div>
+                        ${isCompleted ? '<div class="completion-badge">✓</div>' : ''}
+                    </div>
+                `;
+            });
+            
+            content += `
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('moduleContent').innerHTML = content;
+            document.getElementById('moduleModal').style.display = 'flex';
+        }
+
+        function selectModule(moduleIndex) {
+            currentModule = moduleIndex;
+            displayModule(beginnerModules[currentModule]);
+        }
+
+        function displayModule(module) {
+            document.getElementById('moduleTitle').textContent = module.title;
+            
+            let content = '';
+            module.sections.forEach((section, index) => {
+                content += `
+                    <div class="module-section">
+                        <h3>${section.title}</h3>
+                        <p>${section.content}</p>
+                    </div>
+                `;
+            });
+
+            content += `
+                <div class="module-section">
+                    <h3>Quiz: Test Your Knowledge</h3>
+                    <div id="quizContainer"></div>
+                </div>
+            `;
+
+            document.getElementById('moduleContent').innerHTML = content;
+            document.getElementById('moduleModal').style.display = 'flex';
+            
+            // Display first question
+            if (module.quiz && module.quiz.length > 0) {
+                displayQuizQuestion(module.quiz[0], 0);
+            }
+        }
+
+        function displayQuizQuestion(question, questionIndex) {
+            const quizContainer = document.getElementById('quizContainer');
+            currentQuiz = questionIndex;
+            totalQuestions = beginnerModules[currentModule].quiz.length;
+
+            let optionsHTML = '';
+            question.options.forEach((option, index) => {
+                optionsHTML += `
+                    <div class="quiz-option" onclick="selectAnswer(${index})">
+                        ${option}
+                    </div>
+                `;
+            });
+
+            quizContainer.innerHTML = `
+                <div class="quiz-question">
+                    <h4>Question ${questionIndex + 1} of ${totalQuestions}</h4>
+                    <p>${question.question}</p>
+                    <div class="quiz-options">
+                        ${optionsHTML}
+                    </div>
+                </div>
+                <div class="module-nav">
+                    <button class="nav-button" onclick="previousQuestion()" ${questionIndex === 0 ? 'disabled' : ''}>Previous</button>
+                    <button class="nav-button" onclick="nextQuestion()" ${questionIndex === totalQuestions - 1 ? 'disabled' : ''}>Next</button>
+                </div>
+            `;
+        }
+
+        function selectAnswer(optionIndex) {
+            const options = document.querySelectorAll('.quiz-option');
+            options.forEach(option => option.classList.remove('selected'));
+            options[optionIndex].classList.add('selected');
+        }
+
+        function nextQuestion() {
+            const selectedOption = document.querySelector('.quiz-option.selected');
+            if (!selectedOption) {
+                alert('Please select an answer before continuing.');
+                return;
+            }
+
+            const selectedIndex = Array.from(document.querySelectorAll('.quiz-option')).indexOf(selectedOption);
+            const currentQuestion = beginnerModules[currentModule].quiz[currentQuiz];
+            
+            if (selectedIndex === currentQuestion.correct) {
+                quizScore++;
+            }
+
+            if (currentQuiz < totalQuestions - 1) {
+                displayQuizQuestion(beginnerModules[currentModule].quiz[currentQuiz + 1], currentQuiz + 1);
+            } else {
+                // Quiz completed
+                const score = Math.round((quizScore / totalQuestions) * 100);
+                completeQuiz(score);
+            }
+        }
+
+        function previousQuestion() {
+            if (currentQuiz > 0) {
+                displayQuizQuestion(beginnerModules[currentModule].quiz[currentQuiz - 1], currentQuiz - 1);
+            }
+        }
+
+        function completeQuiz(score) {
+            const quizContainer = document.getElementById('quizContainer');
+            const passed = score >= 70;
+            
+            quizContainer.innerHTML = `
+                <div class="quiz-question">
+                    <h3 style="color: ${passed ? 'var(--success)' : '#ff4444'}">Quiz Complete!</h3>
+                    <p>Your score: <strong>${score}%</strong></p>
+                    <p>${passed ? '🎉 Congratulations! You passed!' : '📚 Keep studying and try again.'}</p>
+                </div>
+                <div class="module-nav">
+                    <button class="nav-button" onclick="closeModule()">Close</button>
+                    ${currentModule < beginnerModules.length - 1 ? '<button class="nav-button" onclick="nextModule()">Next Module</button>' : ''}
+                </div>
+            `;
+
+            // Save module progress
+            const progress = Math.min(100, (score / 100) * 100);
+            localStorage.setItem(`module_${currentModule}_progress`, progress);
+            
+            if (passed) {
+                localStorage.setItem(`module_${currentModule}_completed`, 'true');
+            }
+            
+            // Save overall progress
+            saveProgress(score);
+        }
+
+        function nextModule() {
+            currentModule++;
+            if (currentModule < beginnerModules.length) {
+                quizScore = 0;
+                displayModule(beginnerModules[currentModule]);
+            }
+        }
+
+        function saveProgress(score) {
+            const progress = JSON.parse(localStorage.getItem('learningProgress') || '{}');
+            const quizzesTaken = (progress.quizzesTaken || 0) + 1;
+            const totalScore = (progress.totalScore || 0) + score;
+            const avgScore = Math.round(totalScore / quizzesTaken);
+            const quizProgress = Math.min(100, (quizzesTaken * 10));
+
+            const newProgress = {
+                ...progress,
+                quizzesTaken,
+                totalScore,
+                avgScore,
+                quizProgress,
+                certificates: score >= 70 ? (progress.certificates || 0) + 1 : (progress.certificates || 0)
+            };
+
+            localStorage.setItem('learningProgress', JSON.stringify(newProgress));
+            updateProgressDisplay(newProgress);
+        }
+
+        function closeModule() {
+            document.getElementById('moduleModal').style.display = 'none';
+            quizScore = 0;
+            currentQuiz = 0;
+        }
+
+        function openQuizCenter() {
+            showKnowledgeAssessment();
+        }
+
+        function showKnowledgeAssessment() {
+            const quizContainer = document.getElementById('quizContainer');
+            if (!quizContainer) {
+                alert('Knowledge Assessment - Take comprehensive quizzes to test your knowledge across all modules!');
+                return;
+            }
+
+            const beginnerQuizzes = [
+                {
+                    title: "Market Fundamentals Quiz",
+                    questions: [
+                        {
+                            question: "What is a stock?",
+                            options: ["A type of bond", "A share of ownership in a company", "A government security", "A cryptocurrency"],
+                            correct: 1
+                        },
+                        {
+                            question: "What is a bull market?",
+                            options: ["When prices are falling", "When prices are rising", "When the market is closed", "When there's high volatility"],
+                            correct: 1
+                        },
+                        {
+                            question: "What is a dividend?",
+                            options: ["A type of tax", "A portion of company profits paid to shareholders", "A trading fee", "A market index"],
+                            correct: 1
+                        }
+                    ]
+                },
+                {
+                    title: "Chart Analysis Quiz",
+                    questions: [
+                        {
+                            question: "What does the x-axis on a stock chart represent?",
+                            options: ["Price", "Time", "Volume", "Market cap"],
+                            correct: 1
+                        },
+                        {
+                            question: "What is a support level?",
+                            options: ["A price level where stock tends to stop rising", "A price level where stock tends to stop falling", "A technical indicator", "A type of chart pattern"],
+                            correct: 1
+                        },
+                        {
+                            question: "What does volume represent?",
+                            options: ["The stock price", "The number of shares traded", "The market cap", "The dividend yield"],
+                            correct: 1
+                        }
+                    ]
+                },
+                {
+                    title: "Portfolio Management Quiz",
+                    questions: [
+                        {
+                            question: "What is diversification?",
+                            options: ["Investing all your money in one stock", "Spreading investments across different assets", "Only investing in bonds", "Trading frequently"],
+                            correct: 1
+                        },
+                        {
+                            question: "Which asset typically has the highest risk?",
+                            options: ["Government bonds", "Individual stocks", "Cash savings", "Real estate"],
+                            correct: 1
+                        },
+                        {
+                            question: "What is a stop-loss order?",
+                            options: ["An order to buy more shares", "An order to sell if price falls below a level", "A type of dividend", "A market index"],
+                            correct: 1
+                        }
+                    ]
+                },
+                {
+                    title: "Fundamental Analysis Quiz",
+                    questions: [
+                        {
+                            question: "What does P/E ratio measure?",
+                            options: ["Company debt levels", "Price relative to earnings", "Revenue growth", "Dividend yield"],
+                            correct: 1
+                        },
+                        {
+                            question: "What is value investing?",
+                            options: ["Only investing in growth stocks", "Finding undervalued companies", "Trading frequently", "Only investing in bonds"],
+                            correct: 1
+                        },
+                        {
+                            question: "What does ROE stand for?",
+                            options: ["Return on Earnings", "Return on Equity", "Rate of Exchange", "Revenue on Equity"],
+                            correct: 1
+                        }
+                    ]
+                },
+                {
+                    title: "Trading Strategies Quiz",
+                    questions: [
+                        {
+                            question: "What is dollar-cost averaging?",
+                            options: ["Investing all money at once", "Investing fixed amounts regularly", "Only buying on dips", "Trading daily"],
+                            correct: 1
+                        },
+                        {
+                            question: "Who is famous for buy-and-hold investing?",
+                            options: ["Warren Buffett", "George Soros", "Jim Cramer", "Peter Lynch"],
+                            correct: 0
+                        },
+                        {
+                            question: "What is compound growth?",
+                            options: ["Earnings on your original investment only", "Earnings on both original investment and previous earnings", "A type of dividend", "A trading strategy"],
+                            correct: 1
+                        }
+                    ]
+                }
+            ];
+
+            let currentQuiz = 0;
+            let currentQuestion = 0;
+            let totalScore = 0;
+            let totalQuestions = 0;
+
+            function displayQuiz() {
+                const quiz = beginnerQuizzes[currentQuiz];
+                const question = quiz.questions[currentQuestion];
+                
+                let optionsHTML = '';
+                question.options.forEach((option, index) => {
+                    optionsHTML += `
+                        <div class="quiz-option" onclick="selectAnswer(${index})">
+                            ${option}
+                        </div>
+                    `;
+                });
+
+                quizContainer.innerHTML = `
+                    <div class="quiz-question">
+                        <h3>${quiz.title}</h3>
+                        <h4>Question ${currentQuestion + 1} of ${quiz.questions.length}</h4>
+                        <p>${question.question}</p>
+                        <div class="quiz-options">
+                            ${optionsHTML}
+                        </div>
+                    </div>
+                    <div class="module-nav">
+                        <button class="nav-button" onclick="previousQuestion()" ${currentQuestion === 0 ? 'disabled' : ''}>Previous</button>
+                        <button class="nav-button" onclick="nextQuestion()" ${currentQuestion === quiz.questions.length - 1 ? 'disabled' : ''}>Next</button>
+                    </div>
+                `;
+            }
+
+            window.selectAnswer = function(optionIndex) {
+                const options = document.querySelectorAll('.quiz-option');
+                options.forEach(option => option.classList.remove('selected'));
+                options[optionIndex].classList.add('selected');
+            };
+
+            window.nextQuestion = function() {
+                const selectedOption = document.querySelector('.quiz-option.selected');
+                if (!selectedOption) {
+                    alert('Please select an answer before continuing.');
+                    return;
+                }
+
+                const selectedIndex = Array.from(document.querySelectorAll('.quiz-option')).indexOf(selectedOption);
+                const quiz = beginnerQuizzes[currentQuiz];
+                const question = quiz.questions[currentQuestion];
+                
+                if (selectedIndex === question.correct) {
+                    totalScore++;
+                }
+                totalQuestions++;
+
+                if (currentQuestion < quiz.questions.length - 1) {
+                    currentQuestion++;
+                    displayQuiz();
+                } else if (currentQuiz < beginnerQuizzes.length - 1) {
+                    currentQuiz++;
+                    currentQuestion = 0;
+                    displayQuiz();
+                } else {
+                    // All quizzes completed
+                    const finalScore = Math.round((totalScore / totalQuestions) * 100);
+                    completeKnowledgeAssessment(finalScore);
+                }
+            };
+
+            window.previousQuestion = function() {
+                if (currentQuestion > 0) {
+                    currentQuestion--;
+                    displayQuiz();
+                }
+            };
+
+            function completeKnowledgeAssessment(score) {
+                quizContainer.innerHTML = `
+                    <div class="quiz-question">
+                        <h3 style="color: ${score >= 70 ? 'var(--success)' : '#ff4444'}">Knowledge Assessment Complete!</h3>
+                        <p>Your overall score: <strong>${score}%</strong></p>
+                        <p>${score >= 70 ? '🎉 Congratulations! You have demonstrated strong knowledge across all beginner modules!' : '📚 Keep studying and try again. Focus on areas where you scored lower.'}</p>
+                        <div class="quiz-stats">
+                            <div class="stat">
+                                <span class="stat-number">${totalQuestions}</span>
+                                <span class="stat-label">Questions Answered</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-number">${totalScore}</span>
+                                <span class="stat-label">Correct Answers</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="module-nav">
+                        <button class="nav-button" onclick="closeModule()">Close</button>
+                    </div>
+                `;
+
+                // Save progress
+                saveProgress(score);
+            }
+
+            // Start the first quiz
+            displayQuiz();
+            document.getElementById('moduleModal').style.display = 'flex';
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadProgress();
+        });
+    </script>
+</body>
+</html> 

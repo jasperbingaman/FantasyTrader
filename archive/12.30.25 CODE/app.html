@@ -1,0 +1,2507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard — Fantasy Trader</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="images/logo.png">
+    
+    <style>
+        :root {
+            --bg-dark: #0a0a0f;
+            --bg-card: #12121a;
+            --bg-card-hover: #1a1a25;
+            --bg-sidebar: #0d0d12;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0b0;
+            --text-muted: #606070;
+            --accent-green: #00ff88;
+            --accent-green-dim: #00cc6a;
+            --accent-red: #ff4444;
+            --accent-orange: #ff6b35;
+            --accent-blue: #3b82f6;
+            --accent-purple: #a855f7;
+            --accent-yellow: #fbbf24;
+            --gradient-hero: linear-gradient(135deg, #00ff88 0%, #00cc6a 50%, #3b82f6 100%);
+            --gradient-bull-bear: linear-gradient(135deg, #00ff88 0%, #ff4444 100%);
+            --border-subtle: rgba(255,255,255,0.06);
+            --border-accent: rgba(0,255,136,0.3);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Archivo Black', sans-serif;
+            font-weight: 400;
+            letter-spacing: -0.02em;
+            line-height: 1.1;
+        }
+
+        .text-gradient {
+            background: var(--gradient-hero);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .text-green { color: var(--accent-green); }
+        .text-red { color: var(--accent-red); }
+
+        /* Sidebar */
+        .sidebar {
+            width: 260px;
+            background: var(--bg-sidebar);
+            border-right: 1px solid var(--border-subtle);
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            z-index: 100;
+        }
+
+        .sidebar-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 32px;
+            text-decoration: none;
+        }
+
+        .sidebar-logo img {
+            height: 40px;
+            width: auto;
+        }
+
+        .sidebar-logo span {
+            font-family: 'Archivo Black', sans-serif;
+            font-size: 18px;
+            color: var(--text-primary);
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--gradient-hero);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Archivo Black', sans-serif;
+            font-size: 16px;
+            color: var(--bg-dark);
+        }
+
+        .sidebar-nav {
+            flex: 1;
+        }
+
+        .nav-section {
+            margin-bottom: 24px;
+        }
+
+        .nav-section-title {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+            padding-left: 12px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            border-radius: 10px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s;
+            cursor: pointer;
+            margin-bottom: 4px;
+        }
+
+        .nav-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-primary);
+        }
+
+        .nav-item.active {
+            background: rgba(0, 255, 136, 0.1);
+            color: var(--accent-green);
+        }
+
+        .nav-item-icon {
+            font-size: 18px;
+            width: 24px;
+            text-align: center;
+        }
+
+        .nav-item-badge {
+            margin-left: auto;
+            background: var(--accent-green);
+            color: var(--bg-dark);
+            font-size: 11px;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 100px;
+        }
+
+        .sidebar-user {
+            padding-top: 24px;
+            border-top: 1px solid var(--border-subtle);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            background: var(--gradient-hero);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: var(--bg-dark);
+        }
+
+        .user-details {
+            flex: 1;
+        }
+
+        .user-name {
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .user-email {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .logout-btn {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            padding: 8px;
+            font-size: 16px;
+            transition: color 0.2s;
+        }
+
+        .logout-btn:hover {
+            color: var(--accent-red);
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            margin-left: 260px;
+            padding: 32px;
+            min-height: 100vh;
+        }
+
+        .content-section {
+            display: none;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        .section-header {
+            margin-bottom: 32px;
+        }
+
+        .section-header h1 {
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+
+        .section-header p {
+            color: var(--text-secondary);
+        }
+
+        /* Cards */
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 16px;
+            padding: 24px;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .card-title {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 32px;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 16px;
+            padding: 24px;
+        }
+
+        .stat-card-label {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+
+        .stat-card-value {
+            font-family: 'Archivo Black', sans-serif;
+            font-size: 28px;
+            margin-bottom: 4px;
+        }
+
+        .stat-card-change {
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        /* Live Data Indicator */
+        .live-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 10px;
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid var(--border-accent);
+            border-radius: 100px;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--accent-green);
+        }
+
+        .live-dot {
+            width: 6px;
+            height: 6px;
+            background: var(--accent-green);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* Stock Grid */
+        .stock-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 16px;
+        }
+
+        .stock-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 16px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .stock-card:hover {
+            border-color: var(--border-accent);
+            transform: translateY(-2px);
+        }
+
+        .stock-card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .stock-logo {
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, #1a1a25, #2a2a35);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 12px;
+        }
+
+        .stock-name {
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .stock-sector {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .stock-card-body {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        .stock-price {
+            font-family: 'Archivo Black', sans-serif;
+            font-size: 22px;
+        }
+
+        .stock-change {
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        /* Mini Chart */
+        .stock-chart {
+            height: 40px;
+            margin-top: 12px;
+            background: linear-gradient(180deg, rgba(0,255,136,0.1) 0%, transparent 100%);
+            border-radius: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .chart-line {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--accent-green);
+        }
+
+        /* Holdings Table */
+        .holdings-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .holdings-table th,
+        .holdings-table td {
+            padding: 16px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .holdings-table th {
+            font-size: 12px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        .stock-cell {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        /* Search and Filters */
+        .search-filters {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+
+        .search-box {
+            flex: 1;
+            min-width: 200px;
+            position: relative;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 14px 20px 14px 48px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            color: var(--text-primary);
+            font-size: 14px;
+            font-family: inherit;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--accent-green);
+        }
+
+        .search-box::before {
+            content: '🔍';
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .filter-tabs {
+            display: flex;
+            gap: 8px;
+        }
+
+        .filter-tab {
+            padding: 10px 16px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 8px;
+            color: var(--text-secondary);
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .filter-tab:hover,
+        .filter-tab.active {
+            background: rgba(0, 255, 136, 0.1);
+            border-color: var(--border-accent);
+            color: var(--accent-green);
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.2s;
+            cursor: pointer;
+            border: none;
+            font-family: inherit;
+        }
+
+        .btn-primary {
+            background: var(--accent-green);
+            color: var(--bg-dark);
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-green-dim);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-primary);
+            border: 1px solid var(--border-accent);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(0, 255, 136, 0.1);
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .empty-state-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+
+        .empty-state h3 {
+            margin-bottom: 8px;
+        }
+
+        .empty-state p {
+            color: var(--text-secondary);
+            margin-bottom: 24px;
+        }
+
+        /* Loading State */
+        .loading-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 60px;
+        }
+
+        .loading-spinner {
+            width: 48px;
+            height: 48px;
+            border: 3px solid var(--border-subtle);
+            border-top-color: var(--accent-green);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            margin-top: 16px;
+            color: var(--text-secondary);
+        }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 20px;
+            padding: 32px;
+            width: 100%;
+            max-width: 480px;
+            transform: scale(0.9);
+            transition: transform 0.3s;
+        }
+
+        .modal-overlay.active .modal {
+            transform: scale(1);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .modal-title {
+            font-size: 20px;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .modal-close:hover {
+            color: var(--text-primary);
+        }
+
+        /* Trade Modal Specific */
+        .trade-stock-info {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 20px;
+            background: rgba(0, 255, 136, 0.05);
+            border-radius: 12px;
+            margin-bottom: 24px;
+        }
+
+        .trade-input-group {
+            margin-bottom: 24px;
+        }
+
+        .trade-input-group label {
+            display: block;
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+
+        .trade-input-group input {
+            width: 100%;
+            padding: 16px;
+            background: var(--bg-dark);
+            border: 1px solid var(--border-subtle);
+            border-radius: 10px;
+            color: var(--text-primary);
+            font-size: 16px;
+            font-family: inherit;
+        }
+
+        .trade-input-group input:focus {
+            outline: none;
+            border-color: var(--accent-green);
+        }
+
+        .trade-summary {
+            background: var(--bg-dark);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 24px;
+        }
+
+        .trade-summary-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+        }
+
+        .trade-summary-row:not(:last-child) {
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .trade-summary-total {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        /* League Cards */
+        .league-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 20px;
+        }
+
+        .league-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 16px;
+            padding: 24px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .league-card:hover {
+            border-color: var(--border-accent);
+        }
+
+        .league-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 16px;
+        }
+
+        .league-badge {
+            padding: 4px 10px;
+            background: rgba(255, 107, 53, 0.1);
+            border: 1px solid rgba(255, 107, 53, 0.3);
+            border-radius: 100px;
+            font-size: 11px;
+            color: var(--accent-orange);
+            font-weight: 600;
+        }
+
+        .league-badge.active {
+            background: rgba(0, 255, 136, 0.1);
+            border-color: var(--border-accent);
+            color: var(--accent-green);
+        }
+
+        .league-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            padding-top: 16px;
+            border-top: 1px solid var(--border-subtle);
+        }
+
+        .league-stat {
+            text-align: center;
+        }
+
+        .league-stat-value {
+            font-weight: 700;
+            font-size: 18px;
+        }
+
+        .league-stat-label {
+            font-size: 11px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        /* Education Section */
+        .course-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 20px;
+        }
+
+        .course-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 16px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .course-card:hover {
+            border-color: var(--border-accent);
+            transform: translateY(-4px);
+        }
+
+        .course-header {
+            padding: 24px;
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.1), rgba(59, 130, 246, 0.1));
+        }
+
+        .course-level {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 100px;
+            font-size: 11px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .course-level.beginner {
+            background: rgba(0, 255, 136, 0.2);
+            color: var(--accent-green);
+        }
+
+        .course-level.intermediate {
+            background: rgba(59, 130, 246, 0.2);
+            color: var(--accent-blue);
+        }
+
+        .course-level.advanced {
+            background: rgba(255, 107, 53, 0.2);
+            color: var(--accent-orange);
+        }
+
+        .course-level.mit {
+            background: rgba(168, 85, 247, 0.2);
+            color: var(--accent-purple);
+        }
+
+        .course-level.rice {
+            background: rgba(251, 191, 36, 0.2);
+            color: var(--accent-yellow);
+        }
+
+        .course-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .course-source {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .course-body {
+            padding: 24px;
+        }
+
+        .course-description {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+        }
+
+        .course-meta {
+            display: flex;
+            gap: 16px;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .course-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .course-progress {
+            margin-top: 16px;
+        }
+
+        .progress-bar {
+            height: 6px;
+            background: var(--bg-dark);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--accent-green);
+            border-radius: 3px;
+            transition: width 0.3s;
+        }
+
+        .progress-text {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 8px;
+        }
+
+        /* Course Module List */
+        .module-list {
+            margin-top: 24px;
+        }
+
+        .module-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .module-item:hover {
+            border-color: var(--border-accent);
+        }
+
+        .module-number {
+            width: 36px;
+            height: 36px;
+            background: var(--bg-dark);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .module-item.completed .module-number {
+            background: var(--accent-green);
+            color: var(--bg-dark);
+        }
+
+        .module-info {
+            flex: 1;
+        }
+
+        .module-title {
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .module-duration {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .module-status {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .module-status.completed {
+            color: var(--accent-green);
+        }
+
+        /* Market Status Banner */
+        .market-status {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 20px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            margin-bottom: 24px;
+        }
+
+        .market-status.open {
+            border-color: var(--border-accent);
+            background: rgba(0, 255, 136, 0.05);
+        }
+
+        .market-status.closed {
+            border-color: rgba(255, 68, 68, 0.3);
+            background: rgba(255, 68, 68, 0.05);
+        }
+
+        .market-status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        .market-status.open .market-status-dot {
+            background: var(--accent-green);
+            box-shadow: 0 0 10px var(--accent-green);
+        }
+
+        .market-status.closed .market-status-dot {
+            background: var(--accent-red);
+        }
+
+        .market-status-text {
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .last-updated {
+            margin-left: auto;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .sidebar {
+                width: 200px;
+                padding: 16px;
+            }
+            .main-content {
+                margin-left: 200px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                display: none;
+            }
+            .main-content {
+                margin-left: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <a href="index.html" class="sidebar-logo">
+            <div class="logo-icon">FT</div>
+            <span>Fantasy Trader</span>
+        </a>
+
+        <nav class="sidebar-nav">
+            <div class="nav-section">
+                <div class="nav-section-title">Overview</div>
+                <div class="nav-item active" onclick="showSection('dashboard')">
+                    <span class="nav-item-icon">📊</span>
+                    Dashboard
+                </div>
+                <div class="nav-item" onclick="showSection('portfolio')">
+                    <span class="nav-item-icon">💼</span>
+                    Portfolio
+                </div>
+            </div>
+
+            <div class="nav-section">
+                <div class="nav-section-title">Trading</div>
+                <div class="nav-item" onclick="showSection('trade')">
+                    <span class="nav-item-icon">📈</span>
+                    Trade
+                    <span class="nav-item-badge" id="liveStockCount">50+</span>
+                </div>
+                <div class="nav-item" onclick="showSection('watchlist')">
+                    <span class="nav-item-icon">⭐</span>
+                    Watchlist
+                </div>
+            </div>
+
+            <div class="nav-section">
+                <div class="nav-section-title">Compete</div>
+                <div class="nav-item" onclick="showSection('leagues')">
+                    <span class="nav-item-icon">🏆</span>
+                    Leagues
+                </div>
+                <div class="nav-item" onclick="showSection('leaderboard')">
+                    <span class="nav-item-icon">🥇</span>
+                    Leaderboard
+                </div>
+            </div>
+
+            <div class="nav-section">
+                <div class="nav-section-title">Learn</div>
+                <div class="nav-item" onclick="showSection('education')">
+                    <span class="nav-item-icon">📚</span>
+                    Education
+                    <span class="nav-item-badge">NEW</span>
+                </div>
+            </div>
+        </nav>
+
+        <div class="sidebar-user">
+            <div class="user-info">
+                <div class="user-avatar" id="userAvatar">WE</div>
+                <div class="user-details">
+                    <div class="user-name" id="userName">User</div>
+                    <div class="user-email" id="userEmail">user@email.com</div>
+                </div>
+                <button class="logout-btn" onclick="logout()" title="Logout">↪</button>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Dashboard Section -->
+        <section id="section-dashboard" class="content-section active">
+            <div class="section-header">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                        <h1>Welcome back, <span id="dashboardName">Trader</span></h1>
+                        <p>Track your portfolio and compete in leagues</p>
+                    </div>
+                    <div class="live-indicator">
+                        <div class="live-dot"></div>
+                        LIVE DATA
+                    </div>
+                </div>
+            </div>
+
+            <!-- Market Status -->
+            <div class="market-status" id="marketStatus">
+                <div class="market-status-dot"></div>
+                <span class="market-status-text" id="marketStatusText">Checking market status...</span>
+                <span class="last-updated" id="lastUpdated"></span>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-card-label">Portfolio Value</div>
+                    <div class="stat-card-value" id="portfolioValue">$100,000.00</div>
+                    <div class="stat-card-change text-green" id="portfolioChange">↑ +$0.00 (0.00%)</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-card-label">Available Cash</div>
+                    <div class="stat-card-value" id="cashBalance">$100,000.00</div>
+                    <div class="stat-card-change text-muted">Ready to invest</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-card-label">Active Positions</div>
+                    <div class="stat-card-value" id="holdingsCount">0</div>
+                    <div class="stat-card-change text-muted">stocks in portfolio</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-card-label">League Rank</div>
+                    <div class="stat-card-value">#—</div>
+                    <div class="stat-card-change text-muted">Join a league!</div>
+                </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 24px;">
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-title">Your Holdings</span>
+                        <button class="btn btn-secondary" onclick="showSection('trade')">+ Buy Stock</button>
+                    </div>
+                    <div id="holdingsContainer">
+                        <div class="loading-state">
+                            <div class="loading-spinner"></div>
+                            <div class="loading-text">Loading portfolio...</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-title">Market Movers</span>
+                    </div>
+                    <div id="marketMovers">
+                        <div class="loading-state">
+                            <div class="loading-spinner"></div>
+                            <div class="loading-text">Loading live data...</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Portfolio Section -->
+        <section id="section-portfolio" class="content-section">
+            <div class="section-header">
+                <h1>Your Portfolio</h1>
+                <p>Manage your investments and track performance</p>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-card-label">Total Value</div>
+                    <div class="stat-card-value" id="portfolioTotalValue">$100,000.00</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-card-label">Cash</div>
+                    <div class="stat-card-value" id="portfolioCash">$100,000.00</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-card-label">Today's P&L</div>
+                    <div class="stat-card-value text-green" id="todayPL">$0.00</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-title">All Holdings</span>
+                </div>
+                <div id="portfolioHoldings"></div>
+            </div>
+        </section>
+
+        <!-- Trade Section -->
+        <section id="section-trade" class="content-section">
+            <div class="section-header">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                        <h1>Trade Stocks</h1>
+                        <p>Browse and buy from 50+ stocks with live market data</p>
+                    </div>
+                    <div class="live-indicator">
+                        <div class="live-dot"></div>
+                        YAHOO FINANCE
+                    </div>
+                </div>
+            </div>
+
+            <div class="search-filters">
+                <div class="search-box">
+                    <input type="text" id="stockSearch" placeholder="Search stocks..." oninput="filterStocks()">
+                </div>
+                <div class="filter-tabs">
+                    <button class="filter-tab active" onclick="filterByCategory('all', this)">All</button>
+                    <button class="filter-tab" onclick="filterByCategory('tech', this)">Tech</button>
+                    <button class="filter-tab" onclick="filterByCategory('finance', this)">Finance</button>
+                    <button class="filter-tab" onclick="filterByCategory('healthcare', this)">Healthcare</button>
+                    <button class="filter-tab" onclick="filterByCategory('consumer', this)">Consumer</button>
+                    <button class="filter-tab" onclick="filterByCategory('energy', this)">Energy</button>
+                    <button class="filter-tab" onclick="filterByCategory('industrial', this)">Industrial</button>
+                </div>
+            </div>
+
+            <div id="stockGrid" class="stock-grid">
+                <div class="loading-state">
+                    <div class="loading-spinner"></div>
+                    <div class="loading-text">Fetching live stock data from Yahoo Finance...</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Watchlist Section -->
+        <section id="section-watchlist" class="content-section">
+            <div class="section-header">
+                <h1>Watchlist</h1>
+                <p>Track stocks you're interested in</p>
+            </div>
+            <div class="card">
+                <div class="empty-state">
+                    <div class="empty-state-icon">⭐</div>
+                    <h3>No stocks in watchlist</h3>
+                    <p>Add stocks to your watchlist to track them here.</p>
+                    <button class="btn btn-primary" onclick="showSection('trade')">Browse Stocks</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Leagues Section -->
+        <section id="section-leagues" class="content-section">
+            <div class="section-header">
+                <h1>Leagues</h1>
+                <p>Compete with friends in fantasy investing leagues</p>
+            </div>
+
+            <div style="display: flex; gap: 12px; margin-bottom: 24px;">
+                <button class="btn btn-primary" onclick="openCreateLeague()">+ Create League</button>
+                <button class="btn btn-secondary" onclick="openJoinLeague()">Join League</button>
+            </div>
+
+            <div class="league-grid">
+                <div class="league-card">
+                    <div class="league-card-header">
+                        <div>
+                            <h3 style="font-size: 18px; margin-bottom: 4px;">🏆 UNC Finance Club</h3>
+                            <p style="font-size: 13px; color: var(--text-muted);">8 investors • Week 4 of 12</p>
+                        </div>
+                        <div class="league-badge active">Active</div>
+                    </div>
+                    <div class="league-stats">
+                        <div class="league-stat">
+                            <div class="league-stat-value">#3</div>
+                            <div class="league-stat-label">Your Rank</div>
+                        </div>
+                        <div class="league-stat">
+                            <div class="league-stat-value text-green">+12.4%</div>
+                            <div class="league-stat-label">Your Return</div>
+                        </div>
+                        <div class="league-stat">
+                            <div class="league-stat-value">$112,400</div>
+                            <div class="league-stat-label">Portfolio</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="league-card">
+                    <div class="league-card-header">
+                        <div>
+                            <h3 style="font-size: 18px; margin-bottom: 4px;">🎯 Roommate Challenge</h3>
+                            <p style="font-size: 13px; color: var(--text-muted);">4 investors • Week 2 of 8</p>
+                        </div>
+                        <div class="league-badge">Upcoming</div>
+                    </div>
+                    <div class="league-stats">
+                        <div class="league-stat">
+                            <div class="league-stat-value">#1</div>
+                            <div class="league-stat-label">Your Rank</div>
+                        </div>
+                        <div class="league-stat">
+                            <div class="league-stat-value text-green">+5.2%</div>
+                            <div class="league-stat-label">Your Return</div>
+                        </div>
+                        <div class="league-stat">
+                            <div class="league-stat-value">$105,200</div>
+                            <div class="league-stat-label">Portfolio</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Leaderboard Section -->
+        <section id="section-leaderboard" class="content-section">
+            <div class="section-header">
+                <h1>Leaderboard</h1>
+                <p>See how you stack up against other traders</p>
+            </div>
+            <div class="card">
+                <div class="empty-state">
+                    <div class="empty-state-icon">🏅</div>
+                    <h3>Join a league to compete</h3>
+                    <p>Leaderboards are available once you join or create a league.</p>
+                    <button class="btn btn-primary" onclick="showSection('leagues')">View Leagues</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Education Section -->
+        <section id="section-education" class="content-section">
+            <div class="section-header">
+                <h1>Education Center</h1>
+                <p>Learn investing from MIT, Rice University, and our expert curriculum</p>
+            </div>
+
+            <div class="search-filters">
+                <div class="search-box">
+                    <input type="text" id="courseSearch" placeholder="Search courses..." oninput="filterCourses()">
+                </div>
+                <div class="filter-tabs">
+                    <button class="filter-tab active" onclick="filterCourseLevel('all', this)">All Courses</button>
+                    <button class="filter-tab" onclick="filterCourseLevel('beginner', this)">Beginner</button>
+                    <button class="filter-tab" onclick="filterCourseLevel('intermediate', this)">Intermediate</button>
+                    <button class="filter-tab" onclick="filterCourseLevel('advanced', this)">Advanced</button>
+                    <button class="filter-tab" onclick="filterCourseLevel('mit', this)">MIT OCW</button>
+                    <button class="filter-tab" onclick="filterCourseLevel('rice', this)">Rice University</button>
+                </div>
+            </div>
+
+            <div id="courseGrid" class="course-grid"></div>
+        </section>
+    </main>
+
+    <!-- Trade Modal -->
+    <div class="modal-overlay" id="tradeModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 class="modal-title" id="tradeModalTitle">Buy Stock</h2>
+                <button class="modal-close" onclick="closeTradeModal()">&times;</button>
+            </div>
+
+            <div class="trade-stock-info">
+                <div class="stock-logo" id="tradeStockLogo">AAPL</div>
+                <div>
+                    <div class="stock-name" id="tradeStockName">Apple Inc.</div>
+                    <div class="stock-sector" id="tradeStockSector">Technology • QB</div>
+                </div>
+                <div style="margin-left: auto; text-align: right;">
+                    <div class="stock-price" id="tradeStockPrice">$198.45</div>
+                    <div class="stock-change text-green" id="tradeStockChange">+2.34%</div>
+                </div>
+            </div>
+
+            <div class="trade-input-group">
+                <label>Number of Shares</label>
+                <input type="number" id="tradeShares" value="1" min="1" oninput="updateTradeSummary()">
+            </div>
+
+            <div class="trade-summary">
+                <div class="trade-summary-row">
+                    <span>Price per share</span>
+                    <span id="tradePricePerShare">$198.45</span>
+                </div>
+                <div class="trade-summary-row">
+                    <span>Shares</span>
+                    <span id="tradeShareCount">1</span>
+                </div>
+                <div class="trade-summary-row trade-summary-total">
+                    <span>Total Cost</span>
+                    <span id="tradeTotalCost">$198.45</span>
+                </div>
+            </div>
+
+            <button class="btn btn-primary" style="width: 100%;" onclick="executeTrade()">
+                Confirm Purchase
+            </button>
+        </div>
+    </div>
+
+    <!-- Course Detail Modal -->
+    <div class="modal-overlay" id="courseModal">
+        <div class="modal" style="max-width: 600px;">
+            <div class="modal-header">
+                <h2 class="modal-title" id="courseModalTitle">Course Title</h2>
+                <button class="modal-close" onclick="closeCourseModal()">&times;</button>
+            </div>
+            <div id="courseModalContent"></div>
+        </div>
+    </div>
+
+    <script>
+        // ============================================
+        // CONFIGURATION
+        // ============================================
+        const YAHOO_FINANCE_PROXY = 'https://query1.finance.yahoo.com/v8/finance/chart/';
+        const YAHOO_QUOTE_PROXY = 'https://query1.finance.yahoo.com/v7/finance/quote';
+        
+        // Use a CORS proxy for client-side requests
+        const CORS_PROXY = 'https://corsproxy.io/?';
+        
+        // Stock symbols organized by sector with fantasy positions
+        const STOCK_CONFIG = {
+            tech: {
+                position: 'QB',
+                symbols: ['AAPL', 'MSFT', 'GOOGL', 'META', 'CRM', 'ADBE', 'ORCL', 'NOW', 'INTC', 'CSCO']
+            },
+            hardware: {
+                position: 'RB', 
+                symbols: ['NVDA', 'AMD', 'AVGO', 'QCOM', 'TXN', 'MU', 'AMAT', 'LRCX']
+            },
+            consumer: {
+                position: 'WR',
+                symbols: ['AMZN', 'TSLA', 'HD', 'NKE', 'SBUX', 'MCD', 'TGT', 'COST', 'WMT', 'DIS']
+            },
+            finance: {
+                position: 'TE',
+                symbols: ['JPM', 'V', 'MA', 'BAC', 'GS', 'MS', 'BLK', 'AXP', 'C', 'WFC']
+            },
+            healthcare: {
+                position: 'LB',
+                symbols: ['JNJ', 'UNH', 'PFE', 'MRK', 'ABBV', 'LLY', 'TMO', 'ABT', 'DHR', 'BMY']
+            },
+            energy: {
+                position: 'DL',
+                symbols: ['XOM', 'CVX', 'COP', 'SLB', 'EOG', 'PXD', 'MPC', 'VLO']
+            },
+            industrial: {
+                position: 'K',
+                symbols: ['CAT', 'DE', 'UPS', 'HON', 'BA', 'GE', 'MMM', 'LMT', 'RTX', 'UNP']
+            }
+        };
+
+        // ============================================
+        // EDUCATIONAL COURSES (MIT & Rice)
+        // ============================================
+        const COURSES = [
+            // Beginner Courses
+            {
+                id: 'beginner-1',
+                title: 'Market Fundamentals',
+                level: 'beginner',
+                source: 'Fantasy Trader',
+                description: 'Learn the basics of stock markets, key terminology, and how to read stock quotes. Perfect for absolute beginners.',
+                duration: '45 min',
+                modules: 5,
+                topics: ['Bull vs Bear Markets', 'Market Caps Explained', 'Reading Stock Tickers', 'Order Types', 'Trading Hours'],
+                videoUrl: null,
+                progress: 0
+            },
+            {
+                id: 'beginner-2',
+                title: 'Introduction to Investing',
+                level: 'beginner',
+                source: 'Fantasy Trader',
+                description: 'Understand the fundamentals of investing, including stocks, bonds, and other asset classes.',
+                duration: '1 hour',
+                modules: 6,
+                topics: ['What is Investing?', 'Risk vs Reward', 'Asset Classes', 'Starting Your Portfolio', 'Common Mistakes', 'Setting Goals'],
+                videoUrl: null,
+                progress: 0
+            },
+            {
+                id: 'beginner-3',
+                title: 'Understanding Financial Statements',
+                level: 'beginner',
+                source: 'Fantasy Trader',
+                description: 'Learn to read and interpret balance sheets, income statements, and cash flow statements.',
+                duration: '1.5 hours',
+                modules: 6,
+                topics: ['Balance Sheet Basics', 'Income Statements', 'Cash Flow Analysis', 'Key Ratios', 'Red Flags', 'Case Studies'],
+                videoUrl: null,
+                progress: 0
+            },
+
+            // MIT OCW Courses
+            {
+                id: 'mit-finance-1',
+                title: 'Finance Theory I: Present Value',
+                level: 'mit',
+                source: 'MIT OpenCourseWare',
+                description: 'Learn the time value of money, present value calculations, and fundamental valuation principles from MIT Sloan.',
+                duration: '2 hours',
+                modules: 4,
+                topics: ['Time Value of Money', 'Present Value Calculations', 'Future Value', 'Compounding & Discounting'],
+                videoUrl: 'https://ocw.mit.edu/courses/15-401-finance-theory-i-fall-2008/pages/video-lectures-and-slides/present-value-relations/',
+                externalLink: 'https://ocw.mit.edu/courses/15-401-finance-theory-i-fall-2008/',
+                instructor: 'Prof. Andrew Lo',
+                progress: 0
+            },
+            {
+                id: 'mit-finance-2',
+                title: 'Finance Theory I: Fixed-Income Securities',
+                level: 'mit',
+                source: 'MIT OpenCourseWare',
+                description: 'Deep dive into bonds, yields, duration, and the fixed-income market from MIT Sloan School.',
+                duration: '2.5 hours',
+                modules: 5,
+                topics: ['Bond Basics', 'Yield Calculations', 'Duration & Convexity', 'Term Structure', 'Credit Risk'],
+                videoUrl: 'https://ocw.mit.edu/courses/15-401-finance-theory-i-fall-2008/pages/video-lectures-and-slides/fixed-income-securities/',
+                externalLink: 'https://ocw.mit.edu/courses/15-401-finance-theory-i-fall-2008/',
+                instructor: 'Prof. Andrew Lo',
+                progress: 0
+            },
+            {
+                id: 'mit-finance-3',
+                title: 'Finance Theory I: Equities',
+                level: 'mit',
+                source: 'MIT OpenCourseWare',
+                description: 'Comprehensive look at stock valuation, dividend models, and equity analysis methods.',
+                duration: '2 hours',
+                modules: 4,
+                topics: ['Stock Valuation Models', 'Dividend Discount Model', 'Growth Stocks', 'Market Efficiency'],
+                videoUrl: 'https://ocw.mit.edu/courses/15-401-finance-theory-i-fall-2008/pages/video-lectures-and-slides/equities/',
+                externalLink: 'https://ocw.mit.edu/courses/15-401-finance-theory-i-fall-2008/',
+                instructor: 'Prof. Andrew Lo',
+                progress: 0
+            },
+            {
+                id: 'mit-finance-4',
+                title: 'Finance Theory I: Portfolio Theory',
+                level: 'mit',
+                source: 'MIT OpenCourseWare',
+                description: 'Learn Modern Portfolio Theory, diversification, and the efficient frontier from MIT.',
+                duration: '3 hours',
+                modules: 6,
+                topics: ['Diversification', 'Risk & Return', 'Efficient Frontier', 'Optimal Portfolios', 'Mean-Variance Analysis', 'Portfolio Optimization'],
+                videoUrl: 'https://ocw.mit.edu/courses/15-401-finance-theory-i-fall-2008/pages/video-lectures-and-slides/portfolio-theory/',
+                externalLink: 'https://ocw.mit.edu/courses/15-401-finance-theory-i-fall-2008/',
+                instructor: 'Prof. Andrew Lo',
+                progress: 0
+            },
+            {
+                id: 'mit-finance-5',
+                title: 'Finance Theory I: CAPM & APT',
+                level: 'mit',
+                source: 'MIT OpenCourseWare',
+                description: 'Master the Capital Asset Pricing Model and Arbitrage Pricing Theory.',
+                duration: '2.5 hours',
+                modules: 5,
+                topics: ['CAPM Fundamentals', 'Beta Calculation', 'Security Market Line', 'APT Overview', 'Factor Models'],
+                videoUrl: 'https://ocw.mit.edu/courses/15-401-finance-theory-i-fall-2008/pages/video-lectures-and-slides/the-capm-and-apt/',
+                externalLink: 'https://ocw.mit.edu/courses/15-401-finance-theory-i-fall-2008/',
+                instructor: 'Prof. Andrew Lo',
+                progress: 0
+            },
+            {
+                id: 'mit-finance-6',
+                title: 'Finance Theory I: Options',
+                level: 'mit',
+                source: 'MIT OpenCourseWare',
+                description: 'Introduction to options pricing, strategies, and derivatives markets.',
+                duration: '3 hours',
+                modules: 6,
+                topics: ['Options Basics', 'Call & Put Options', 'Options Strategies', 'Black-Scholes Model', 'Greeks', 'Risk Management'],
+                videoUrl: 'https://ocw.mit.edu/courses/15-401-finance-theory-i-fall-2008/pages/video-lectures-and-slides/options/',
+                externalLink: 'https://ocw.mit.edu/courses/15-401-finance-theory-i-fall-2008/',
+                instructor: 'Prof. Andrew Lo',
+                progress: 0
+            },
+            {
+                id: 'mit-finance-7',
+                title: 'Finance Theory I: Efficient Markets',
+                level: 'mit',
+                source: 'MIT OpenCourseWare',
+                description: 'Explore the Efficient Market Hypothesis and its implications for investors.',
+                duration: '2 hours',
+                modules: 4,
+                topics: ['EMH Overview', 'Forms of Efficiency', 'Anomalies', 'Behavioral Finance Intro'],
+                videoUrl: 'https://ocw.mit.edu/courses/15-401-finance-theory-i-fall-2008/pages/video-lectures-and-slides/efficient-markets/',
+                externalLink: 'https://ocw.mit.edu/courses/15-401-finance-theory-i-fall-2008/',
+                instructor: 'Prof. Andrew Lo',
+                progress: 0
+            },
+            {
+                id: 'mit-math-finance',
+                title: 'Mathematics with Applications in Finance',
+                level: 'mit',
+                source: 'MIT OpenCourseWare',
+                description: 'Quantitative methods for financial analysis including probability, statistics, and stochastic calculus.',
+                duration: '4 hours',
+                modules: 8,
+                topics: ['Financial Math Intro', 'Probability Theory', 'Statistical Analysis', 'Time Series', 'Stochastic Processes', 'Monte Carlo Methods', 'Risk Modeling', 'Quantitative Trading'],
+                videoUrl: 'https://ocw.mit.edu/courses/18-s096-topics-in-mathematics-with-applications-in-finance-fall-2013/',
+                externalLink: 'https://ocw.mit.edu/courses/18-s096-topics-in-mathematics-with-applications-in-finance-fall-2013/',
+                instructor: 'Dr. Peter Kempthorne',
+                progress: 0
+            },
+            {
+                id: 'mit-fintech',
+                title: 'FinTech: Shaping the Financial World',
+                level: 'mit',
+                source: 'MIT OpenCourseWare',
+                description: 'Explore how technology is transforming finance, from AI to blockchain and robo-advisors.',
+                duration: '3 hours',
+                modules: 6,
+                topics: ['FinTech Overview', 'AI in Finance', 'Blockchain & Crypto', 'Robo-Advisors', 'Trading Technology', 'Future of Finance'],
+                videoUrl: 'https://ocw.mit.edu/courses/15-s08-fintech-shaping-the-financial-world-spring-2020/',
+                externalLink: 'https://ocw.mit.edu/courses/15-s08-fintech-shaping-the-financial-world-spring-2020/',
+                instructor: 'Prof. Gary Gensler',
+                progress: 0
+            },
+
+            // Rice University Courses
+            {
+                id: 'rice-global-markets',
+                title: 'Global Financial Markets & Instruments',
+                level: 'rice',
+                source: 'Rice University',
+                description: 'Understand global financial markets, trading mechanisms, and investment instruments.',
+                duration: '3 hours',
+                modules: 6,
+                topics: ['Market Structure', 'Trading Mechanisms', 'Dark Pools', 'Algorithmic Trading', 'Margin Trading', 'Short Selling'],
+                externalLink: 'https://online.rice.edu/courses/global-financial-markets-and-instruments',
+                instructor: 'Dr. Arzu Ozoguz',
+                progress: 0
+            },
+            {
+                id: 'rice-portfolio',
+                title: 'Portfolio Construction & Analysis',
+                level: 'rice',
+                source: 'Rice University',
+                description: 'Learn to construct and analyze investment portfolios using modern techniques.',
+                duration: '3 hours',
+                modules: 6,
+                topics: ['Portfolio Construction', 'Asset Allocation', 'Risk Analysis', 'Performance Attribution', 'Rebalancing', 'Tax Considerations'],
+                externalLink: 'https://online.rice.edu/courses/investment-portfolio-management',
+                instructor: 'Prof. Jill Foote',
+                progress: 0
+            },
+            {
+                id: 'rice-behavioral',
+                title: 'Behavioral Finance & Biases',
+                level: 'rice',
+                source: 'Rice University',
+                description: 'Discover how psychological biases affect investment decisions and market behavior.',
+                duration: '2.5 hours',
+                modules: 5,
+                topics: ['Cognitive Biases', 'Overconfidence', 'Loss Aversion', 'Herd Behavior', 'Rational vs Irrational'],
+                externalLink: 'https://online.rice.edu/courses/investment-portfolio-management',
+                instructor: 'Dr. Arzu Ozoguz',
+                progress: 0
+            },
+            {
+                id: 'rice-strategies',
+                title: 'Investment Strategies & Performance',
+                level: 'rice',
+                source: 'Rice University',
+                description: 'Master various investment strategies and learn to evaluate performance effectively.',
+                duration: '3 hours',
+                modules: 6,
+                topics: ['Active vs Passive', 'Value Investing', 'Momentum Strategies', 'Factor Investing', 'Style Analysis', 'Attribution Analysis'],
+                externalLink: 'https://online.rice.edu/courses/investment-strategies-portfolio-analysis',
+                instructor: 'Prof. Jill Foote',
+                progress: 0
+            },
+            {
+                id: 'rice-finance-101',
+                title: 'Finance for Non-Finance Professionals',
+                level: 'rice',
+                source: 'Rice University',
+                description: 'MBA-level finance fundamentals including valuation, capital budgeting, and financial analysis.',
+                duration: '4 hours',
+                modules: 8,
+                topics: ['Financial Valuation', 'Time Value of Money', 'Cash Flow Analysis', 'Capital Budgeting', 'Risk & Return', 'Cost of Capital', 'DCF Valuation', 'Case Study'],
+                externalLink: 'https://www.coursera.org/learn/finance-for-non-finance',
+                instructor: 'Prof. James Weston',
+                progress: 0
+            },
+
+            // Intermediate Courses
+            {
+                id: 'intermediate-1',
+                title: 'Technical Analysis Fundamentals',
+                level: 'intermediate',
+                source: 'Fantasy Trader',
+                description: 'Learn to read charts, identify patterns, and use technical indicators for trading decisions.',
+                duration: '2 hours',
+                modules: 6,
+                topics: ['Chart Types', 'Support & Resistance', 'Moving Averages', 'RSI & MACD', 'Volume Analysis', 'Chart Patterns'],
+                videoUrl: null,
+                progress: 0
+            },
+            {
+                id: 'intermediate-2',
+                title: 'Fundamental Analysis Deep Dive',
+                level: 'intermediate',
+                source: 'Fantasy Trader',
+                description: 'Advanced fundamental analysis techniques for evaluating companies and their stocks.',
+                duration: '2.5 hours',
+                modules: 6,
+                topics: ['Valuation Ratios', 'DCF Analysis', 'Competitive Analysis', 'Industry Analysis', 'Management Quality', 'Growth Metrics'],
+                videoUrl: null,
+                progress: 0
+            },
+            {
+                id: 'intermediate-3',
+                title: 'Sector Analysis & Rotation',
+                level: 'intermediate',
+                source: 'Fantasy Trader',
+                description: 'Understand different market sectors and how to time sector rotations.',
+                duration: '2 hours',
+                modules: 5,
+                topics: ['11 Market Sectors', 'Economic Cycles', 'Sector ETFs', 'Rotation Strategies', 'Sector Correlations'],
+                videoUrl: null,
+                progress: 0
+            },
+
+            // Advanced Courses
+            {
+                id: 'advanced-1',
+                title: 'Options Trading Strategies',
+                level: 'advanced',
+                source: 'Fantasy Trader',
+                description: 'Master advanced options strategies including spreads, straddles, and iron condors.',
+                duration: '4 hours',
+                modules: 8,
+                topics: ['Covered Calls', 'Protective Puts', 'Vertical Spreads', 'Iron Condors', 'Straddles & Strangles', 'Calendar Spreads', 'Greeks Deep Dive', 'Position Sizing'],
+                videoUrl: null,
+                progress: 0
+            },
+            {
+                id: 'advanced-2',
+                title: 'Algorithmic Trading Basics',
+                level: 'advanced',
+                source: 'Fantasy Trader',
+                description: 'Introduction to systematic trading strategies and algorithm development.',
+                duration: '3 hours',
+                modules: 6,
+                topics: ['Algo Trading Overview', 'Strategy Development', 'Backtesting', 'Risk Management', 'Execution', 'Common Strategies'],
+                videoUrl: null,
+                progress: 0
+            },
+            {
+                id: 'advanced-3',
+                title: 'Alternative Investments',
+                level: 'advanced',
+                source: 'Fantasy Trader',
+                description: 'Explore hedge funds, private equity, real estate, and other alternative investments.',
+                duration: '3 hours',
+                modules: 7,
+                topics: ['Hedge Fund Strategies', 'Private Equity', 'Real Estate Investing', 'Commodities', 'Cryptocurrency', 'Venture Capital', 'Due Diligence'],
+                videoUrl: null,
+                progress: 0
+            }
+        ];
+
+        // ============================================
+        // STATE
+        // ============================================
+        let STOCKS = [];
+        let selectedStock = null;
+        let lastFetchTime = null;
+        let isMarketOpen = false;
+
+        // ============================================
+        // USER DATA
+        // ============================================
+        function getCurrentUser() {
+            return JSON.parse(localStorage.getItem('fantasyTraderCurrentUser') || 'null');
+        }
+
+        function setCurrentUser(user) {
+            localStorage.setItem('fantasyTraderCurrentUser', JSON.stringify(user));
+        }
+
+        function updateUserInStorage(user) {
+            const users = JSON.parse(localStorage.getItem('fantasyTraderUsers') || '[]');
+            const index = users.findIndex(u => u.id === user.id);
+            if (index !== -1) {
+                users[index] = user;
+                localStorage.setItem('fantasyTraderUsers', JSON.stringify(users));
+            }
+            setCurrentUser(user);
+        }
+
+        // ============================================
+        // YAHOO FINANCE API
+        // ============================================
+        async function fetchStockData() {
+            const allSymbols = Object.values(STOCK_CONFIG).flatMap(config => config.symbols);
+            const symbolString = allSymbols.join(',');
+            
+            try {
+                // Try direct Yahoo Finance API (works with CORS proxy)
+                const url = `${CORS_PROXY}${encodeURIComponent(`${YAHOO_QUOTE_PROXY}?symbols=${symbolString}`)}`;
+                
+                const response = await fetch(url, {
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Yahoo Finance API request failed');
+                }
+
+                const data = await response.json();
+                
+                if (data.quoteResponse && data.quoteResponse.result) {
+                    STOCKS = data.quoteResponse.result.map(quote => {
+                        // Find sector and position for this stock
+                        let sector = 'tech';
+                        let position = 'QB';
+                        
+                        for (const [sectorName, config] of Object.entries(STOCK_CONFIG)) {
+                            if (config.symbols.includes(quote.symbol)) {
+                                sector = sectorName;
+                                position = config.position;
+                                break;
+                            }
+                        }
+
+                        return {
+                            symbol: quote.symbol,
+                            name: quote.shortName || quote.longName || quote.symbol,
+                            price: quote.regularMarketPrice || 0,
+                            change: quote.regularMarketChangePercent || 0,
+                            changeAmount: quote.regularMarketChange || 0,
+                            previousClose: quote.regularMarketPreviousClose || 0,
+                            dayHigh: quote.regularMarketDayHigh || 0,
+                            dayLow: quote.regularMarketDayLow || 0,
+                            volume: quote.regularMarketVolume || 0,
+                            marketCap: quote.marketCap || 0,
+                            sector: sector,
+                            position: position,
+                            fiftyTwoWeekHigh: quote.fiftyTwoWeekHigh || 0,
+                            fiftyTwoWeekLow: quote.fiftyTwoWeekLow || 0
+                        };
+                    });
+
+                    lastFetchTime = new Date();
+                    updateLastFetchDisplay();
+                    checkMarketStatus();
+                    
+                    document.getElementById('liveStockCount').textContent = STOCKS.length;
+                    
+                    return true;
+                }
+            } catch (error) {
+                console.error('Error fetching from Yahoo Finance:', error);
+            }
+
+            // Fallback to simulated data if API fails
+            console.log('Using fallback stock data');
+            loadFallbackData();
+            return false;
+        }
+
+        function loadFallbackData() {
+            // Fallback with realistic sample data
+            const fallbackPrices = {
+                'AAPL': { price: 198.45, change: 2.34, name: 'Apple Inc.' },
+                'MSFT': { price: 378.91, change: 1.52, name: 'Microsoft Corporation' },
+                'GOOGL': { price: 141.80, change: -0.45, name: 'Alphabet Inc.' },
+                'META': { price: 505.23, change: 3.45, name: 'Meta Platforms Inc.' },
+                'NVDA': { price: 142.67, change: 4.12, name: 'NVIDIA Corporation' },
+                'AMD': { price: 156.23, change: 2.87, name: 'Advanced Micro Devices' },
+                'AMZN': { price: 186.52, change: 1.23, name: 'Amazon.com Inc.' },
+                'TSLA': { price: 248.50, change: -1.82, name: 'Tesla Inc.' },
+                'JPM': { price: 198.34, change: 0.87, name: 'JPMorgan Chase & Co.' },
+                'V': { price: 278.45, change: 1.12, name: 'Visa Inc.' },
+                'JNJ': { price: 156.23, change: -0.82, name: 'Johnson & Johnson' },
+                'UNH': { price: 524.67, change: 2.34, name: 'UnitedHealth Group' },
+                'PFE': { price: 28.45, change: -0.23, name: 'Pfizer Inc.' },
+                'XOM': { price: 105.67, change: 1.45, name: 'Exxon Mobil Corporation' },
+                'CVX': { price: 152.34, change: 0.89, name: 'Chevron Corporation' },
+                'CAT': { price: 287.45, change: 1.67, name: 'Caterpillar Inc.' },
+                'BA': { price: 178.90, change: -2.34, name: 'Boeing Company' },
+                'HD': { price: 345.67, change: 0.56, name: 'Home Depot Inc.' },
+                'NKE': { price: 98.45, change: -1.23, name: 'Nike Inc.' },
+                'DIS': { price: 112.34, change: 0.78, name: 'Walt Disney Company' },
+                'MA': { price: 456.78, change: 1.34, name: 'Mastercard Inc.' },
+                'BAC': { price: 34.56, change: 0.45, name: 'Bank of America' },
+                'GS': { price: 387.90, change: 2.12, name: 'Goldman Sachs' },
+                'MRK': { price: 112.34, change: 0.67, name: 'Merck & Co.' },
+                'ABBV': { price: 178.90, change: 1.23, name: 'AbbVie Inc.' },
+                'LLY': { price: 789.45, change: 3.45, name: 'Eli Lilly and Company' },
+                'CRM': { price: 267.89, change: 1.78, name: 'Salesforce Inc.' },
+                'ADBE': { price: 567.34, change: 2.34, name: 'Adobe Inc.' },
+                'ORCL': { price: 123.45, change: 0.89, name: 'Oracle Corporation' },
+                'AVGO': { price: 1234.56, change: 2.67, name: 'Broadcom Inc.' },
+                'QCOM': { price: 167.89, change: 1.45, name: 'Qualcomm Inc.' },
+                'COST': { price: 567.89, change: 0.78, name: 'Costco Wholesale' },
+                'WMT': { price: 156.78, change: 0.34, name: 'Walmart Inc.' },
+                'MCD': { price: 289.45, change: 0.56, name: "McDonald's Corporation" },
+                'SBUX': { price: 98.67, change: -0.45, name: 'Starbucks Corporation' },
+                'COP': { price: 112.34, change: 1.23, name: 'ConocoPhillips' },
+                'HON': { price: 198.67, change: 0.89, name: 'Honeywell International' },
+                'GE': { price: 134.56, change: 1.67, name: 'General Electric' },
+                'UPS': { price: 145.67, change: 0.45, name: 'United Parcel Service' },
+                'DE': { price: 378.90, change: 1.34, name: 'Deere & Company' }
+            };
+
+            STOCKS = [];
+            
+            for (const [sectorName, config] of Object.entries(STOCK_CONFIG)) {
+                for (const symbol of config.symbols) {
+                    const data = fallbackPrices[symbol];
+                    if (data) {
+                        STOCKS.push({
+                            symbol: symbol,
+                            name: data.name,
+                            price: data.price,
+                            change: data.change,
+                            changeAmount: data.price * (data.change / 100),
+                            previousClose: data.price / (1 + data.change / 100),
+                            sector: sectorName,
+                            position: config.position,
+                            dayHigh: data.price * 1.02,
+                            dayLow: data.price * 0.98,
+                            volume: Math.floor(Math.random() * 50000000),
+                            marketCap: data.price * Math.floor(Math.random() * 10000000000)
+                        });
+                    }
+                }
+            }
+
+            lastFetchTime = new Date();
+            updateLastFetchDisplay();
+            document.getElementById('liveStockCount').textContent = STOCKS.length;
+        }
+
+        function checkMarketStatus() {
+            const now = new Date();
+            const nyTime = new Date(now.toLocaleString('en-US', { timeZone: 'America/New_York' }));
+            const day = nyTime.getDay();
+            const hour = nyTime.getHours();
+            const minute = nyTime.getMinutes();
+            const currentTime = hour * 60 + minute;
+
+            // Market open 9:30 AM - 4:00 PM ET, Mon-Fri
+            isMarketOpen = day >= 1 && day <= 5 && currentTime >= 570 && currentTime < 960;
+            
+            const statusEl = document.getElementById('marketStatus');
+            const statusText = document.getElementById('marketStatusText');
+            
+            if (isMarketOpen) {
+                statusEl.className = 'market-status open';
+                statusText.textContent = 'Market Open — Prices updating live';
+            } else {
+                statusEl.className = 'market-status closed';
+                const nextOpen = getNextMarketOpen(nyTime);
+                statusText.textContent = `Market Closed — Opens ${nextOpen}`;
+            }
+        }
+
+        function getNextMarketOpen(now) {
+            const day = now.getDay();
+            const hour = now.getHours();
+            
+            if (day === 0) return 'Monday 9:30 AM ET';
+            if (day === 6) return 'Monday 9:30 AM ET';
+            if (hour >= 16) {
+                if (day === 5) return 'Monday 9:30 AM ET';
+                return 'Tomorrow 9:30 AM ET';
+            }
+            return 'Today 9:30 AM ET';
+        }
+
+        function updateLastFetchDisplay() {
+            if (lastFetchTime) {
+                const el = document.getElementById('lastUpdated');
+                el.textContent = `Last updated: ${lastFetchTime.toLocaleTimeString()}`;
+            }
+        }
+
+        // ============================================
+        // INITIALIZATION
+        // ============================================
+        async function init() {
+            const user = getCurrentUser();
+            
+            if (!user) {
+                window.location.href = 'index.html';
+                return;
+            }
+
+            // Initialize portfolio if needed
+            if (!user.portfolio) {
+                user.portfolio = { cash: 100000, holdings: [] };
+                updateUserInStorage(user);
+            }
+
+            // Update UI with user data
+            document.getElementById('userName').textContent = `${user.firstName} ${user.lastName.charAt(0)}.`;
+            document.getElementById('userEmail').textContent = user.email;
+            document.getElementById('userAvatar').textContent = `${user.firstName.charAt(0)}${user.lastName.charAt(0)}`;
+            document.getElementById('dashboardName').textContent = user.firstName;
+
+            // Fetch live stock data
+            await fetchStockData();
+            
+            // Update displays
+            updatePortfolioDisplay();
+            renderStocks();
+            renderMarketMovers();
+            renderCourses();
+
+            // Refresh stock data every 60 seconds if market is open
+            setInterval(async () => {
+                if (isMarketOpen) {
+                    await fetchStockData();
+                    updatePortfolioDisplay();
+                    renderStocks();
+                    renderMarketMovers();
+                }
+            }, 60000);
+        }
+
+        // ============================================
+        // NAVIGATION
+        // ============================================
+        function showSection(sectionId) {
+            // Update nav items
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            if (event && event.currentTarget) {
+                event.currentTarget.classList.add('active');
+            }
+
+            // Show section
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById('section-' + sectionId).classList.add('active');
+        }
+
+        function logout() {
+            localStorage.removeItem('fantasyTraderCurrentUser');
+            window.location.href = 'index.html';
+        }
+
+        // ============================================
+        // PORTFOLIO
+        // ============================================
+        function updatePortfolioDisplay() {
+            const user = getCurrentUser();
+            const portfolio = user.portfolio;
+
+            // Calculate portfolio value
+            let holdingsValue = 0;
+            let todayPL = 0;
+            
+            portfolio.holdings.forEach(holding => {
+                const stock = STOCKS.find(s => s.symbol === holding.symbol);
+                if (stock) {
+                    holdingsValue += stock.price * holding.shares;
+                    todayPL += (stock.changeAmount || 0) * holding.shares;
+                }
+            });
+
+            const totalValue = portfolio.cash + holdingsValue;
+            const change = totalValue - 100000;
+            const changePercent = ((change / 100000) * 100).toFixed(2);
+
+            // Update displays
+            document.getElementById('portfolioValue').textContent = formatCurrency(totalValue);
+            document.getElementById('cashBalance').textContent = formatCurrency(portfolio.cash);
+            document.getElementById('portfolioTotalValue').textContent = formatCurrency(totalValue);
+            document.getElementById('portfolioCash').textContent = formatCurrency(portfolio.cash);
+            document.getElementById('holdingsCount').textContent = portfolio.holdings.length;
+            
+            // Today's P&L
+            const todayPLEl = document.getElementById('todayPL');
+            if (todayPLEl) {
+                todayPLEl.textContent = formatCurrency(todayPL);
+                todayPLEl.className = todayPL >= 0 ? 'stat-card-value text-green' : 'stat-card-value text-red';
+            }
+
+            const changeClass = change >= 0 ? 'text-green' : 'text-red';
+            const changeSign = change >= 0 ? '+' : '';
+            document.getElementById('portfolioChange').className = `stat-card-change ${changeClass}`;
+            document.getElementById('portfolioChange').innerHTML = `${change >= 0 ? '↑' : '↓'} ${changeSign}${formatCurrency(change)} (${changeSign}${changePercent}%)`;
+
+            // Update holdings table
+            renderHoldings();
+        }
+
+        function renderHoldings() {
+            const user = getCurrentUser();
+            const holdings = user.portfolio.holdings;
+
+            const containers = ['holdingsContainer', 'portfolioHoldings'];
+            
+            containers.forEach(containerId => {
+                const container = document.getElementById(containerId);
+                if (!container) return;
+                
+                if (holdings.length === 0) {
+                    container.innerHTML = `
+                        <div class="empty-state">
+                            <div class="empty-state-icon">📊</div>
+                            <h3>No holdings yet</h3>
+                            <p>Start building your portfolio by buying some stocks.</p>
+                            <button class="btn btn-primary" onclick="showSection('trade')">Browse Stocks</button>
+                        </div>
+                    `;
+                    return;
+                }
+
+                let html = `
+                    <table class="holdings-table">
+                        <thead>
+                            <tr>
+                                <th>Stock</th>
+                                <th>Shares</th>
+                                <th>Price</th>
+                                <th>Value</th>
+                                <th>Today</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                `;
+
+                holdings.forEach(holding => {
+                    const stock = STOCKS.find(s => s.symbol === holding.symbol);
+                    if (stock) {
+                        const value = stock.price * holding.shares;
+                        const changeClass = stock.change >= 0 ? 'text-green' : 'text-red';
+                        
+                        html += `
+                            <tr>
+                                <td>
+                                    <div class="stock-cell">
+                                        <div class="stock-logo">${stock.symbol.substring(0, 4)}</div>
+                                        <div>
+                                            <div class="stock-name">${stock.name}</div>
+                                            <div class="stock-sector">${stock.symbol}</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>${holding.shares}</td>
+                                <td>${formatCurrency(stock.price)}</td>
+                                <td>${formatCurrency(value)}</td>
+                                <td class="${changeClass}">${stock.change >= 0 ? '+' : ''}${stock.change.toFixed(2)}%</td>
+                            </tr>
+                        `;
+                    }
+                });
+
+                html += '</tbody></table>';
+                container.innerHTML = html;
+            });
+        }
+
+        function renderMarketMovers() {
+            const container = document.getElementById('marketMovers');
+            if (!container || STOCKS.length === 0) return;
+
+            // Sort by absolute change to get biggest movers
+            const movers = [...STOCKS]
+                .sort((a, b) => Math.abs(b.change) - Math.abs(a.change))
+                .slice(0, 5);
+
+            let html = '';
+            movers.forEach(stock => {
+                const changeClass = stock.change >= 0 ? 'text-green' : 'text-red';
+                html += `
+                    <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--border-subtle);">
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <div class="stock-logo" style="width: 36px; height: 36px; font-size: 10px;">${stock.symbol}</div>
+                            <div>
+                                <div style="font-weight: 600; font-size: 13px;">${stock.symbol}</div>
+                                <div style="font-size: 11px; color: var(--text-muted);">${stock.sector}</div>
+                            </div>
+                        </div>
+                        <div style="text-align: right;">
+                            <div style="font-weight: 600;">${formatCurrency(stock.price)}</div>
+                            <div class="${changeClass}" style="font-size: 12px;">${stock.change >= 0 ? '+' : ''}${stock.change.toFixed(2)}%</div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        // ============================================
+        // TRADING
+        // ============================================
+        function renderStocks(filteredStocks = STOCKS) {
+            const grid = document.getElementById('stockGrid');
+            
+            if (filteredStocks.length === 0) {
+                grid.innerHTML = `
+                    <div class="loading-state">
+                        <div class="loading-spinner"></div>
+                        <div class="loading-text">Loading stock data...</div>
+                    </div>
+                `;
+                return;
+            }
+            
+            grid.innerHTML = filteredStocks.map(stock => `
+                <div class="stock-card" onclick="openTradeModal('${stock.symbol}')">
+                    <div class="stock-card-header">
+                        <div class="stock-logo">${stock.symbol.substring(0, 4)}</div>
+                        <div>
+                            <div class="stock-name">${stock.name}</div>
+                            <div class="stock-sector">${capitalize(stock.sector)} • ${stock.position}</div>
+                        </div>
+                    </div>
+                    <div class="stock-card-body">
+                        <div class="stock-price">${formatCurrency(stock.price)}</div>
+                        <div class="stock-change ${stock.change >= 0 ? 'text-green' : 'text-red'}">
+                            ${stock.change >= 0 ? '↑' : '↓'} ${stock.change >= 0 ? '+' : ''}${stock.change.toFixed(2)}%
+                        </div>
+                    </div>
+                    <div class="stock-chart">
+                        <div class="chart-line" style="background: ${stock.change >= 0 ? 'var(--accent-green)' : 'var(--accent-red)'}"></div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function filterStocks() {
+            const query = document.getElementById('stockSearch').value.toLowerCase();
+            const filtered = STOCKS.filter(stock => 
+                stock.name.toLowerCase().includes(query) || 
+                stock.symbol.toLowerCase().includes(query)
+            );
+            renderStocks(filtered);
+        }
+
+        function filterByCategory(category, btn) {
+            // Update active tab
+            document.querySelectorAll('.filter-tabs .filter-tab').forEach(tab => tab.classList.remove('active'));
+            if (btn) btn.classList.add('active');
+            
+            if (category === 'all') {
+                renderStocks(STOCKS);
+            } else {
+                const filtered = STOCKS.filter(stock => stock.sector === category);
+                renderStocks(filtered);
+            }
+        }
+
+        function openTradeModal(symbol) {
+            selectedStock = STOCKS.find(s => s.symbol === symbol);
+            if (!selectedStock) return;
+
+            document.getElementById('tradeModalTitle').textContent = `Buy ${selectedStock.symbol}`;
+            document.getElementById('tradeStockLogo').textContent = selectedStock.symbol.substring(0, 4);
+            document.getElementById('tradeStockName').textContent = selectedStock.name;
+            document.getElementById('tradeStockSector').textContent = `${capitalize(selectedStock.sector)} • ${selectedStock.position}`;
+            document.getElementById('tradeStockPrice').textContent = formatCurrency(selectedStock.price);
+            document.getElementById('tradeStockChange').textContent = `${selectedStock.change >= 0 ? '+' : ''}${selectedStock.change.toFixed(2)}%`;
+            document.getElementById('tradeStockChange').className = `stock-change ${selectedStock.change >= 0 ? 'text-green' : 'text-red'}`;
+            document.getElementById('tradeShares').value = 1;
+            
+            updateTradeSummary();
+            document.getElementById('tradeModal').classList.add('active');
+        }
+
+        function closeTradeModal() {
+            document.getElementById('tradeModal').classList.remove('active');
+            selectedStock = null;
+        }
+
+        function updateTradeSummary() {
+            if (!selectedStock) return;
+            
+            const shares = parseInt(document.getElementById('tradeShares').value) || 0;
+            const total = selectedStock.price * shares;
+
+            document.getElementById('tradePricePerShare').textContent = formatCurrency(selectedStock.price);
+            document.getElementById('tradeShareCount').textContent = shares;
+            document.getElementById('tradeTotalCost').textContent = formatCurrency(total);
+        }
+
+        function executeTrade() {
+            if (!selectedStock) return;
+
+            const user = getCurrentUser();
+            const shares = parseInt(document.getElementById('tradeShares').value) || 0;
+            const total = selectedStock.price * shares;
+
+            if (shares <= 0) {
+                alert('Please enter a valid number of shares.');
+                return;
+            }
+
+            if (total > user.portfolio.cash) {
+                alert('Insufficient funds. You don\'t have enough cash for this purchase.');
+                return;
+            }
+
+            // Execute trade
+            user.portfolio.cash -= total;
+
+            // Check if already holding this stock
+            const existingHolding = user.portfolio.holdings.find(h => h.symbol === selectedStock.symbol);
+            if (existingHolding) {
+                const oldValue = existingHolding.avgCost * existingHolding.shares;
+                existingHolding.shares += shares;
+                existingHolding.avgCost = (oldValue + total) / existingHolding.shares;
+            } else {
+                user.portfolio.holdings.push({
+                    symbol: selectedStock.symbol,
+                    shares: shares,
+                    avgCost: selectedStock.price
+                });
+            }
+
+            updateUserInStorage(user);
+            updatePortfolioDisplay();
+            closeTradeModal();
+
+            alert(`Successfully purchased ${shares} shares of ${selectedStock.symbol}!`);
+        }
+
+        // ============================================
+        // EDUCATION
+        // ============================================
+        function renderCourses(filteredCourses = COURSES) {
+            const grid = document.getElementById('courseGrid');
+            
+            grid.innerHTML = filteredCourses.map(course => `
+                <div class="course-card" onclick="openCourseModal('${course.id}')">
+                    <div class="course-header">
+                        <span class="course-level ${course.level}">${getLevelLabel(course.level)}</span>
+                        <h3 class="course-title">${course.title}</h3>
+                        <p class="course-source">${course.source}${course.instructor ? ' • ' + course.instructor : ''}</p>
+                    </div>
+                    <div class="course-body">
+                        <p class="course-description">${course.description}</p>
+                        <div class="course-meta">
+                            <span class="course-meta-item">📚 ${course.modules} modules</span>
+                            <span class="course-meta-item">⏱️ ${course.duration}</span>
+                        </div>
+                        <div class="course-progress">
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: ${course.progress}%"></div>
+                            </div>
+                            <div class="progress-text">${course.progress}% complete</div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function getLevelLabel(level) {
+            const labels = {
+                'beginner': 'Beginner',
+                'intermediate': 'Intermediate',
+                'advanced': 'Advanced',
+                'mit': 'MIT OCW',
+                'rice': 'Rice University'
+            };
+            return labels[level] || level;
+        }
+
+        function filterCourses() {
+            const query = document.getElementById('courseSearch').value.toLowerCase();
+            const filtered = COURSES.filter(course => 
+                course.title.toLowerCase().includes(query) || 
+                course.description.toLowerCase().includes(query) ||
+                course.source.toLowerCase().includes(query)
+            );
+            renderCourses(filtered);
+        }
+
+        function filterCourseLevel(level, btn) {
+            // Update active tab
+            document.querySelectorAll('#section-education .filter-tabs .filter-tab').forEach(tab => tab.classList.remove('active'));
+            if (btn) btn.classList.add('active');
+            
+            if (level === 'all') {
+                renderCourses(COURSES);
+            } else {
+                const filtered = COURSES.filter(course => course.level === level);
+                renderCourses(filtered);
+            }
+        }
+
+        function openCourseModal(courseId) {
+            const course = COURSES.find(c => c.id === courseId);
+            if (!course) return;
+
+            document.getElementById('courseModalTitle').textContent = course.title;
+            
+            let content = `
+                <div style="margin-bottom: 24px;">
+                    <span class="course-level ${course.level}">${getLevelLabel(course.level)}</span>
+                    <p style="color: var(--text-secondary); margin-top: 12px;">${course.description}</p>
+                </div>
+                
+                <div style="display: flex; gap: 24px; margin-bottom: 24px; padding: 16px; background: var(--bg-dark); border-radius: 12px;">
+                    <div>
+                        <div style="font-size: 12px; color: var(--text-muted);">Source</div>
+                        <div style="font-weight: 600;">${course.source}</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 12px; color: var(--text-muted);">Duration</div>
+                        <div style="font-weight: 600;">${course.duration}</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 12px; color: var(--text-muted);">Modules</div>
+                        <div style="font-weight: 600;">${course.modules}</div>
+                    </div>
+                </div>
+
+                ${course.instructor ? `
+                    <div style="margin-bottom: 24px;">
+                        <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 8px;">INSTRUCTOR</div>
+                        <div style="font-weight: 600;">${course.instructor}</div>
+                    </div>
+                ` : ''}
+
+                <div style="margin-bottom: 24px;">
+                    <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px;">TOPICS COVERED</div>
+                    <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                        ${course.topics.map(topic => `
+                            <span style="padding: 6px 12px; background: var(--bg-dark); border-radius: 100px; font-size: 12px;">${topic}</span>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+
+            if (course.externalLink) {
+                content += `
+                    <a href="${course.externalLink}" target="_blank" class="btn btn-primary" style="width: 100%; text-decoration: none;">
+                        Open Course on ${course.source} →
+                    </a>
+                `;
+            } else {
+                content += `
+                    <button class="btn btn-primary" style="width: 100%;">
+                        Start Learning
+                    </button>
+                `;
+            }
+
+            document.getElementById('courseModalContent').innerHTML = content;
+            document.getElementById('courseModal').classList.add('active');
+        }
+
+        function closeCourseModal() {
+            document.getElementById('courseModal').classList.remove('active');
+        }
+
+        // ============================================
+        // UTILITIES
+        // ============================================
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'USD'
+            }).format(amount);
+        }
+
+        function capitalize(str) {
+            return str.charAt(0).toUpperCase() + str.slice(1);
+        }
+
+        function openCreateLeague() {
+            alert('League creation coming soon! For now, join the UNC Finance Club league.');
+        }
+
+        function openJoinLeague() {
+            const code = prompt('Enter league code:');
+            if (code) {
+                alert('League joined! (Demo mode - full functionality coming soon)');
+            }
+        }
+
+        // Initialize on load
+        document.addEventListener('DOMContentLoaded', init);
+
+        // Close modals on escape
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeTradeModal();
+                closeCourseModal();
+            }
+        });
+
+        // Close modals on overlay click
+        document.getElementById('tradeModal').addEventListener('click', (e) => {
+            if (e.target.classList.contains('modal-overlay')) closeTradeModal();
+        });
+        document.getElementById('courseModal').addEventListener('click', (e) => {
+            if (e.target.classList.contains('modal-overlay')) closeCourseModal();
+        });
+    </script>
+</body>
+</html>

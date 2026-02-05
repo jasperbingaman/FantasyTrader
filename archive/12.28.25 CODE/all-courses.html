@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Stock League - All Courses</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Orbitron:wght@400;500;600;700;800;900&display=swap');
+
+        :root {
+            --primary: #10b981;
+            --secondary: #059669;
+            --accent: #f59e0b;
+            --success: #10b981;
+            --danger: #ef4444;
+            --background: #0a0a0a;
+            --surface: #1a1a1a;
+            --text-primary: #ffffff;
+            --text-secondary: #a1a1aa;
+            --glow: rgba(16, 185, 129, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--background);
+            color: var(--text-primary);
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            background: rgba(26, 26, 26, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(16, 185, 129, 0.2);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .back-btn {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--primary);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .back-btn:hover {
+            background: rgba(16, 185, 129, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .page-title {
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #ffffff 0%, #10b981 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Main Container */
+        .main-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Master Course Section */
+        .master-course {
+            background: rgba(255, 255, 255, 0.95);
+            border: 2px solid var(--primary);
+            border-radius: 20px;
+            padding: 3rem;
+            margin-bottom: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .master-course::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+        }
+
+        .master-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 2rem;
+        }
+
+        .master-info h2 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #000000 0%, #10b981 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .master-description {
+            font-size: 1.1rem;
+            color: #333333;
+            line-height: 1.6;
+            max-width: 600px;
+        }
+
+        .master-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .stat-card {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--primary);
+            display: block;
+        }
+
+        .stat-label {
+            color: #333333;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .master-progress {
+            margin: 2rem 0;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            overflow: hidden;
+            margin-bottom: 1rem;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        .progress-text {
+            color: #333333;
+            font-size: 0.9rem;
+        }
+
+        .master-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .action-btn {
+            background: white;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3);
+        }
+
+        .outline-btn {
+            background: white;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        .outline-btn:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* Specialized Courses */
+        .specialized-courses {
+            margin-top: 3rem;
+        }
+
+        .courses-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 2rem;
+        }
+
+        .course-card {
+            background: rgba(26, 26, 26, 0.95);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            border-radius: 16px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .course-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .course-card:hover::before {
+            opacity: 1;
+        }
+
+        .course-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+            box-shadow: 0 15px 35px rgba(16, 185, 129, 0.1);
+        }
+
+        .course-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1.5rem;
+        }
+
+        .course-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .course-level {
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--primary);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .course-description {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .course-modules {
+            list-style: none;
+            margin-bottom: 1.5rem;
+            padding: 0;
+        }
+
+        .course-modules li {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.5;
+            margin-bottom: 0.3rem;
+            padding-left: 0;
+        }
+
+        .course-progress {
+            margin: 1.5rem 0;
+        }
+
+        .course-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .course-btn {
+            background: white;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-size: 0.9rem;
+        }
+
+        .course-btn:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .start-btn {
+            background: white;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        .start-btn:hover {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);
+        }
+
+
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .master-header {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .master-stats {
+                grid-template-columns: 1fr;
+            }
+
+            .courses-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .master-actions {
+                flex-direction: column;
+            }
+
+            .course-actions {
+                flex-direction: column;
+            }
+        }
+
+        /* Course Content Styles */
+        .course-content {
+            display: none;
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-top: 1rem;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        .course-content h4 {
+            color: var(--primary);
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 0.5rem;
+        }
+
+        .course-content p {
+            color: #333;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .course-content ul {
+            color: #333;
+            margin-bottom: 1rem;
+        }
+
+        .course-content li {
+            margin-bottom: 0.5rem;
+            line-height: 1.5;
+        }
+
+        .close-content {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            margin-top: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="header-content">
+            <button class="back-btn" onclick="window.location.href='learn.html'">
+                ← Back to Learning Hub
+            </button>
+            <h1 class="page-title">All Courses</h1>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Master Trading Course -->
+        <div class="master-course">
+            <div class="master-header">
+                <div class="master-info">
+                    <h2>Master Trading Course</h2>
+                    <p class="master-description">
+                        The ultimate comprehensive course covering everything from market fundamentals to advanced trading strategies. 
+                        Perfect for beginners and experienced traders alike, this course provides the foundation for successful trading.
+                        <br><br>
+                        <strong>What You'll Learn:</strong>
+                        • Market fundamentals and economic indicators<br>
+                        • Technical analysis and chart patterns<br>
+                        • Risk management and position sizing<br>
+                        • Trading psychology and emotional control<br>
+                        • Portfolio diversification strategies<br>
+                        • Real-world trading scenarios and case studies
+                    </p>
+                </div>
+            </div>
+
+            <div class="master-stats">
+                <div class="stat-card">
+                    <span class="stat-number">24</span>
+                    <span class="stat-label">Modules</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">120+</span>
+                    <span class="stat-label">Lessons</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">50+</span>
+                    <span class="stat-label">Quizzes</span>
+                </div>
+            </div>
+
+            <div class="master-progress">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="masterProgress"></div>
+                </div>
+                <div class="progress-text">0% Complete</div>
+            </div>
+
+            <div class="master-actions">
+                <button class="action-btn" onclick="startMasterCourse()">Start Course</button>
+                <button class="action-btn outline-btn" onclick="viewMasterOutline()">View Outline</button>
+                <button class="action-btn outline-btn" onclick="downloadMaterials()">Download Materials</button>
+            </div>
+        </div>
+
+        <!-- Specialized Courses -->
+        <div class="specialized-courses">
+            <h2 style="font-size: 2rem; margin-bottom: 2rem; text-align: center; color: var(--text-primary);">
+                Specialized Trading Courses
+            </h2>
+            
+            <div class="courses-grid">
+                <!-- Options Trading -->
+                <div class="course-card">
+                    <div class="course-header">
+                        <div>
+                            <h3 class="course-title">Options Trading</h3>
+                            <span class="course-level">Intermediate</span>
+                        </div>
+                    </div>
+                    <p class="course-description">
+                        Master options trading strategies including calls, puts, spreads, and complex combinations. 
+                        Learn risk management and leverage techniques for advanced trading.
+                        <br><br>
+                        <strong>Key Topics:</strong> Options Greeks, volatility strategies, income generation, 
+                        hedging techniques, and advanced options combinations for sophisticated trading.
+                    </p>
+                    <ul class="course-modules">
+                        <li>• Options Basics & Greeks</li>
+                        <li>• Call & Put Strategies</li>
+                        <li>• Spreads & Combinations</li>
+                        <li>• Risk Management</li>
+                        <li>• Advanced Options</li>
+                    </ul>
+                    
+
+
+                    <div class="course-progress">
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 0%"></div>
+                        </div>
+                        <div class="progress-text">0% Complete</div>
+                    </div>
+
+                    <div class="course-actions">
+                        <button class="course-btn start-btn" onclick="startCourse('options')">Start Course</button>
+                        <button class="course-btn" onclick="viewCourse('options')">View Details</button>
+                    </div>
+                </div>
+
+                <!-- Day Trading -->
+                <div class="course-card">
+                    <div class="course-header">
+                        <div>
+                            <h3 class="course-title">Day Trading</h3>
+                            <span class="course-level">Advanced</span>
+                        </div>
+                    </div>
+                    <p class="course-description">
+                        Learn day trading strategies, technical analysis, and risk management for intraday trading. 
+                        Master entry/exit timing and market psychology.
+                        <br><br>
+                        <strong>Key Topics:</strong> Pre-market analysis, scalping techniques, momentum trading, 
+                        risk management for intraday positions, and developing a winning day trading routine.
+                    </p>
+                    <ul class="course-modules">
+                        <li>• Market Structure & Setup</li>
+                        <li>• Entry & Exit Timing</li>
+                        <li>• Risk Management</li>
+                        <li>• Trading Psychology</li>
+                        <li>• Advanced Techniques</li>
+                    </ul>
+                    
+
+
+                    <div class="course-progress">
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 0%"></div>
+                        </div>
+                        <div class="progress-text">0% Complete</div>
+                    </div>
+
+                    <div class="course-actions">
+                        <button class="course-btn start-btn" onclick="startCourse('day-trading')">Start Course</button>
+                        <button class="course-btn" onclick="viewCourse('day-trading')">View Details</button>
+                    </div>
+                </div>
+
+                <!-- Swing Trading -->
+                <div class="course-card">
+                    <div class="course-header">
+                        <div>
+                            <h3 class="course-title">Swing Trading</h3>
+                            <span class="course-level">Intermediate</span>
+                        </div>
+                    </div>
+                    <p class="course-description">
+                        Master swing trading techniques for medium-term positions. Learn to identify trends, 
+                        set proper stop-losses, and manage positions effectively.
+                        <br><br>
+                        <strong>Key Topics:</strong> Trend identification, support/resistance levels, 
+                        swing trading setups, position management, and building a swing trading system.
+                    </p>
+                    <ul class="course-modules">
+                        <li>• Trend Analysis & Identification</li>
+                        <li>• Position Sizing</li>
+                        <li>• Stop-Loss Strategies</li>
+                        <li>• Market Timing</li>
+                        <li>• Portfolio Management</li>
+                    </ul>
+                    
+
+
+                    <div class="course-progress">
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 0%"></div>
+                        </div>
+                        <div class="progress-text">0% Complete</div>
+                    </div>
+
+                    <div class="course-actions">
+                        <button class="course-btn start-btn" onclick="startCourse('swing-trading')">Start Course</button>
+                        <button class="course-btn" onclick="viewCourse('swing-trading')">View Details</button>
+                    </div>
+                </div>
+
+                <!-- Technical Analysis -->
+                <div class="course-card">
+                    <div class="course-header">
+                        <div>
+                            <h3 class="course-title">Technical Analysis</h3>
+                            <span class="course-level">Intermediate</span>
+                        </div>
+                    </div>
+                    <p class="course-description">
+                        Deep dive into technical analysis including chart patterns, indicators, oscillators, 
+                        and volume analysis for informed trading decisions.
+                        <br><br>
+                        <strong>Key Topics:</strong> Chart patterns, technical indicators, volume analysis, 
+                        multi-timeframe analysis, and building technical trading systems.
+                    </p>
+                    <ul class="course-modules">
+                        <li>• Chart Patterns & Formations</li>
+                        <li>• Technical Indicators</li>
+                        <li>• Oscillators & Momentum</li>
+                        <li>• Volume Analysis</li>
+                        <li>• Multi-Timeframe Analysis</li>
+                    </ul>
+                    
+
+
+                    <div class="course-progress">
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 0%"></div>
+                        </div>
+                        <div class="progress-text">0% Complete</div>
+                    </div>
+
+                    <div class="course-actions">
+                        <button class="course-btn start-btn" onclick="startCourse('technical-analysis')">Start Course</button>
+                        <button class="course-btn" onclick="viewCourse('technical-analysis')">View Details</button>
+                    </div>
+                </div>
+
+                <!-- Risk Management -->
+                <div class="course-card">
+                    <div class="course-header">
+                        <div>
+                            <h3 class="course-title">Risk Management</h3>
+                            <span class="course-level">Advanced</span>
+                        </div>
+                    </div>
+                    <p class="course-description">
+                        Learn essential risk management principles including position sizing, stop-loss strategies, 
+                        portfolio diversification, and emotional control.
+                        <br><br>
+                        <strong>Key Topics:</strong> Position sizing formulas, risk-reward ratios, 
+                        portfolio correlation, emotional discipline, and building a risk management framework.
+                    </p>
+                    <ul class="course-modules">
+                        <li>• Position Sizing & Risk</li>
+                        <li>• Stop-Loss Strategies</li>
+                        <li>• Portfolio Diversification</li>
+                        <li>• Emotional Control</li>
+                        <li>• Risk Metrics & Analysis</li>
+                    </ul>
+                    
+
+
+                    <div class="course-progress">
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 0%"></div>
+                        </div>
+                        <div class="progress-text">0% Complete</div>
+                    </div>
+
+                    <div class="course-actions">
+                        <button class="course-btn start-btn" onclick="startCourse('risk-management')">Start Course</button>
+                        <button class="course-btn" onclick="viewCourse('risk-management')">View Details</button>
+                    </div>
+                </div>
+
+                <!-- Cryptocurrency -->
+                <div class="course-card">
+                    <div class="course-header">
+                        <div>
+                            <h3 class="course-title">Cryptocurrency Trading</h3>
+                            <span class="course-level">Intermediate</span>
+                        </div>
+                    </div>
+                    <p class="course-description">
+                        Master cryptocurrency trading including Bitcoin, Ethereum, and altcoins. Learn blockchain fundamentals, 
+                        crypto-specific strategies, and risk management.
+                    </p>
+                    <ul class="course-modules">
+                        <li>• Blockchain Fundamentals</li>
+                        <li>• Crypto Market Analysis</li>
+                        <li>• Trading Strategies</li>
+                        <li>• Risk Management</li>
+                        <li>• Advanced Crypto Concepts</li>
+                    </ul>
+                    
+
+
+                    <div class="course-progress">
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 0%"></div>
+                        </div>
+                        <div class="progress-text">0% Complete</div>
+                    </div>
+
+                    <div class="course-actions">
+                        <button class="course-btn start-btn" onclick="startCourse('cryptocurrency')">Start Course</button>
+                        <button class="course-btn" onclick="viewCourse('cryptocurrency')">View Details</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Course Management Functions
+        function startMasterCourse() {
+            alert('Starting Master Trading Course...\n\nThis comprehensive course includes:\n• 24 detailed modules\n• 120+ interactive lessons\n• 50+ knowledge assessments\n• Real-time charts and graphics\n• Progress tracking\n• Completion certificates');
+        }
+
+        function viewMasterOutline() {
+            alert('Master Trading Course Outline:\n\n📚 FOUNDATION MODULES (1-6)\n• Market Fundamentals\n• Chart Analysis\n• Technical Indicators\n• Risk Management Basics\n• Portfolio Construction\n• Trading Psychology\n\n📈 INTERMEDIATE MODULES (7-14)\n• Advanced Chart Patterns\n• Options Strategies\n• Swing Trading\n• Day Trading Basics\n• Market Analysis\n• Sector Rotation\n• Economic Indicators\n• News Trading\n\n🚀 ADVANCED MODULES (15-24)\n• Complex Options\n• Algorithmic Trading\n• Risk Management Pro\n• Portfolio Optimization\n• Alternative Investments\n• International Markets\n• Derivatives\n• Market Making\n• Quantitative Analysis\n• Trading Systems');
+        }
+
+        function downloadMaterials() {
+            alert('Downloading Course Materials...\n\n📥 Available Downloads:\n• Complete Course PDF\n• Trading Checklist\n• Risk Management Templates\n• Chart Pattern Guide\n• Options Strategy Cards\n• Portfolio Tracking Sheets\n• Quiz Answer Keys\n• Additional Resources');
+        }
+
+        function startCourse(courseType) {
+            const courseNames = {
+                'options': 'Options Trading',
+                'day-trading': 'Day Trading',
+                'swing-trading': 'Swing Trading',
+                'technical-analysis': 'Technical Analysis',
+                'risk-management': 'Risk Management',
+                'cryptocurrency': 'Cryptocurrency Trading'
+            };
+
+            const courseName = courseNames[courseType];
+            alert(`Starting ${courseName} Course...\n\nThis specialized course will provide:\n• In-depth module content\n• Interactive charts and graphics\n• Practice quizzes and assessments\n• Real-world examples\n• Progress tracking\n• Completion certificate`);
+        }
+
+        function viewCourse(courseType) {
+            const courseDetails = {
+                'options': {
+                    name: 'Options Trading',
+                    modules: ['Options Basics', 'Call & Put Strategies', 'Spreads & Combinations', 'Risk Management', 'Advanced Strategies'],
+                    difficulty: 'Intermediate'
+                },
+                'day-trading': {
+                    name: 'Day Trading',
+                    modules: ['Market Structure', 'Entry/Exit Timing', 'Risk Management', 'Psychology', 'Advanced Techniques'],
+                    difficulty: 'Advanced'
+                },
+                'swing-trading': {
+                    name: 'Swing Trading',
+                    modules: ['Trend Analysis', 'Position Sizing', 'Stop-Loss Strategies', 'Market Timing', 'Portfolio Management'],
+                    difficulty: 'Intermediate'
+                },
+                'technical-analysis': {
+                    name: 'Technical Analysis',
+                    modules: ['Chart Patterns', 'Indicators', 'Oscillators', 'Volume Analysis', 'Multi-Timeframe'],
+                    difficulty: 'Intermediate'
+                },
+                'risk-management': {
+                    name: 'Risk Management',
+                    modules: ['Position Sizing', 'Stop-Loss Strategies', 'Portfolio Diversification', 'Emotional Control', 'Risk Metrics'],
+                    difficulty: 'Advanced'
+                },
+                'cryptocurrency': {
+                    name: 'Cryptocurrency Trading',
+                    modules: ['Blockchain Basics', 'Crypto Markets', 'Trading Strategies', 'Risk Management', 'Advanced Concepts'],
+                    difficulty: 'Intermediate'
+                }
+            };
+
+            const course = courseDetails[courseType];
+            alert(`${course.name} Course Details:\n\n📚 Modules: ${course.modules.join(', ')}\n🎯 Difficulty: ${course.difficulty}\n\nThis course provides comprehensive coverage of ${course.name.toLowerCase()} with interactive content, charts, and assessments.`);
+        }
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            // Ensure all progress bars start at 0%
+            const progressBars = document.querySelectorAll('.progress-fill');
+            progressBars.forEach(bar => {
+                bar.style.width = '0%';
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Stock League - Profile</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+        :root {
+            --background: #0B1622;
+            --surface: #162A3D;
+            --accent: #FFB100;
+            --success: #00ff88;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--background);
+            color: #ffffff;
+            min-height: 100vh;
+            padding: 40px 24px 60px;
+        }
+
+        .profile-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 32px;
+        }
+
+        .profile-title {
+            font-size: 2.4rem;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        .back-link {
+            color: var(--success);
+            text-decoration: none;
+            font-weight: 600;
+            border: 1px solid rgba(0, 255, 136, 0.4);
+            padding: 0.55rem 1rem;
+            border-radius: 8px;
+            background: rgba(0, 255, 136, 0.08);
+        }
+
+        .profile-grid {
+            display: grid;
+            grid-template-columns: 320px 1fr;
+            gap: 24px;
+        }
+
+        .profile-card {
+            background: var(--surface);
+            border-radius: 16px;
+            padding: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+        }
+
+        .avatar {
+            width: 110px;
+            height: 110px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.4), rgba(255, 177, 0, 0.3));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        .profile-name {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .profile-role {
+            font-size: 0.95rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 16px;
+        }
+
+        .profile-meta {
+            display: grid;
+            gap: 10px;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.85);
+        }
+
+        .profile-meta span {
+            color: rgba(255, 255, 255, 0.6);
+            margin-right: 6px;
+        }
+
+        .section-card {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 14px;
+            padding: 18px;
+        }
+
+        .section-card h3 {
+            font-size: 1rem;
+            color: var(--accent);
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 14px;
+        }
+
+        .detail-item {
+            background: rgba(11, 22, 34, 0.7);
+            border-radius: 10px;
+            padding: 12px 14px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .detail-item span {
+            display: block;
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 6px;
+        }
+
+        .detail-item strong {
+            font-size: 0.95rem;
+        }
+
+        .friends-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 12px;
+        }
+
+        .friend-card {
+            background: rgba(0, 255, 136, 0.08);
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            border-radius: 10px;
+            padding: 10px 12px;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 900px) {
+            .profile-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="profile-header">
+        <div class="profile-title">Profile Center</div>
+        <a class="back-link" href="dashboard.html">Back to Dashboard</a>
+    </div>
+
+    <div class="profile-grid">
+        <div class="profile-card">
+            <div class="avatar">FT</div>
+            <div class="profile-name" id="profileName">Fantasy Trader</div>
+            <div class="profile-role">League Competitor • Active Trader</div>
+            <div class="profile-meta">
+                <div><span>Account:</span> Pro League</div>
+                <div><span>Email:</span> trader@fantasytrader.com</div>
+                <div><span>Date Joined:</span> January 12, 2025</div>
+                <div><span>Friends:</span> 18 traders</div>
+            </div>
+        </div>
+
+        <div class="profile-card">
+            <div class="section-card" style="margin-bottom: 18px;">
+                <h3>Account Details</h3>
+                <div class="details-grid">
+                    <div class="detail-item">
+                        <span>Username</span>
+                        <strong id="profileUsername">FantasyTrader</strong>
+                    </div>
+                    <div class="detail-item">
+                        <span>Account Tier</span>
+                        <strong>Platinum</strong>
+                    </div>
+                    <div class="detail-item">
+                        <span>Portfolio Value</span>
+                        <strong>$112,450</strong>
+                    </div>
+                    <div class="detail-item">
+                        <span>League Rank</span>
+                        <strong>#4 (Top 10%)</strong>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-card" style="margin-bottom: 18px;">
+                <h3>Security</h3>
+                <div class="details-grid">
+                    <div class="detail-item">
+                        <span>Password</span>
+                        <strong>Last changed 18 days ago</strong>
+                    </div>
+                    <div class="detail-item">
+                        <span>2FA</span>
+                        <strong>Enabled</strong>
+                    </div>
+                    <div class="detail-item">
+                        <span>Recovery Email</span>
+                        <strong>trader@fantasytrader.com</strong>
+                    </div>
+                    <div class="detail-item">
+                        <span>Security Alerts</span>
+                        <strong>On</strong>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-card">
+                <h3>Friends & League</h3>
+                <div class="friends-list">
+                    <div class="friend-card">Alex Chen • Growth</div>
+                    <div class="friend-card">Jordan Lee • Macro</div>
+                    <div class="friend-card">Priya Patel • Options</div>
+                    <div class="friend-card">Sam Rivera • Value</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const savedUsername = localStorage.getItem('username');
+        if (savedUsername) {
+            document.getElementById('profileName').textContent = savedUsername;
+            document.getElementById('profileUsername').textContent = savedUsername;
+        }
+    </script>
+</body>
+</html>

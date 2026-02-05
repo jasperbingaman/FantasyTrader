@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Stock League - Beginner Trading Path</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Orbitron:wght@400;500;600;700;800;900&display=swap');
+
+        :root {
+            --primary: #10b981;
+            --secondary: #059669;
+            --accent: #f59e0b;
+            --success: #10b981;
+            --danger: #ef4444;
+            --background: #0a0a0a;
+            --surface: #1a1a1a;
+            --text-primary: #ffffff;
+            --text-secondary: #a1a1aa;
+            --glow: rgba(16, 185, 129, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--background);
+            color: var(--text-primary);
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            background: rgba(26, 26, 26, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(16, 185, 129, 0.2);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .back-btn {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--primary);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .back-btn:hover {
+            background: rgba(16, 185, 129, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .page-title {
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #ffffff 0%, #10b981 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Main Container */
+        .main-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Course Overview */
+        .course-overview {
+            background: rgba(26, 26, 26, 0.95);
+            border: 2px solid var(--primary);
+            border-radius: 20px;
+            padding: 3rem;
+            margin-bottom: 3rem;
+            text-align: center;
+        }
+
+        .course-title {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #ffffff 0%, #10b981 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .course-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+        }
+
+        .course-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .stat-card {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--primary);
+            display: block;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Modules Grid */
+        .modules-section {
+            margin-top: 3rem;
+        }
+
+        .modules-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .module-card {
+            background: rgba(26, 26, 26, 0.95);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            border-radius: 16px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .module-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .module-card:hover::before {
+            opacity: 1;
+        }
+
+        .module-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+            box-shadow: 0 15px 35px rgba(16, 185, 129, 0.1);
+        }
+
+        .module-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1.5rem;
+        }
+
+        .module-number {
+            width: 50px;
+            height: 50px;
+            background: var(--primary);
+            color: var(--background);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 1.2rem;
+        }
+
+        .module-status {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--primary);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .module-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .module-description {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .module-features {
+            list-style: none;
+            margin-bottom: 2rem;
+        }
+
+        .module-features li {
+            color: var(--text-secondary);
+            padding: 0.5rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            padding-left: 1.5rem;
+        }
+
+        .module-features li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        .module-progress {
+            margin-bottom: 1.5rem;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 0.5rem;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+
+        .progress-text {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .module-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .module-btn {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--primary);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-size: 0.9rem;
+            flex: 1;
+        }
+
+        .module-btn:hover {
+            background: rgba(16, 185, 129, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .start-btn {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+
+        .start-btn:hover {
+            box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .course-stats {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            
+            .modules-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .course-title {
+                font-size: 2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .main-container {
+                padding: 1rem;
+            }
+            
+            .course-overview {
+                padding: 2rem 1rem;
+            }
+            
+            .course-stats {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="header-content">
+            <button class="back-btn" onclick="window.location.href='learn.html'">
+                ← Back to Learning Hub
+            </button>
+            <h1 class="page-title">Beginner Trading Path</h1>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Course Overview -->
+        <div class="course-overview">
+            <h1 class="course-title">Beginner Trading Course</h1>
+            <p class="course-subtitle">Master the fundamentals of stock trading with our comprehensive beginner course</p>
+            
+            <div class="course-stats">
+                <div class="stat-card">
+                    <span class="stat-number">5</span>
+                    <span class="stat-label">Modules</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">25+</span>
+                    <span class="stat-label">Lessons</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">15+</span>
+                    <span class="stat-label">Quizzes</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modules Section -->
+        <div class="modules-section">
+            <h2 style="font-size: 2rem; margin-bottom: 2rem; text-align: center; color: var(--text-primary);">
+                Course Modules
+            </h2>
+            
+            <div class="modules-grid">
+                <!-- Module 1: Market Fundamentals -->
+                <div class="module-card" onclick="openModule(0)">
+                    <div class="module-header">
+                        <div class="module-number">1</div>
+                        <span class="module-status" id="status-0">Not Started</span>
+                    </div>
+                    <h3 class="module-title">Market Fundamentals</h3>
+                    <p class="module-description">
+                        Understand the basics of stock markets, key terminology, and how trading works.
+                    </p>
+                    <ul class="module-features">
+                        <li>What is the Stock Market?</li>
+                        <li>Key Trading Terms</li>
+                        <li>Market Participants</li>
+                        <li>Basic Market Mechanics</li>
+                    </ul>
+                    
+                    <div class="module-progress">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progress-0" style="width: 0%"></div>
+                        </div>
+                        <div class="progress-text">0% Complete</div>
+                    </div>
+
+                    <div class="module-actions">
+                        <button class="module-btn start-btn" onclick="startModule(0)">Start Module</button>
+                        <button class="module-btn" onclick="viewModule(0)">Preview</button>
+                    </div>
+                </div>
+
+                <!-- Module 2: Reading Stock Charts -->
+                <div class="module-card" onclick="openModule(1)">
+                    <div class="module-header">
+                        <div class="module-number">2</div>
+                        <span class="module-status" id="status-1">Not Started</span>
+                    </div>
+                    <h3 class="module-title">Reading Stock Charts</h3>
+                    <p class="module-description">
+                        Learn to read and interpret stock charts, identify patterns, and understand technical analysis basics.
+                    </p>
+                    <ul class="module-features">
+                        <li>Chart Types & Timeframes</li>
+                        <li>Support & Resistance</li>
+                        <li>Trend Lines & Patterns</li>
+                        <li>Volume Analysis</li>
+                    </ul>
+                    
+                    <div class="module-progress">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progress-1" style="width: 0%"></div>
+                        </div>
+                        <div class="progress-text">0% Complete</div>
+                    </div>
+
+                    <div class="module-actions">
+                        <button class="module-btn start-btn" onclick="startModule(1)">Start Module</button>
+                        <button class="module-btn" onclick="viewModule(1)">Preview</button>
+                    </div>
+                </div>
+
+                <!-- Module 3: Building Your Portfolio -->
+                <div class="module-card" onclick="openModule(2)">
+                    <div class="module-header">
+                        <div class="module-number">3</div>
+                        <span class="module-status" id="status-2">Not Started</span>
+                    </div>
+                    <h3 class="module-title">Building Your Portfolio</h3>
+                    <p class="module-description">
+                        Learn portfolio management principles, diversification strategies, and risk management techniques.
+                    </p>
+                    <ul class="module-features">
+                        <li>Diversification Principles</li>
+                        <li>Asset Allocation</li>
+                        <li>Risk Management</li>
+                        <li>Portfolio Rebalancing</li>
+                    </ul>
+                    
+                    <div class="module-progress">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progress-2" style="width: 0%"></div>
+                        </div>
+                        <div class="progress-text">0% Complete</div>
+                    </div>
+
+                    <div class="module-actions">
+                        <button class="module-btn start-btn" onclick="startModule(2)">Start Module</button>
+                        <button class="module-btn" onclick="viewModule(2)">Preview</button>
+                    </div>
+                </div>
+
+                <!-- Module 4: Fundamental Analysis -->
+                <div class="module-card" onclick="openModule(3)">
+                    <div class="module-header">
+                        <div class="module-number">4</div>
+                        <span class="module-status" id="status-3">Not Started</span>
+                    </div>
+                    <h3 class="module-title">Fundamental Analysis</h3>
+                    <p class="module-description">
+                        Understand how to analyze company financials, evaluate business models, and make informed investment decisions.
+                    </p>
+                    <ul class="module-features">
+                        <li>Financial Statements</li>
+                        <li>Key Financial Ratios</li>
+                        <li>Growth vs Value Investing</li>
+                        <li>Industry Analysis</li>
+                    </ul>
+                    
+                    <div class="module-progress">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progress-3" style="width: 0%"></div>
+                        </div>
+                        <div class="progress-text">0% Complete</div>
+                    </div>
+
+                    <div class="module-actions">
+                        <button class="module-btn start-btn" onclick="startModule(3)">Start Module</button>
+                        <button class="module-btn" onclick="viewModule(3)">Preview</button>
+                    </div>
+                </div>
+
+                <!-- Module 5: Trading Strategies -->
+                <div class="module-card" onclick="openModule(4)">
+                    <div class="module-header">
+                        <div class="module-number">5</div>
+                        <span class="module-status" id="status-4">Not Started</span>
+                    </div>
+                    <h3 class="module-title">Trading Strategies</h3>
+                    <p class="module-description">
+                        Develop practical trading strategies, set investment goals, and build disciplined trading habits.
+                    </p>
+                    <ul class="module-features">
+                        <li>Buy & Hold Strategy</li>
+                        <li>Dollar-Cost Averaging</li>
+                        <li>Setting Investment Goals</li>
+                        <li>Creating Trading Plans</li>
+                    </ul>
+                    
+                    <div class="module-progress">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progress-4" style="width: 0%"></div>
+                        </div>
+                        <div class="progress-text">0% Complete</div>
+                    </div>
+
+                    <div class="module-actions">
+                        <button class="module-btn start-btn" onclick="startModule(4)">Start Module</button>
+                        <button class="module-btn" onclick="viewModule(4)">Preview</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Module data
+        const modules = [
+            {
+                title: "Market Fundamentals",
+                lessons: [
+                    "What is the Stock Market?",
+                    "Key Trading Terms",
+                    "Market Participants",
+                    "Basic Market Mechanics",
+                    "Market Hours & Sessions"
+                ],
+                quizzes: [
+                    "Market Basics Quiz",
+                    "Terminology Test",
+                    "Market Mechanics Assessment"
+                ]
+            },
+            {
+                title: "Reading Stock Charts",
+                lessons: [
+                    "Chart Types & Timeframes",
+                    "Support & Resistance",
+                    "Trend Lines & Patterns",
+                    "Volume Analysis",
+                    "Moving Averages"
+                ],
+                quizzes: [
+                    "Chart Reading Quiz",
+                    "Pattern Recognition Test",
+                    "Technical Analysis Assessment"
+                ]
+            },
+            {
+                title: "Building Your Portfolio",
+                lessons: [
+                    "Diversification Principles",
+                    "Asset Allocation",
+                    "Risk Management",
+                    "Portfolio Rebalancing",
+                    "Investment Vehicles"
+                ],
+                quizzes: [
+                    "Portfolio Quiz",
+                    "Risk Management Test",
+                    "Asset Allocation Assessment"
+                ]
+            },
+            {
+                title: "Fundamental Analysis",
+                lessons: [
+                    "Financial Statements",
+                    "Key Financial Ratios",
+                    "Growth vs Value Investing",
+                    "Industry Analysis",
+                    "Economic Indicators"
+                ],
+                quizzes: [
+                    "Financial Analysis Quiz",
+                    "Ratio Analysis Test",
+                    "Valuation Assessment"
+                ]
+            },
+            {
+                title: "Trading Strategies",
+                lessons: [
+                    "Buy & Hold Strategy",
+                    "Dollar-Cost Averaging",
+                    "Setting Investment Goals",
+                    "Creating Trading Plans",
+                    "Psychology & Discipline"
+                ],
+                quizzes: [
+                    "Strategy Quiz",
+                    "Goal Setting Test",
+                    "Trading Plan Assessment"
+                ]
+            }
+        ];
+
+        // Module functions
+        function startModule(moduleIndex) {
+            const module = modules[moduleIndex];
+            alert(`Starting ${module.title} Module!\n\n📚 Lessons: ${module.lessons.length}\n📝 Quizzes: ${module.quizzes.length}\n\nThis module will cover:\n${module.lessons.join('\n')}\n\nGet ready to learn and test your knowledge!`);
+            
+            // Update status
+            document.getElementById(`status-${moduleIndex}`).textContent = 'In Progress';
+            document.getElementById(`status-${moduleIndex}`).className = 'module-status';
+            
+            // Simulate progress
+            simulateProgress(moduleIndex);
+        }
+
+        function viewModule(moduleIndex) {
+            const module = modules[moduleIndex];
+            alert(`Module Preview: ${module.title}\n\n📚 Lessons:\n${module.lessons.join('\n')}\n\n📝 Quizzes:\n${module.quizzes.join('\n')}\n\nClick "Start Module" to begin learning!`);
+        }
+
+        function openModule(moduleIndex) {
+            // Navigate to the specific module page
+            const module = modules[moduleIndex];
+            const moduleNumber = moduleIndex + 1;
+            window.location.href = `beginner-module-${moduleNumber}.html`;
+        }
+
+        function simulateProgress(moduleIndex) {
+            const progressBar = document.getElementById(`progress-${moduleIndex}`);
+            const progressText = progressBar.nextElementSibling;
+            let progress = 0;
+            
+            const interval = setInterval(() => {
+                progress += Math.random() * 15;
+                if (progress >= 100) {
+                    progress = 100;
+                    clearInterval(interval);
+                    document.getElementById(`status-${moduleIndex}`).textContent = 'Completed';
+                    document.getElementById(`status-${moduleIndex}`).style.background = 'rgba(16, 185, 129, 0.2)';
+                }
+                
+                progressBar.style.width = `${progress}%`;
+                progressText.textContent = `${Math.round(progress)}% Complete`;
+            }, 500);
+        }
+
+        // Initialize progress bars to 0%
+        document.addEventListener('DOMContentLoaded', () => {
+            const progressBars = document.querySelectorAll('.progress-fill');
+            progressBars.forEach(bar => {
+                bar.style.width = '0%';
+            });
+        });
+    </script>
+</body>
+</html> 

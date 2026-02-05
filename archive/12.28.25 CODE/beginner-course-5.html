@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beginner Course - Module 5: Tracking Performance & Next Steps</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1E3888;
+            --secondary: #47A992;
+            --accent: #FFB100;
+            --success: #00FF88;
+            --background: #0B1622;
+            --surface: #162A3D;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: var(--background);
+            color: #ffffff;
+            line-height: 1.6;
+        }
+
+        .header {
+            background: rgba(22, 42, 61, 0.95);
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid rgba(0, 255, 136, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .back-button {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .back-button:hover {
+            background: rgba(0, 255, 136, 0.1);
+            border-color: var(--success);
+        }
+
+        .progress-bar {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .progress-text {
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .progress-track {
+            width: 200px;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--success);
+            width: 100%; /* Module 5 = 100% */
+            transition: width 0.3s ease;
+        }
+
+        .main-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .module-title {
+            color: var(--accent);
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .module-subtitle {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1.2rem;
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .content-section {
+            background: rgba(22, 42, 61, 0.8);
+            border: 1px solid rgba(0, 255, 136, 0.1);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            color: var(--success);
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .content-text {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.1rem;
+            line-height: 1.7;
+            margin-bottom: 1.5rem;
+        }
+
+        .highlight-box {
+            background: rgba(255, 177, 0, 0.1);
+            border: 1px solid rgba(255, 177, 0, 0.3);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .highlight-title {
+            color: var(--accent);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .navigation-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 3rem;
+        }
+
+        .nav-button {
+            background: rgba(22, 42, 61, 0.95);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            color: var(--success);
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .nav-button:hover {
+            background: rgba(0, 255, 136, 0.1);
+            border-color: var(--success);
+            transform: translateY(-2px);
+        }
+
+        .quiz-section {
+            background: rgba(22, 42, 61, 0.8);
+            border: 1px solid rgba(255, 177, 0, 0.2);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+
+        .quiz-question {
+            color: var(--accent);
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .quiz-option {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .quiz-option:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: var(--accent);
+        }
+
+        .quiz-option.correct {
+            background: rgba(0, 255, 136, 0.1);
+            border-color: var(--success);
+        }
+
+        .quiz-option.incorrect {
+            background: rgba(255, 68, 68, 0.1);
+            border-color: #ff4444;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="learn.html" class="back-button">← Back to Learning</a>
+        <div class="progress-bar">
+            <span class="progress-text">Module 5 of 5</span>
+            <div class="progress-track">
+                <div class="progress-fill"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="main-container">
+        <h1 class="module-title">Module 5: Tracking Performance & Next Steps</h1>
+        <p class="module-subtitle">Learn how to track your progress and keep improving</p>
+
+        <div class="content-section">
+            <h2 class="section-title">Tracking Your Performance</h2>
+            <p class="content-text">
+                Monitoring your portfolio's performance helps you understand what's working and what isn't. Look at your total returns, compare your results to the market, and review your trades regularly.
+            </p>
+            <div class="highlight-box">
+                <div class="highlight-title">Tip</div>
+                <p>Don't get discouraged by short-term losses. Focus on learning and improving your strategy over time.</p>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">Setting Goals</h2>
+            <p class="content-text">
+                Set clear, realistic goals for your trading. Are you aiming to grow your portfolio, learn new strategies, or compete in leagues? Goals help you stay focused and motivated.
+            </p>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">Next Steps</h2>
+            <ul style="color: rgba(255, 255, 255, 0.9); margin-left: 1.5rem; line-height: 1.7;">
+                <li>Keep learning with intermediate and advanced modules</li>
+                <li>Join leagues and compete with others</li>
+                <li>Try new strategies and track your results</li>
+                <li>Stay updated with market news and events</li>
+            </ul>
+        </div>
+
+        <div class="quiz-section">
+            <h3 class="quiz-question">Quick Quiz: Why is it important to review your trades?</h3>
+            <div class="quiz-options">
+                <div class="quiz-option" onclick="checkAnswer(this, 'correct')">
+                    To learn from your successes and mistakes
+                </div>
+                <div class="quiz-option" onclick="checkAnswer(this, 'incorrect')">
+                    To guarantee profits
+                </div>
+                <div class="quiz-option" onclick="checkAnswer(this, 'incorrect')">
+                    To impress your friends
+                </div>
+                <div class="quiz-option" onclick="checkAnswer(this, 'incorrect')">
+                    To avoid paying taxes
+                </div>
+            </div>
+        </div>
+
+        <div class="navigation-buttons">
+            <a href="beginner-course-4.html" class="nav-button">← Previous Module</a>
+            <button class="nav-button" onclick="completeModule()">Complete Course</button>
+            <a href="learn.html" class="nav-button">Back to Learning</a>
+        </div>
+    </div>
+
+    <script>
+        function checkAnswer(option, result) {
+            // Remove previous selections
+            document.querySelectorAll('.quiz-option').forEach(opt => {
+                opt.classList.remove('correct', 'incorrect');
+            });
+            
+            // Add result class
+            option.classList.add(result);
+            
+            // Show feedback
+            if (result === 'correct') {
+                setTimeout(() => {
+                    alert('Correct! Reviewing your trades helps you learn and improve.');
+                }, 500);
+            } else {
+                setTimeout(() => {
+                    alert('Not quite right. Reviewing your trades helps you learn from your successes and mistakes.');
+                }, 500);
+            }
+        }
+
+        function completeModule() {
+            localStorage.setItem('module5Completed', 'true');
+            alert('Congratulations! You\'ve completed the Beginner Course. Keep learning and happy trading!');
+        }
+    </script>
+</body>
+</html> 

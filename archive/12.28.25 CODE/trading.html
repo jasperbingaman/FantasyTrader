@@ -1,0 +1,2200 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Trading Platform - Stock League</title>
+    <script src="https://cdn.jsdelivr.net/npm/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="stock-data.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #1E3888;
+            --secondary: #47A992;
+            --accent: #FFB100;
+            --background: #0B1622;
+            --surface: #162A3D;
+            --success: #00FF88;
+            --danger: #FF4444;
+            --text-primary: #ffffff;
+            --text-secondary: #b2b5be;
+            --border: #2a2e39;
+            --chart-bg: #131722;
+            --panel-bg: #1e222d;
+            --hover-bg: #2a2e39;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', 'Inter', sans-serif;
+            background: #0A0E1A;
+            color: var(--text-primary);
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Premium Header */
+        .header {
+            background: #0F1419;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 1.5rem 2.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .market-tickers-header {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .ticker-item-header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.2rem;
+        }
+
+        .ticker-symbol-header {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .ticker-value-header {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .ticker-change-header {
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+
+        .ticker-change-header.positive {
+            color: var(--success);
+        }
+
+        .ticker-change-header.negative {
+            color: var(--danger);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--success), var(--accent));
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: var(--background);
+            box-shadow: 0 0 15px rgba(0, 255, 136, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .logo-icon::before {
+            content: 'FT';
+            font-family: 'Inter', sans-serif;
+            font-weight: 900;
+            letter-spacing: -1px;
+        }
+
+        .back-button {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(0, 255, 136, 0.1));
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 12px;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .back-button:hover {
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.2), rgba(255, 177, 0, 0.2));
+            border-color: var(--accent);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 255, 136, 0.3);
+        }
+
+        .page-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            font-family: 'Poppins', sans-serif;
+            color: #ffffff;
+            letter-spacing: -1px;
+            margin: 0;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .market-status {
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--success);
+        }
+
+        .market-status.closed {
+            background: rgba(255, 68, 68, 0.1);
+            border-color: rgba(255, 68, 68, 0.3);
+            color: var(--danger);
+        }
+
+        /* Main Container */
+        .main-container {
+            max-width: 1800px;
+            margin: 90px auto 0;
+            padding: 2rem;
+            background: #0F1419;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            padding-bottom: 80px;
+        }
+
+        /* Trading Layout */
+        .trading-layout {
+            display: grid;
+            grid-template-columns: 360px 1fr 380px;
+            gap: 1.5rem;
+            min-height: calc(100vh - 200px);
+        }
+
+        /* Market Tickers - Removed from main content */
+
+        /* Left Panel - Search & AI Assistant */
+        .left-panel {
+            background: #151A21;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 0;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Stock Search Section */
+        .search-section {
+            background: #1A1F28;
+            border-radius: 0;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .search-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            font-family: 'Poppins', sans-serif;
+            color: #ffffff;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .search-title i {
+            font-size: 1.6rem;
+            color: var(--success);
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 1rem 1.25rem;
+            background: #0F1419;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 0;
+            color: var(--text-primary);
+            font-size: 1rem;
+            font-family: 'Inter', sans-serif;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--success);
+            background: #151A21;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--success);
+        }
+
+        .search-results {
+            max-height: 300px;
+            overflow-y: auto;
+            border-radius: 8px;
+        }
+
+        .search-result-item {
+            padding: 12px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+            transition: all 0.3s ease;
+        }
+
+        .search-result-item:hover {
+            background: var(--hover-bg);
+        }
+
+        .symbol-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .symbol {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .company-name {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .price-info {
+            text-align: right;
+        }
+
+        .current-price {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .price-change {
+            font-size: 12px;
+        }
+
+        .price-change.positive {
+            color: var(--success);
+        }
+
+        .price-change.negative {
+            color: var(--danger);
+        }
+
+        /* AI Assistant Section */
+        .ai-assistant {
+            background: #1A1F28;
+            border-radius: 0;
+            padding: 2rem;
+            flex: 1;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .ai-features {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .ai-feature-btn {
+            padding: 0.75rem 1.25rem;
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            border-radius: 0;
+            color: var(--success);
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .ai-feature-btn:hover {
+            background: rgba(0, 255, 136, 0.2);
+            transform: translateY(-1px);
+        }
+
+        .ai-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            font-family: 'Poppins', sans-serif;
+            color: #ffffff;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .ai-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--success), var(--accent));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: #0A0E1A;
+            box-shadow: 0 4px 12px rgba(0, 255, 136, 0.3);
+        }
+
+        .ai-messages {
+            max-height: 300px;
+            overflow-y: auto;
+            margin-bottom: 1rem;
+        }
+
+        .ai-message {
+            padding: 0.8rem;
+            margin-bottom: 0.8rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+        }
+
+        .ai-message.user {
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid rgba(0, 255, 136, 0.2);
+        }
+
+        .ai-message.assistant {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .ai-input {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .ai-input input {
+            flex: 1;
+            padding: 8px 12px;
+            background: var(--chart-bg);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--text-primary);
+            font-size: 12px;
+        }
+
+        .ai-send {
+            padding: 8px 12px;
+            background: var(--success);
+            border: none;
+            border-radius: 6px;
+            color: var(--background);
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        /* Center Panel - Chart & Trading */
+        .center-panel {
+            background: #151A21;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 0;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .chart-header {
+            background: #1A1F28;
+            border-radius: 0;
+            padding: 1.5rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .symbol-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .symbol-title {
+            font-size: 2rem;
+            font-weight: 800;
+            font-family: 'Poppins', sans-serif;
+            color: #ffffff;
+            letter-spacing: -1px;
+        }
+
+        .price-display {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+
+        .current-price-large {
+            font-size: 2rem;
+            font-weight: 800;
+            font-family: 'JetBrains Mono', monospace;
+            color: #ffffff;
+        }
+
+        .price-change-large {
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .chart-controls {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .chart-button {
+            padding: 0.75rem 1.5rem;
+            background: #0F1419;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.6);
+            border-radius: 0;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        .chart-button.active,
+        .chart-button:hover {
+            background: var(--success);
+            color: #0A0E1A;
+            border-color: var(--success);
+            transform: translateY(-2px);
+        }
+
+        .chart-container {
+            flex: 1;
+            background: #0F1419;
+            border-radius: 0;
+            position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            min-height: 500px;
+            max-height: 600px;
+        }
+
+        /* Trading Form */
+        .trading-form {
+            background: #1A1F28;
+            border-radius: 0;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .trading-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            font-family: 'Poppins', sans-serif;
+            color: #ffffff;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .trading-title i {
+            font-size: 1.8rem;
+            color: var(--success);
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .form-label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.5);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .form-input {
+            padding: 1rem 1.25rem;
+            background: #0F1419;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 0;
+            color: var(--text-primary);
+            font-size: 1rem;
+            font-family: 'JetBrains Mono', monospace;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--success);
+        }
+
+        .trade-buttons {
+            display: flex;
+            gap: 0.8rem;
+        }
+
+        .trade-button {
+            flex: 1;
+            padding: 1.25rem 2rem;
+            border: none;
+            border-radius: 0;
+            font-size: 1.1rem;
+            font-weight: 700;
+            font-family: 'Poppins', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .trade-button i {
+            font-size: 1.3rem;
+        }
+
+        .buy-button {
+            background: var(--success);
+            color: var(--background);
+        }
+
+        .buy-button:hover {
+            background: #00cc6a;
+            transform: translateY(-2px);
+        }
+
+        .sell-button {
+            background: var(--danger);
+            color: var(--text-primary);
+        }
+
+        .sell-button:hover {
+            background: #cc3333;
+            transform: translateY(-2px);
+        }
+
+        /* Right Panel - Stock Metrics & Portfolio */
+        .right-panel {
+            background: #151A21;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 0;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Stock Research Section */
+        .research-section {
+            background: #1A1F28;
+            border-radius: 0;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .research-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            font-family: 'Poppins', sans-serif;
+            color: #ffffff;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .research-title i {
+            font-size: 1.6rem;
+            color: var(--accent);
+        }
+
+        .research-tabs {
+            display: flex;
+            gap: 0.3rem;
+            margin-bottom: 0.8rem;
+            flex-wrap: wrap;
+        }
+
+        .research-tab {
+            padding: 0.4rem 0.8rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: none;
+            border-radius: 6px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.3s ease;
+        }
+
+        .research-tab.active {
+            background: var(--success);
+            color: var(--background);
+        }
+
+        .research-content {
+            background: var(--chart-bg);
+            border-radius: 8px;
+            padding: 0.8rem;
+            min-height: 150px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        /* Top Gainers/Losers */
+        .market-movers {
+            background: var(--surface);
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+
+        .movers-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
+
+        .movers-tabs {
+            display: flex;
+            gap: 0.3rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .movers-tab {
+            padding: 0.4rem 0.8rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: none;
+            border-radius: 6px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.3s ease;
+        }
+
+        .movers-tab.active {
+            background: var(--success);
+            color: var(--background);
+        }
+
+        .movers-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .mover-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1.25rem;
+            background: #0F1419;
+            border-radius: 0;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .mover-item:hover {
+            background: #151A21;
+            border-color: rgba(255, 255, 255, 0.08);
+            transform: translateX(4px);
+        }
+
+        .mover-symbol {
+            font-weight: 700;
+            font-size: 1.1rem;
+            font-family: 'Poppins', sans-serif;
+            color: #ffffff;
+        }
+
+        .mover-change {
+            font-weight: 700;
+            font-size: 1.1rem;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .mover-change.positive {
+            color: var(--success);
+        }
+
+        .mover-change.negative {
+            color: var(--danger);
+        }
+
+        /* News Button */
+        .news-button {
+            background: linear-gradient(135deg, var(--accent), var(--success));
+            color: #0A0E1A;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 0;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 1rem;
+            font-family: 'Poppins', sans-serif;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .news-button i {
+            font-size: 1.2rem;
+        }
+
+        .news-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(255, 177, 0, 0.3);
+        }
+
+        /* Market Sentiment */
+        .sentiment-section {
+            background: linear-gradient(135deg, var(--surface) 0%, rgba(0, 255, 136, 0.1) 100%);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            margin-bottom: 1rem;
+        }
+
+        .sentiment-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--success);
+            margin-bottom: 1rem;
+        }
+
+        .sentiment-indicator {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .sentiment-bar {
+            flex: 1;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .sentiment-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--danger) 0%, var(--accent) 50%, var(--success) 100%);
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+
+        .sentiment-value {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        /* Stock Metrics Section */
+        .metrics-section {
+            background: #1A1F28;
+            border-radius: 0;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .metrics-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            font-family: 'Poppins', sans-serif;
+            color: #ffffff;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .metrics-title i {
+            font-size: 1.6rem;
+            color: var(--accent);
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+
+        .metric-item {
+            background: #0F1419;
+            border-radius: 0;
+            padding: 1.5rem;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            transition: all 0.3s ease;
+        }
+
+        .metric-item:hover {
+            background: #151A21;
+            border-color: rgba(255, 255, 255, 0.08);
+        }
+
+        .metric-value {
+            font-size: 1.4rem;
+            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
+            color: #ffffff;
+            margin-bottom: 0.5rem;
+        }
+
+        .metric-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.5);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Portfolio Section */
+        .portfolio-section {
+            background: #1A1F28;
+            border-radius: 0;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            flex: 1;
+        }
+
+        .portfolio-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            font-family: 'Poppins', sans-serif;
+            color: #ffffff;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .portfolio-title i {
+            font-size: 1.6rem;
+            color: var(--accent);
+        }
+
+        .portfolio-summary {
+            background: var(--chart-bg);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .portfolio-value {
+            font-size: 2rem;
+            font-weight: 800;
+            font-family: 'JetBrains Mono', monospace;
+            color: #ffffff;
+            margin-bottom: 0.5rem;
+        }
+
+        .portfolio-change {
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .portfolio-positions {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            max-height: 150px;
+            overflow-y: auto;
+        }
+
+        .position-item {
+            padding: 1rem 1.25rem;
+            background: #0F1419;
+            border-radius: 0;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .position-item:hover {
+            background: #151A21;
+            border-color: rgba(255, 255, 255, 0.08);
+        }
+
+        .position-symbol {
+            font-weight: 700;
+            font-size: 1.1rem;
+            font-family: 'Poppins', sans-serif;
+            color: #ffffff;
+        }
+
+        .position-details {
+            text-align: right;
+        }
+
+        .position-shares {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .position-value {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        /* Loading States */
+        .loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 200px;
+            color: var(--text-secondary);
+        }
+
+        .spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--border);
+            border-top: 2px solid var(--success);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 8px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .trading-layout {
+                grid-template-columns: 300px 1fr 300px;
+            }
+        }
+
+        @media (max-width: 900px) {
+            .trading-layout {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            
+            .main-container {
+                margin: 60px 1rem 0;
+                padding: 1rem;
+            }
+        }
+        .metrics-tabs {
+            display: flex;
+            gap: 0.3rem;
+            margin-bottom: 0.8rem;
+        }
+        .metrics-tab {
+            padding: 0.4rem 0.8rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: none;
+            border-radius: 6px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.3s ease;
+        }
+        .metrics-tab.active {
+            background: var(--success);
+            color: var(--background);
+        }
+        .metrics-content {
+            min-height: 120px;
+        }
+        .meters-section {
+            display: flex;
+            gap: 1.2rem;
+            margin: 1rem 0 0.5rem 0;
+        }
+        .meter-block {
+            flex: 1;
+            background: var(--surface);
+            border-radius: 8px;
+            padding: 0.7rem 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .meter-title {
+            font-size: 0.9rem;
+            color: var(--accent);
+            margin-bottom: 0.3rem;
+        }
+        .meter-bar {
+            width: 100%;
+            height: 12px;
+            background: rgba(255,255,255,0.08);
+            border-radius: 6px;
+            margin-bottom: 0.3rem;
+            overflow: hidden;
+        }
+        .meter-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--danger), var(--accent), var(--success));
+            border-radius: 6px;
+            transition: width 0.4s;
+        }
+        .meter-label {
+            font-size: 0.8rem;
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+        .top-holdings {
+            margin-top: 0.7rem;
+            background: rgba(255,255,255,0.04);
+            border-radius: 8px;
+            padding: 0.5rem 1rem;
+        }
+        .top-holdings-title {
+            font-size: 0.95rem;
+            color: var(--accent);
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+        }
+        .top-holdings-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+        }
+        .top-holding-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9rem;
+            color: var(--text-primary);
+        }
+    </style>
+</head>
+<body>
+    <!-- Enhanced Header -->
+    <div class="header">
+        <div class="header-left">
+            <div style="display: flex; gap: 1rem; align-items: center;">
+                <a href="dashboard.html" class="back-button">← Dashboard</a>
+                <a href="practice.html" class="back-button">← Practice</a>
+            </div>
+            <div class="logo-section">
+                <div class="logo-icon"></div>
+                <h1 class="page-title">Trading Platform</h1>
+            </div>
+        </div>
+        <div class="header-right">
+            <div class="market-tickers-header">
+                <div class="ticker-item-header">
+                    <div class="ticker-symbol-header">S&P 500</div>
+                    <div class="ticker-value-header" id="sp500ValueHeader">4,567.89</div>
+                    <div class="ticker-change-header positive" id="sp500ChangeHeader">+23.45</div>
+                </div>
+                <div class="ticker-item-header">
+                    <div class="ticker-symbol-header">DOW</div>
+                    <div class="ticker-value-header" id="dowValueHeader">35,123.45</div>
+                    <div class="ticker-change-header positive" id="dowChangeHeader">+156.78</div>
+                </div>
+                <div class="ticker-item-header">
+                    <div class="ticker-symbol-header">NASDAQ</div>
+                    <div class="ticker-value-header" id="nasdaqValueHeader">14,234.56</div>
+                    <div class="ticker-change-header negative" id="nasdaqChangeHeader">-12.34</div>
+                </div>
+            </div>
+            <div class="market-status" id="marketStatus">Market Open</div>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Trading Layout -->
+    <div class="trading-layout">
+            <!-- Left Panel - Search & AI Assistant -->
+        <div class="left-panel">
+                <!-- Stock Search Section -->
+            <div class="search-section">
+                    <div class="search-title">
+                        <i class="fas fa-search"></i>
+                        Stock Search
+                    </div>
+                <input type="text" class="search-input" placeholder="Search symbols..." id="symbolSearch">
+                    <div class="search-results" id="searchResults"></div>
+            </div>
+            
+                <!-- Stock Research Section -->
+                <div class="research-section">
+                    <div class="research-title">
+                        <i class="fas fa-chart-line"></i>
+                        Stock Research
+                    </div>
+                    <div class="research-tabs">
+                        <button class="research-tab active" onclick="showResearchTab('financials')">Financials</button>
+                        <button class="research-tab" onclick="showResearchTab('technical')">Technical</button>
+                        <button class="research-tab" onclick="showResearchTab('fundamentals')">Fundamentals</button>
+                    </div>
+                    <div class="research-content" id="researchContent">
+                        <div id="financials-content">
+                            <h4>Financial Overview</h4>
+                            <p>Select a stock to view detailed financial information including income statements, balance sheets, and cash flow analysis.</p>
+                        </div>
+                        <div id="technical-content" style="display: none;">
+                            <h4>Technical Analysis</h4>
+                            <p>View technical indicators, moving averages, and chart patterns for the selected stock.</p>
+                        </div>
+                        <div id="fundamentals-content" style="display: none;">
+                            <h4>Fundamental Analysis</h4>
+                            <p>Analyze company fundamentals including P/E ratios, growth rates, and valuation metrics.</p>
+                        </div>
+            </div>
+        </div>
+
+                <!-- AI Assistant Section -->
+                <div class="ai-assistant">
+                    <div class="ai-title">
+                        <div class="ai-icon">AI</div>
+                        <span>Trading Assistant</span>
+                    </div>
+                    <div class="ai-features">
+                        <div class="ai-feature-btn" onclick="quickQuestion('analyze')">Analyze</div>
+                        <div class="ai-feature-btn" onclick="quickQuestion('risk')">Risk</div>
+                        <div class="ai-feature-btn" onclick="quickQuestion('trend')">Trends</div>
+                        <div class="ai-feature-btn" onclick="quickQuestion('buy')">Buy Signal</div>
+                        <div class="ai-feature-btn" onclick="quickQuestion('sell')">Sell Signal</div>
+                        <div class="ai-feature-btn" onclick="quickQuestion('news')">News</div>
+                    </div>
+                    <div class="ai-messages" id="aiMessages">
+                        <div class="ai-message assistant">
+                            Hello! I'm your AI trading assistant. I can help you analyze stocks, provide trading insights, and answer questions about market trends. What would you like to know?
+                        </div>
+                    </div>
+                    <div class="ai-input">
+                        <input type="text" id="aiInput" placeholder="Ask me anything...">
+                        <button class="ai-send" onclick="sendAIMessage()">Send</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Center Panel - Chart & Trading -->
+        <div class="center-panel">
+            <div class="chart-header">
+                <div class="symbol-header">
+                    <div class="symbol-title" id="symbolTitle">Select a symbol</div>
+                    <div class="price-display" id="priceDisplay" style="display: none;">
+                        <div class="current-price-large" id="currentPriceLarge"></div>
+                        <div class="price-change-large" id="priceChangeLarge"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="chart-controls">
+                <button class="chart-button active" data-period="1D">1D</button>
+                <button class="chart-button" data-period="1W">1W</button>
+                <button class="chart-button" data-period="1M">1M</button>
+                <button class="chart-button" data-period="3M">3M</button>
+                <button class="chart-button" data-period="1Y">1Y</button>
+                <button class="chart-button" data-period="ALL">ALL</button>
+            </div>
+            
+            <div class="chart-container">
+                <div id="chart"></div>
+        </div>
+
+                <!-- Trading Form -->
+                <div class="trading-form">
+                    <div class="trading-title">
+                        <i class="fas fa-exchange-alt"></i>
+                        Execute Trade
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Shares</label>
+                        <input type="number" class="form-input" id="sharesInput" placeholder="0" min="1" step="1">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Price</label>
+                        <input type="number" class="form-input" id="priceInput" placeholder="0.00" step="0.01" readonly>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Total</label>
+                        <input type="number" class="form-input" id="totalInput" placeholder="0.00" readonly>
+                    </div>
+                    
+                    <div class="trade-buttons">
+                        <button class="trade-button buy-button" id="buyButton" disabled>
+                            <i class="fas fa-arrow-up"></i>
+                            Buy
+                        </button>
+                        <button class="trade-button sell-button" id="sellButton" disabled>
+                            <i class="fas fa-arrow-down"></i>
+                            Sell
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Right Panel - Compact Layout -->
+            <div class="right-panel">
+                <!-- News Button -->
+                <a href="news.html" class="news-button">
+                    <i class="fas fa-newspaper"></i>
+                    View Market News
+                </a>
+
+                <!-- Stock Metrics Section with Tabs -->
+                <div class="metrics-section">
+                    <div class="metrics-title">
+                        <i class="fas fa-chart-bar"></i>
+                        Stock Metrics
+                    </div>
+                    <div class="metrics-tabs">
+                        <button class="metrics-tab active" onclick="showMetricsTab('basic')">Basic</button>
+                        <button class="metrics-tab" onclick="showMetricsTab('advanced')">Advanced</button>
+                    </div>
+                    <div class="metrics-content" id="metricsContent">
+                        <div id="basic-metrics" style="display: block;">
+                            <div class="metrics-grid" id="stockMetrics">
+                                <div class="metric-item">
+                                    <div class="metric-value">--</div>
+                                    <div class="metric-label">Market Cap</div>
+                                </div>
+                                <div class="metric-item">
+                                    <div class="metric-value">--</div>
+                                    <div class="metric-label">P/E Ratio</div>
+                                </div>
+                                <div class="metric-item">
+                                    <div class="metric-value">--</div>
+                                    <div class="metric-label">Volume</div>
+                                </div>
+                                <div class="metric-item">
+                                    <div class="metric-value">--</div>
+                                    <div class="metric-label">52W High</div>
+                                </div>
+                                <div class="metric-item">
+                                    <div class="metric-value">--</div>
+                                    <div class="metric-label">52W Low</div>
+                                </div>
+                                <div class="metric-item">
+                                    <div class="metric-value">--</div>
+                                    <div class="metric-label">Beta</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="advanced-metrics" style="display: none;">
+                            <div class="metrics-grid">
+                                <div class="metric-item">
+                                    <div class="metric-value">--</div>
+                                    <div class="metric-label">EPS</div>
+                                </div>
+                                <div class="metric-item">
+                                    <div class="metric-value">--</div>
+                                    <div class="metric-label">Dividend Yield</div>
+                                </div>
+                                <div class="metric-item">
+                                    <div class="metric-value">--</div>
+                                    <div class="metric-label">ROE</div>
+                                </div>
+                                <div class="metric-item">
+                                    <div class="metric-value">--</div>
+                                    <div class="metric-label">Debt/Equity</div>
+                                </div>
+                                <div class="metric-item">
+                                    <div class="metric-value">--</div>
+                                    <div class="metric-label">Free Cash Flow</div>
+                                </div>
+                                <div class="metric-item">
+                                    <div class="metric-value">--</div>
+                                    <div class="metric-label">PEG Ratio</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Analyst Rating and Technicals Meters -->
+                <div class="meters-section">
+                    <div class="meter-block">
+                        <div class="meter-title">Analyst Rating</div>
+                        <div class="meter-bar">
+                            <div class="meter-fill" id="analystMeter" style="width: 70%"></div>
+                        </div>
+                        <div class="meter-label" id="analystMeterLabel">Buy</div>
+                    </div>
+                    <div class="meter-block">
+                        <div class="meter-title">Technicals</div>
+                        <div class="meter-bar">
+                            <div class="meter-fill" id="technicalsMeter" style="width: 60%"></div>
+                        </div>
+                        <div class="meter-label" id="technicalsMeterLabel">Bullish</div>
+                    </div>
+                </div>
+
+                <!-- Market Movers Section -->
+                <div class="market-movers">
+                    <div class="movers-title">
+                        <i class="fas fa-fire"></i>
+                        Market Movers
+                    </div>
+                    <div class="movers-tabs">
+                        <button class="movers-tab active" onclick="showMoversTab('gainers')">Top Gainers</button>
+                        <button class="movers-tab" onclick="showMoversTab('losers')">Top Losers</button>
+                    </div>
+                    <div class="movers-list" id="moversList">
+                        <div class="mover-item">
+                            <div class="mover-symbol">TSLA</div>
+                            <div class="mover-change positive">+8.45%</div>
+                        </div>
+                        <div class="mover-item">
+                            <div class="mover-symbol">NVDA</div>
+                            <div class="mover-change positive">+6.23%</div>
+                        </div>
+                        <div class="mover-item">
+                            <div class="mover-symbol">AMD</div>
+                            <div class="mover-change positive">+5.67%</div>
+                        </div>
+                        <div class="mover-item">
+                            <div class="mover-symbol">AAPL</div>
+                            <div class="mover-change positive">+4.12%</div>
+                        </div>
+                        <div class="mover-item">
+                            <div class="mover-symbol">MSFT</div>
+                            <div class="mover-change positive">+3.89%</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Portfolio Section (Top Holdings) -->
+            <div class="portfolio-section">
+                    <div class="portfolio-title">
+                        <i class="fas fa-briefcase"></i>
+                        Portfolio
+                    </div>
+                <div class="portfolio-summary">
+                    <div class="portfolio-value" id="portfolioValue">$10,000.00</div>
+                    <div class="portfolio-change" id="portfolioChange">+$0.00 (0.00%)</div>
+                </div>
+                <div class="portfolio-positions" id="portfolioPositions">
+                    <div class="loading">
+                        <div class="spinner"></div>
+                        Loading portfolio...
+                        </div>
+                    </div>
+                    <div class="top-holdings" id="topHoldings">
+                        <!-- Top holdings will be rendered here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentSymbol = null;
+        let currentPrice = 0;
+        let chart = null;
+        let portfolio = null;
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            loadPortfolio();
+            setupEventListeners();
+            updatePortfolioDisplay();
+            updateMarketStatus();
+            updateMarketTickers();
+            
+            // Update market status every minute
+            setInterval(updateMarketStatus, 60000);
+            
+            // Update market tickers every 30 seconds
+            setInterval(updateMarketTickers, 30000);
+        });
+
+        // Research Tab Functions
+        function showResearchTab(tab) {
+            // Hide all content
+            document.querySelectorAll('#researchContent > div').forEach(content => {
+                content.style.display = 'none';
+            });
+            
+            // Remove active class from all tabs
+            document.querySelectorAll('.research-tab').forEach(tabBtn => {
+                tabBtn.classList.remove('active');
+            });
+            
+            // Show selected content
+            document.getElementById(tab + '-content').style.display = 'block';
+            
+            // Add active class to clicked tab
+            event.target.classList.add('active');
+        }
+
+        // Market Movers Tab Functions
+        function showMoversTab(tab) {
+            // Remove active class from all tabs
+            document.querySelectorAll('.movers-tab').forEach(tabBtn => {
+                tabBtn.classList.remove('active');
+            });
+            
+            // Add active class to clicked tab
+            event.target.classList.add('active');
+            
+            // Update movers list based on tab
+            updateMoversList(tab);
+        }
+
+        function updateMoversList(tab) {
+            const moversList = document.getElementById('moversList');
+            
+            if (tab === 'gainers') {
+                moversList.innerHTML = `
+                    <div class="mover-item">
+                        <div class="mover-symbol">TSLA</div>
+                        <div class="mover-change positive">+8.45%</div>
+                    </div>
+                    <div class="mover-item">
+                        <div class="mover-symbol">NVDA</div>
+                        <div class="mover-change positive">+6.23%</div>
+                    </div>
+                    <div class="mover-item">
+                        <div class="mover-symbol">AMD</div>
+                        <div class="mover-change positive">+5.67%</div>
+                    </div>
+                    <div class="mover-item">
+                        <div class="mover-symbol">AAPL</div>
+                        <div class="mover-change positive">+4.12%</div>
+                    </div>
+                    <div class="mover-item">
+                        <div class="mover-symbol">MSFT</div>
+                        <div class="mover-change positive">+3.89%</div>
+                    </div>
+                `;
+            } else {
+                moversList.innerHTML = `
+                    <div class="mover-item">
+                        <div class="mover-symbol">NFLX</div>
+                        <div class="mover-change negative">-5.23%</div>
+                    </div>
+                    <div class="mover-item">
+                        <div class="mover-symbol">META</div>
+                        <div class="mover-change negative">-4.67%</div>
+                    </div>
+                    <div class="mover-item">
+                        <div class="mover-symbol">GOOGL</div>
+                        <div class="mover-change negative">-3.45%</div>
+                    </div>
+                    <div class="mover-item">
+                        <div class="mover-symbol">AMZN</div>
+                        <div class="mover-change negative">-2.89%</div>
+                    </div>
+                    <div class="mover-item">
+                        <div class="mover-symbol">UBER</div>
+                        <div class="mover-change negative">-2.34%</div>
+                    </div>
+                `;
+            }
+        }
+
+        // Update market tickers
+        function updateMarketTickers() {
+            const tickers = [
+                { id: 'sp500Value', value: '4,567.89', change: '+23.45 (+0.52%)', positive: true },
+                { id: 'dowValue', value: '35,123.45', change: '+156.78 (+0.45%)', positive: true },
+                { id: 'nasdaqValue', value: '14,234.56', change: '-12.34 (-0.09%)', positive: false }
+            ];
+            
+            tickers.forEach(ticker => {
+                const valueEl = document.getElementById(ticker.id);
+                const changeEl = document.getElementById(ticker.id.replace('Value', 'Change'));
+                
+                if (valueEl && changeEl) {
+                    valueEl.textContent = ticker.value;
+                    changeEl.textContent = ticker.change;
+                    changeEl.className = `ticker-change ${ticker.positive ? 'positive' : 'negative'}`;
+                }
+            });
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            const symbolSearch = document.getElementById('symbolSearch');
+            const sharesInput = document.getElementById('sharesInput');
+            const buyButton = document.getElementById('buyButton');
+            const sellButton = document.getElementById('sellButton');
+            const chartButtons = document.querySelectorAll('.chart-button');
+            const aiInput = document.getElementById('aiInput');
+
+            // Symbol search
+            symbolSearch.addEventListener('input', debounce(handleSymbolSearch, 300));
+            symbolSearch.addEventListener('focus', showSearchResults);
+            document.addEventListener('click', hideSearchResults);
+
+            // Trading form
+            sharesInput.addEventListener('input', updateTotal);
+            buyButton.addEventListener('click', () => executeTrade('buy'));
+            sellButton.addEventListener('click', () => executeTrade('sell'));
+
+            // Chart period buttons
+            chartButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    chartButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+                    if (currentSymbol) {
+                        loadChart(currentSymbol, button.dataset.period);
+                    }
+                });
+            });
+
+            // AI input
+            aiInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    sendAIMessage();
+                }
+            });
+        }
+
+        // Symbol search
+        async function handleSymbolSearch(e) {
+            const query = e.target.value.trim();
+            if (query.length < 2) {
+                hideSearchResults();
+                return;
+            }
+
+            try {
+                const results = await stockDataService.searchStocks(query);
+                showSearchResults(results);
+            } catch (error) {
+                console.error('Search failed:', error);
+                const mockResults = stockDataService.getComprehensiveSearchResults(query);
+                showSearchResults(mockResults);
+            }
+        }
+
+        function showSearchResults(results = []) {
+            const searchResults = document.getElementById('searchResults');
+            const searchInput = document.getElementById('symbolSearch');
+            
+            if (results.length === 0) {
+                searchResults.innerHTML = '<div class="search-result-item">No results found</div>';
+                return;
+            }
+
+            searchResults.innerHTML = results.map(stock => `
+                <div class="search-result-item" onclick="selectSymbol('${stock.symbol}')">
+                    <div class="symbol-info">
+                        <div class="symbol">${stock.symbol}</div>
+                        <div class="company-name">${stock.name}</div>
+                    </div>
+                    <div class="price-info">
+                        <div class="current-price">$${stock.price.toFixed(2)}</div>
+                        <div class="price-change ${stock.change >= 0 ? 'positive' : 'negative'}">
+                            ${stock.change >= 0 ? '+' : ''}${stock.change.toFixed(2)}%
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function hideSearchResults(e) {
+            const searchResults = document.getElementById('searchResults');
+            const searchInput = document.getElementById('symbolSearch');
+            
+            if (e && !searchInput.contains(e.target) && !searchResults.contains(e.target)) {
+                searchResults.innerHTML = '';
+            }
+        }
+
+        // Select symbol
+        async function selectSymbol(symbol) {
+            currentSymbol = symbol;
+            
+            // Update UI
+            document.getElementById('symbolTitle').textContent = symbol;
+            document.getElementById('symbolSearch').value = symbol;
+            hideSearchResults();
+            
+            // Load stock data
+            try {
+                const stockData = await stockDataService.getStockQuote(symbol);
+                updatePriceDisplay(stockData);
+                updateTradingForm(stockData);
+                updateStockMetrics(stockData);
+                loadChart(symbol, '1M');
+                addToWatchlist(stockData);
+            } catch (error) {
+                console.error('Failed to load stock data:', error);
+                const mockData = stockDataService.getMockData(symbol);
+                updatePriceDisplay(mockData);
+                updateTradingForm(mockData);
+                updateStockMetrics(mockData);
+                loadChart(symbol, '1M');
+                addToWatchlist(mockData);
+            }
+        }
+
+        // Update price display
+        function updatePriceDisplay(stockData) {
+            const priceDisplay = document.getElementById('priceDisplay');
+            const currentPriceLarge = document.getElementById('currentPriceLarge');
+            const priceChangeLarge = document.getElementById('priceChangeLarge');
+            
+            currentPrice = stockData.price;
+            const isPositive = stockData.change >= 0;
+            
+            currentPriceLarge.textContent = `$${stockData.price.toFixed(2)}`;
+            currentPriceLarge.className = `current-price-large ${isPositive ? 'positive' : 'negative'}`;
+            
+            priceChangeLarge.textContent = `${isPositive ? '+' : ''}${stockData.change.toFixed(2)} (${isPositive ? '+' : ''}${stockData.changePercent.toFixed(2)}%)`;
+            priceChangeLarge.className = `price-change-large ${isPositive ? 'positive' : 'negative'}`;
+            
+            priceDisplay.style.display = 'block';
+        }
+
+        // Update stock metrics
+        function updateStockMetrics(stockData) {
+            const metrics = [
+                { label: 'Market Cap', value: stockData.marketCap || '$1.2B' },
+                { label: 'P/E Ratio', value: stockData.peRatio || '15.2' },
+                { label: 'Volume', value: stockData.volume || '2.5M' },
+                { label: '52W High', value: stockData.high52w || '$150.00' },
+                { label: '52W Low', value: stockData.low52w || '$85.00' },
+                { label: 'Beta', value: stockData.beta || '1.2' }
+            ];
+
+            const metricsGrid = document.getElementById('stockMetrics');
+            metricsGrid.innerHTML = metrics.map(metric => `
+                <div class="metric-item">
+                    <div class="metric-value">${metric.value}</div>
+                    <div class="metric-label">${metric.label}</div>
+                </div>
+            `).join('');
+        }
+
+        // Update trading form
+        function updateTradingForm(stockData) {
+            document.getElementById('priceInput').value = stockData.price.toFixed(2);
+            updateTotal();
+        }
+
+        // Update total
+        function updateTotal() {
+            const shares = parseFloat(document.getElementById('sharesInput').value) || 0;
+            const total = shares * currentPrice;
+            document.getElementById('totalInput').value = total.toFixed(2);
+            
+            // Enable/disable buttons
+            const buyButton = document.getElementById('buyButton');
+            const sellButton = document.getElementById('sellButton');
+            
+            buyButton.disabled = shares <= 0 || total > portfolio.cash;
+            sellButton.disabled = shares <= 0 || !portfolio.stocks[currentSymbol] || portfolio.stocks[currentSymbol].shares < shares;
+        }
+
+        // Load chart
+        async function loadChart(symbol, period = '1M') {
+            const chartContainer = document.getElementById('chart');
+            chartContainer.innerHTML = '<div class="loading"><div class="spinner"></div>Loading chart...</div>';
+            
+            try {
+                const data = await stockDataService.getHistoricalData(symbol, period);
+                createChart(data);
+            } catch (error) {
+                console.error('Failed to load chart data:', error);
+                const mockData = stockDataService.getMockHistoricalData(symbol);
+                createChart(mockData);
+            }
+        }
+
+        // Create chart
+        function createChart(data) {
+            const chartContainer = document.getElementById('chart');
+            chartContainer.innerHTML = '';
+            
+            if (chart) {
+                chart.remove();
+            }
+            
+            chart = LightweightCharts.createChart(chartContainer, {
+                width: chartContainer.clientWidth,
+                height: chartContainer.clientHeight,
+                layout: {
+                    backgroundColor: 'transparent',
+                    textColor: '#ffffff',
+                },
+                grid: {
+                    vertLines: { color: 'rgba(255, 255, 255, 0.1)' },
+                    horzLines: { color: 'rgba(255, 255, 255, 0.1)' },
+                },
+                crosshair: {
+                    mode: LightweightCharts.CrosshairMode.Normal,
+                },
+                rightPriceScale: {
+                    borderColor: 'rgba(255, 255, 255, 0.1)',
+                },
+                timeScale: {
+                    borderColor: 'rgba(255, 255, 255, 0.1)',
+                },
+            });
+
+            const candlestickSeries = chart.addCandlestickSeries({
+                upColor: '#00FF88',
+                downColor: '#FF4444',
+                borderVisible: false,
+                wickUpColor: '#00FF88',
+                wickDownColor: '#FF4444',
+            });
+
+            candlestickSeries.setData(data);
+            
+            // Handle resize
+            window.addEventListener('resize', () => {
+                chart.applyOptions({
+                    width: chartContainer.clientWidth,
+                    height: chartContainer.clientHeight,
+                });
+            });
+        }
+
+        // Execute trade
+        function executeTrade(action) {
+            const shares = parseFloat(document.getElementById('sharesInput').value);
+            if (!shares || shares <= 0) {
+                alert('Please enter a valid number of shares');
+                return;
+            }
+
+            if (action === 'buy') {
+                const totalCost = shares * currentPrice;
+                if (totalCost > portfolio.cash) {
+                    alert('Insufficient funds');
+                    return;
+                }
+
+                // Update portfolio
+                portfolio.cash -= totalCost;
+                if (!portfolio.stocks[currentSymbol]) {
+                    portfolio.stocks[currentSymbol] = {
+                        symbol: currentSymbol,
+                        shares: 0,
+                        avgPrice: 0,
+                        totalCost: 0
+                    };
+                }
+
+                const position = portfolio.stocks[currentSymbol];
+                position.shares += shares;
+                position.totalCost += totalCost;
+                position.avgPrice = position.totalCost / position.shares;
+
+                alert(`Successfully bought ${shares} shares of ${currentSymbol}`);
+            } else if (action === 'sell') {
+                if (!portfolio.stocks[currentSymbol] || portfolio.stocks[currentSymbol].shares < shares) {
+                    alert('Insufficient shares to sell');
+                    return;
+                }
+
+                const totalValue = shares * currentPrice;
+                portfolio.cash += totalValue;
+                portfolio.stocks[currentSymbol].shares -= shares;
+
+                if (portfolio.stocks[currentSymbol].shares === 0) {
+                    delete portfolio.stocks[currentSymbol];
+                }
+
+                alert(`Successfully sold ${shares} shares of ${currentSymbol}`);
+            }
+
+            // Convert to portfolioData format
+            const portfolioData = {
+                cash: portfolio.cash,
+                stocks: {}
+            };
+            
+            // Convert stocks object to sector-based format
+            Object.values(portfolio.stocks).forEach(stock => {
+                const sector = getSectorForSymbol(stock.symbol);
+                if (!portfolioData.stocks[sector]) {
+                    portfolioData.stocks[sector] = [];
+                }
+                portfolioData.stocks[sector].push({
+                    symbol: stock.symbol,
+                    shares: stock.shares,
+                    price: stock.avgPrice,
+                    sector: sector
+                });
+            });
+            
+            // Save to both keys for compatibility
+            localStorage.setItem('portfolio', JSON.stringify(portfolio));
+            localStorage.setItem('portfolioData', JSON.stringify(portfolioData));
+            updatePortfolioDisplay();
+            document.getElementById('sharesInput').value = '';
+            updateTotal();
+            
+            // Update cash balance display if it exists
+            const cashDisplay = document.getElementById('cashAvailable');
+            if (cashDisplay) {
+                cashDisplay.textContent = `$${portfolio.cash.toFixed(2)}`;
+            }
+        }
+
+        // AI Assistant Functions
+        function sendAIMessage() {
+            const aiInput = document.getElementById('aiInput');
+            const message = aiInput.value.trim();
+            
+            if (!message) return;
+
+            // Add user message
+            addAIMessage(message, 'user');
+            aiInput.value = '';
+
+            // Generate AI response
+            setTimeout(() => {
+                const response = generateAIResponse(message);
+                addAIMessage(response, 'assistant');
+            }, 1000);
+        }
+
+        function quickQuestion(type) {
+            const questions = {
+                'analyze': 'Can you analyze the current stock market trends?',
+                'risk': 'What are the current market risks I should be aware of?',
+                'trend': 'What are the top trending sectors right now?',
+                'buy': 'What stocks look good for buying right now?',
+                'sell': 'Are there any stocks I should consider selling?',
+                'news': 'What\'s the latest market news affecting stocks?'
+            };
+
+            const question = questions[type];
+            addAIMessage(question, 'user');
+            
+            setTimeout(() => {
+                const response = generateAIResponse(type);
+                addAIMessage(response, 'assistant');
+            }, 1000);
+        }
+
+        function addAIMessage(message, sender) {
+            const aiMessages = document.getElementById('aiMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `ai-message ${sender}`;
+            messageDiv.textContent = message;
+            aiMessages.appendChild(messageDiv);
+            aiMessages.scrollTop = aiMessages.scrollHeight;
+        }
+
+        function generateAIResponse(userMessage) {
+            const responses = {
+                'help': 'I can help you analyze stocks, provide trading insights, explain market trends, and answer questions about specific companies. Just ask!',
+                'analyze': 'Based on current market data, I see strong momentum in tech stocks, particularly AI and semiconductor companies. The S&P 500 is showing bullish patterns with support at key levels. Consider focusing on companies with strong fundamentals and growth potential.',
+                'trend': 'Top trending sectors include: 1) Artificial Intelligence & Machine Learning, 2) Renewable Energy, 3) Biotechnology, 4) Cybersecurity, 5) Electric Vehicles. These sectors are showing strong institutional buying and positive earnings growth.',
+                'risk': 'Current market risks include: 1) Inflation concerns affecting Fed policy, 2) Geopolitical tensions, 3) Earnings season volatility, 4) Sector rotation from growth to value. Consider diversifying across sectors and maintaining stop-losses.',
+                'buy': 'Strong buy candidates include: 1) Tech companies with AI exposure, 2) Healthcare stocks with FDA approvals, 3) Financial stocks benefiting from rate environment, 4) Energy companies with strong cash flows. Always do your own research!',
+                'sell': 'Consider selling stocks that: 1) Have missed earnings expectations, 2) Show deteriorating fundamentals, 3) Are in declining sectors, 4) Have high debt levels. Monitor your positions regularly.',
+                'news': 'Key market news: 1) Fed signals potential rate cuts, 2) Tech earnings beat expectations, 3) Oil prices stabilize after OPEC+ meeting, 4) Inflation data shows cooling trend. This is creating positive market sentiment.'
+            };
+
+            const lowerMessage = userMessage.toLowerCase();
+            
+            if (lowerMessage.includes('help')) return responses.help;
+            if (lowerMessage.includes('analyze') || lowerMessage.includes('analysis')) return responses.analyze;
+            if (lowerMessage.includes('trend')) return responses.trend;
+            if (lowerMessage.includes('risk')) return responses.risk;
+            if (lowerMessage.includes('buy')) return responses.buy;
+            if (lowerMessage.includes('sell')) return responses.sell;
+            if (lowerMessage.includes('news')) return responses.news;
+
+            return 'I understand your question. I can help you with stock analysis, market trends, risk management, and trading strategies. What specific aspect would you like to know more about?';
+        }
+
+        // Market Status Functions
+        function updateMarketStatus() {
+            const now = new Date();
+            const hour = now.getHours();
+            const isMarketOpen = hour >= 9 && hour < 16;
+            const marketStatus = document.getElementById('marketStatus');
+            
+            if (isMarketOpen) {
+                marketStatus.textContent = 'Market Open';
+                marketStatus.className = 'market-status';
+            } else {
+                marketStatus.textContent = 'Market Closed';
+                marketStatus.className = 'market-status closed';
+            }
+        }
+
+        // Research Tab Functions
+        function showResearchTab(tab) {
+            // Hide all content
+            document.querySelectorAll('#researchContent > div').forEach(content => {
+                content.style.display = 'none';
+            });
+            
+            // Remove active class from all tabs
+            document.querySelectorAll('.research-tab').forEach(tabBtn => {
+                tabBtn.classList.remove('active');
+            });
+            
+            // Show selected content
+            document.getElementById(tab + '-content').style.display = 'block';
+            
+            // Add active class to clicked tab
+            event.target.classList.add('active');
+        }
+
+        // Market Movers Tab Functions
+        function showMoversTab(tab) {
+            // Remove active class from all tabs
+            document.querySelectorAll('.movers-tab').forEach(tabBtn => {
+                tabBtn.classList.remove('active');
+            });
+            
+            // Add active class to clicked tab
+            event.target.classList.add('active');
+            
+            // Update movers list based on tab
+            updateMoversList(tab);
+        }
+
+        function updateMoversList(tab) {
+            const moversList = document.getElementById('moversList');
+            
+            if (tab === 'gainers') {
+                moversList.innerHTML = `
+                    <div class="mover-item">
+                        <div class="mover-symbol">TSLA</div>
+                        <div class="mover-change positive">+8.45%</div>
+                    </div>
+                    <div class="mover-item">
+                        <div class="mover-symbol">NVDA</div>
+                        <div class="mover-change positive">+6.23%</div>
+                    </div>
+                    <div class="mover-item">
+                        <div class="mover-symbol">AMD</div>
+                        <div class="mover-change positive">+5.67%</div>
+                    </div>
+                    <div class="mover-item">
+                        <div class="mover-symbol">AAPL</div>
+                        <div class="mover-change positive">+4.12%</div>
+                    </div>
+                    <div class="mover-item">
+                        <div class="mover-symbol">MSFT</div>
+                        <div class="mover-change positive">+3.89%</div>
+                    </div>
+                `;
+            } else {
+                moversList.innerHTML = `
+                    <div class="mover-item">
+                        <div class="mover-symbol">NFLX</div>
+                        <div class="mover-change negative">-5.23%</div>
+                    </div>
+                    <div class="mover-item">
+                        <div class="mover-symbol">META</div>
+                        <div class="mover-change negative">-4.67%</div>
+                    </div>
+                    <div class="mover-item">
+                        <div class="mover-symbol">GOOGL</div>
+                        <div class="mover-change negative">-3.45%</div>
+                    </div>
+                    <div class="mover-item">
+                        <div class="mover-symbol">AMZN</div>
+                        <div class="mover-change negative">-2.89%</div>
+                    </div>
+                    <div class="mover-item">
+                        <div class="mover-symbol">UBER</div>
+                        <div class="mover-change negative">-2.34%</div>
+                    </div>
+                `;
+            }
+        }
+
+        // Update market tickers
+        function updateMarketTickers() {
+            const tickers = [
+                { id: 'sp500Value', value: '4,567.89', change: '+23.45 (+0.52%)', positive: true },
+                { id: 'dowValue', value: '35,123.45', change: '+156.78 (+0.45%)', positive: true },
+                { id: 'nasdaqValue', value: '14,234.56', change: '-12.34 (-0.09%)', positive: false }
+            ];
+            
+            tickers.forEach(ticker => {
+                const valueEl = document.getElementById(ticker.id);
+                const changeEl = document.getElementById(ticker.id.replace('Value', 'Change'));
+                
+                if (valueEl && changeEl) {
+                    valueEl.textContent = ticker.value;
+                    changeEl.textContent = ticker.change;
+                    changeEl.className = `ticker-change ${ticker.positive ? 'positive' : 'negative'}`;
+                }
+            });
+        }
+
+        // Get sector for symbol
+        function getSectorForSymbol(symbol) {
+            const sectorMap = {
+                'AAPL': 'Technology', 'MSFT': 'Technology', 'GOOGL': 'Technology', 'AMZN': 'Technology',
+                'META': 'Technology', 'NVDA': 'Technology', 'TSLA': 'Technology', 'AMD': 'Technology',
+                'JPM': 'Finance', 'BAC': 'Finance', 'WFC': 'Finance', 'GS': 'Finance',
+                'JNJ': 'Healthcare', 'PFE': 'Healthcare', 'UNH': 'Healthcare', 'ABT': 'Healthcare',
+                'XOM': 'Energy', 'CVX': 'Energy', 'COP': 'Energy',
+                'WMT': 'Consumer', 'HD': 'Consumer', 'MCD': 'Consumer'
+            };
+            return sectorMap[symbol] || 'Other';
+        }
+
+        // Load portfolio
+        function loadPortfolio() {
+            portfolio = JSON.parse(localStorage.getItem('portfolio')) || {
+                cash: 10000,
+                stocks: {}
+            };
+        }
+
+        // Update portfolio display
+        function updatePortfolioDisplay() {
+            const portfolioValue = document.getElementById('portfolioValue');
+            const portfolioChange = document.getElementById('portfolioChange');
+            const portfolioPositions = document.getElementById('portfolioPositions');
+
+            // Calculate total value
+            let totalValue = portfolio.cash;
+            let totalCost = 10000; // Starting amount
+
+            Object.values(portfolio.stocks).forEach(stock => {
+                totalValue += stock.shares * currentPrice; // Using current price as approximation
+                totalCost += stock.totalCost;
+            });
+
+            const change = totalValue - 10000;
+            const changePercent = (change / 10000) * 100;
+
+            portfolioValue.textContent = `$${totalValue.toFixed(2)}`;
+            portfolioChange.textContent = `${change >= 0 ? '+' : ''}$${change.toFixed(2)} (${change >= 0 ? '+' : ''}${changePercent.toFixed(2)}%)`;
+            portfolioChange.className = `portfolio-change ${change >= 0 ? 'positive' : 'negative'}`;
+
+            // Update positions
+            const positions = Object.values(portfolio.stocks);
+            if (positions.length === 0) {
+                portfolioPositions.innerHTML = '<div class="loading">No positions yet</div>';
+            } else {
+                portfolioPositions.innerHTML = positions.map(stock => {
+                    const value = stock.shares * currentPrice;
+                    return `
+                        <div class="position-item">
+                            <div class="position-symbol">${stock.symbol}</div>
+                            <div class="position-details">
+                                <div class="position-shares">${stock.shares} shares</div>
+                                <div class="position-value">$${value.toFixed(2)}</div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            }
+            // Render top holdings
+            const topHoldingsDiv = document.getElementById('topHoldings');
+            if (positions.length > 0) {
+                const sorted = positions.slice().sort((a, b) => (b.shares * currentPrice) - (a.shares * currentPrice));
+                topHoldingsDiv.innerHTML = '<div class="top-holdings-title">Top Holdings</div>' +
+                    '<div class="top-holdings-list">' +
+                    sorted.slice(0, 3).map(stock =>
+                        `<div class="top-holding-item"><span>${stock.symbol}</span><span>$${(stock.shares * currentPrice).toFixed(2)}</span></div>`
+                    ).join('') + '</div>';
+            } else {
+                topHoldingsDiv.innerHTML = '';
+            }
+        }
+
+        // Add to watchlist
+        function addToWatchlist(stockData) {
+            const watchlist = JSON.parse(localStorage.getItem('watchlist')) || [];
+            const existingIndex = watchlist.findIndex(item => item.symbol === stockData.symbol);
+            
+            if (existingIndex === -1) {
+                watchlist.push({
+                    symbol: stockData.symbol,
+                    name: stockData.name || 'Unknown',
+                    price: stockData.price,
+                    change: stockData.changePercent
+                });
+                localStorage.setItem('watchlist', JSON.stringify(watchlist));
+            }
+        }
+
+        // Utility functions
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+
+        function showMetricsTab(tab) {
+            document.getElementById('basic-metrics').style.display = tab === 'basic' ? 'block' : 'none';
+            document.getElementById('advanced-metrics').style.display = tab === 'advanced' ? 'block' : 'none';
+            document.querySelectorAll('.metrics-tab').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html> 

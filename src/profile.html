@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - FantasyTrader</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="images/logo.png">
+
+    <!-- Supabase JS SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <style>
+        :root {
+            --bg-dark: #0a0a0f;
+            --bg-card: #12121a;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0b0;
+            --text-muted: #606070;
+            --accent-green: #00ff88;
+            --accent-green-dim: #00cc6a;
+            --accent-orange: #ff6b35;
+            --accent-blue: #3b82f6;
+            --gradient-hero: linear-gradient(135deg, #00ff88 0%, #00cc6a 50%, #3b82f6 100%);
+            --border-subtle: rgba(255,255,255,0.06);
+            --border-accent: rgba(0,255,136,0.3);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding: 40px 24px 60px;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Archivo Black', sans-serif;
+            font-weight: 400;
+            letter-spacing: -0.02em;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .profile-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 32px;
+        }
+
+        .profile-title {
+            font-size: 2.4rem;
+            background: var(--gradient-hero);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .back-link {
+            color: var(--accent-green);
+            text-decoration: none;
+            font-weight: 600;
+            border: 1px solid var(--border-accent);
+            padding: 0.55rem 1rem;
+            border-radius: 8px;
+            background: rgba(0, 255, 136, 0.08);
+            transition: all 0.2s;
+        }
+
+        .back-link:hover {
+            background: rgba(0, 255, 136, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .profile-grid {
+            display: grid;
+            grid-template-columns: 320px 1fr;
+            gap: 24px;
+        }
+
+        .profile-card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 24px;
+            border: 1px solid var(--border-subtle);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+        }
+
+        .avatar {
+            width: 110px;
+            height: 110px;
+            border-radius: 50%;
+            background: var(--gradient-hero);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--bg-dark);
+            margin-bottom: 16px;
+        }
+
+        .profile-name {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .profile-role {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+        }
+
+        .profile-meta {
+            display: grid;
+            gap: 10px;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .profile-meta span {
+            color: var(--text-muted);
+            margin-right: 6px;
+        }
+
+        .section-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border-subtle);
+            border-radius: 14px;
+            padding: 18px;
+            margin-bottom: 18px;
+        }
+
+        .section-card:last-child {
+            margin-bottom: 0;
+        }
+
+        .section-card h3 {
+            font-size: 0.85rem;
+            color: var(--accent-green);
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 14px;
+        }
+
+        .detail-item {
+            background: rgba(10, 10, 15, 0.7);
+            border-radius: 10px;
+            padding: 12px 14px;
+            border: 1px solid var(--border-subtle);
+        }
+
+        .detail-item span {
+            display: block;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+        }
+
+        .detail-item strong {
+            font-size: 0.95rem;
+            color: var(--text-primary);
+        }
+
+        .friends-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 12px;
+        }
+
+        .friend-card {
+            background: rgba(0, 255, 136, 0.08);
+            border: 1px solid var(--border-accent);
+            border-radius: 10px;
+            padding: 10px 12px;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .logout-btn {
+            width: 100%;
+            margin-top: 20px;
+            padding: 12px;
+            background: rgba(255, 68, 68, 0.1);
+            border: 1px solid rgba(255, 68, 68, 0.3);
+            color: #ff6666;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+
+        .logout-btn:hover {
+            background: rgba(255, 68, 68, 0.2);
+        }
+
+        @media (max-width: 900px) {
+            .profile-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="profile-header">
+            <h1 class="profile-title">Profile</h1>
+            <a class="back-link" href="your-league.html">← Back to Dashboard</a>
+        </div>
+
+        <div class="profile-grid">
+            <div class="profile-card">
+                <div class="avatar" id="avatarInitials">FT</div>
+                <div class="profile-name" id="profileName">Loading...</div>
+                <div class="profile-role">League Competitor • Active Trader</div>
+                <div class="profile-meta">
+                    <div><span>Account:</span> Free Tier</div>
+                    <div><span>Email:</span> <span id="profileEmail">Loading...</span></div>
+                    <div><span>Joined:</span> <span id="profileJoined">Loading...</span></div>
+                </div>
+                <button class="logout-btn" onclick="handleLogoutClick()">Sign Out</button>
+            </div>
+
+            <div class="profile-card">
+                <div class="section-card">
+                    <h3>Account Details</h3>
+                    <div class="details-grid">
+                        <div class="detail-item">
+                            <span>Full Name</span>
+                            <strong id="detailName">Loading...</strong>
+                        </div>
+                        <div class="detail-item">
+                            <span>Account Tier</span>
+                            <strong>Free</strong>
+                        </div>
+                        <div class="detail-item">
+                            <span>Portfolio Value</span>
+                            <strong id="portfolioValue">$100,000</strong>
+                        </div>
+                        <div class="detail-item">
+                            <span>League Rank</span>
+                            <strong id="leagueRank">Not in league</strong>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section-card">
+                    <h3>Learning Progress</h3>
+                    <div class="details-grid">
+                        <div class="detail-item">
+                            <span>Courses Started</span>
+                            <strong id="coursesStarted">0</strong>
+                        </div>
+                        <div class="detail-item">
+                            <span>Courses Completed</span>
+                            <strong id="coursesCompleted">0</strong>
+                        </div>
+                        <div class="detail-item">
+                            <span>Total XP</span>
+                            <strong id="totalXP">0</strong>
+                        </div>
+                        <div class="detail-item">
+                            <span>Current Streak</span>
+                            <strong id="currentStreak">0 days</strong>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section-card">
+                    <h3>League Activity</h3>
+                    <div class="friends-list" id="leaguesList">
+                        <div class="friend-card">No leagues yet</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Supabase Auth Script -->
+    <script src="js/supabase.js"></script>
+    <script>
+        // Load user profile data
+        document.addEventListener('DOMContentLoaded', async function() {
+            const { user } = await getCurrentUser();
+
+            if (!user) {
+                // Not logged in, redirect to home
+                window.location.href = 'index.html';
+                return;
+            }
+
+            // Populate profile with user data
+            const firstName = user.user_metadata?.first_name || '';
+            const lastName = user.user_metadata?.last_name || '';
+            const fullName = `${firstName} ${lastName}`.trim() || user.email;
+            const initials = getInitials(firstName, lastName) || 'FT';
+
+            document.getElementById('avatarInitials').textContent = initials;
+            document.getElementById('profileName').textContent = fullName;
+            document.getElementById('profileEmail').textContent = user.email;
+            document.getElementById('detailName').textContent = fullName;
+
+            // Format join date
+            const joinDate = new Date(user.created_at);
+            const formattedDate = joinDate.toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+            document.getElementById('profileJoined').textContent = formattedDate;
+
+            // Load additional profile data from Supabase
+            await loadProfileData(user.id);
+            await loadLearningProgress(user.id);
+        });
+
+        function getInitials(firstName, lastName) {
+            const first = firstName ? firstName.charAt(0).toUpperCase() : '';
+            const last = lastName ? lastName.charAt(0).toUpperCase() : '';
+            return first + last || null;
+        }
+
+        async function loadProfileData(userId) {
+            const { profile, error } = await getUserProfile(userId);
+
+            if (profile) {
+                // Update portfolio value if available
+                if (profile.portfolio_cash) {
+                    document.getElementById('portfolioValue').textContent =
+                        '$' + profile.portfolio_cash.toLocaleString();
+                }
+            }
+        }
+
+        async function loadLearningProgress(userId) {
+            const { progress, error } = await getLearningProgress(userId);
+
+            if (progress && progress.length > 0) {
+                const started = progress.length;
+                const completed = progress.filter(p => p.completed).length;
+
+                document.getElementById('coursesStarted').textContent = started;
+                document.getElementById('coursesCompleted').textContent = completed;
+            }
+        }
+
+        async function handleLogoutClick() {
+            const { error } = await signOut();
+            if (!error) {
+                window.location.href = 'index.html';
+            } else {
+                alert('Error signing out. Please try again.');
+            }
+        }
+    </script>
+</body>
+</html>

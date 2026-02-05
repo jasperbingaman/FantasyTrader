@@ -1,0 +1,1906 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Portfolio</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --primary: #1E3888;
+            --secondary: #47A992;
+            --accent: #FFB100;
+            --background: #0B1622;
+            --surface: #162A3D;
+            --success: #00FF88;
+            --danger: #FF4444;
+        }
+
+        body {
+            font-family: 'Roboto', 'Segoe UI', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #0A0E1A;
+            color: #ffffff;
+            overflow-x: hidden;
+            position: relative;
+            font-weight: 400;
+        }
+
+        /* Cool animated background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(0, 255, 136, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(255, 177, 0, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 40% 20%, rgba(30, 56, 136, 0.03) 0%, transparent 50%);
+            z-index: 0;
+            animation: backgroundShift 20s ease-in-out infinite;
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 255, 136, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 136, 0.02) 1px, transparent 1px);
+            background-size: 50px 50px;
+            z-index: 0;
+            animation: gridMove 30s linear infinite;
+        }
+
+        @keyframes backgroundShift {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
+        }
+
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        .portfolio-container {
+            max-width: 1400px;
+            margin: 40px auto;
+            padding: 2rem;
+            background: #0A0E1A;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            margin: 0 auto 2rem;
+            max-width: 1200px;
+        }
+
+        .stat-card {
+            background: #151A21;
+            border-radius: 0;
+            padding: 1.25rem;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            position: relative;
+        }
+
+        .stat-card:hover {
+            border-color: rgba(255, 255, 255, 0.12);
+        }
+
+        .stat-title {
+            font-size: 0.9rem;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-value {
+            font-size: 1.4rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-subtitle {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        /* Enhanced Holdings Grid */
+        .holdings-grid {
+            margin-top: 2rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 1.5rem;
+        }
+
+        .portfolio-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding: 0;
+        }
+
+        .portfolio-actions {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .action-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: var(--text-primary);
+            padding: 10px 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .action-btn:hover {
+            background: rgba(16, 185, 129, 0.2);
+            border-color: var(--success);
+            transform: translateY(-2px);
+        }
+
+        .weekly-report-btn {
+            background: linear-gradient(135deg, var(--accent) 0%, #f97316 100%);
+            border-color: var(--accent);
+        }
+
+        .weekly-report-btn:hover {
+            background: linear-gradient(135deg, #f97316 0%, var(--accent) 100%);
+        }
+
+        .performance-btn {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-color: var(--primary);
+        }
+
+        .performance-btn:hover {
+            background: linear-gradient(135deg, var(--secondary) 0%, var(--primary) 100%);
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+
+        .modal-content {
+            background: var(--surface);
+            border-radius: 20px;
+            max-width: 800px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 25px 30px;
+            border-bottom: 1px solid rgba(0, 255, 136, 0.2);
+        }
+
+        .modal-header h2 {
+            color: var(--text-primary);
+            margin: 0;
+            font-size: 1.8rem;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 2rem;
+            cursor: pointer;
+            padding: 0;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .close-btn:hover {
+            background: rgba(255, 68, 68, 0.2);
+            color: var(--danger);
+        }
+
+        .modal-body {
+            padding: 30px;
+        }
+
+        .report-section {
+            margin-bottom: 30px;
+        }
+
+        .report-section h3 {
+            color: var(--success);
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+        }
+
+        .report-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .report-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid rgba(0, 255, 136, 0.1);
+        }
+
+        .report-item .label {
+            display: block;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+        }
+
+        .report-item .value {
+            display: block;
+            color: var(--text-primary);
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .value.positive {
+            color: var(--success);
+        }
+
+        .value.negative {
+            color: var(--danger);
+        }
+
+        /* Performance Modal Styles */
+        .performance-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+            border-bottom: 1px solid rgba(0, 255, 136, 0.2);
+            padding-bottom: 20px;
+        }
+
+        .tab-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: var(--text-secondary);
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .tab-btn.active {
+            background: var(--success);
+            color: #000;
+            border-color: var(--success);
+        }
+
+        .tab-btn:hover:not(.active) {
+            background: rgba(255, 255, 255, 0.2);
+            color: var(--text-primary);
+        }
+
+        .performance-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+        }
+
+        .performance-chart {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 20px;
+            border: 1px solid rgba(0, 255, 136, 0.1);
+        }
+
+        .performance-stats {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .stat-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid rgba(0, 255, 136, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .stat-item .label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .stat-item .value {
+            color: var(--text-primary);
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .performance-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .portfolio-actions {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .modal-content {
+                width: 95%;
+                margin: 20px;
+            }
+        }
+
+        .watchlist-btn {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border: none;
+            color: white;
+            padding: 15px 30px;
+            font-size: 1rem;
+            font-weight: 700;
+            font-family: 'Inter', sans-serif;
+            border-radius: 12px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 
+                0 8px 25px rgba(16, 185, 129, 0.3),
+                0 0 0 0 rgba(16, 185, 129, 0.7);
+        }
+
+        .watchlist-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .watchlist-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 
+                0 15px 35px rgba(16, 185, 129, 0.4),
+                0 0 0 0 rgba(16, 185, 129, 0.7);
+        }
+
+        .watchlist-btn:hover::before {
+            left: 100%;
+        }
+
+        .watchlist-btn:active {
+            transform: translateY(-1px);
+        }
+
+        .portfolio-summary {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin: 0 auto 2rem;
+            max-width: 1000px;
+        }
+
+        .summary-item {
+            padding: 1rem 1.5rem;
+            background: #151A21;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 0;
+        }
+
+        .summary-label {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .summary-value {
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin-top: 0.5rem;
+        }
+
+        .holdings-grid {
+            display: grid;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .holding-card {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+            align-items: center;
+            padding: 1rem;
+            background: var(--surface);
+            border-radius: 8px;
+            transition: transform 0.2s;
+        }
+
+        .holding-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .stock-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .stock-symbol {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--accent);
+        }
+
+        .stock-name {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .holding-value {
+            font-size: 1.1rem;
+            font-weight: bold;
+        }
+
+        .holding-change {
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .positive {
+            color: var(--success);
+            background: rgba(0, 255, 136, 0.1);
+        }
+
+        .negative {
+            color: var(--danger);
+            background: rgba(255, 68, 68, 0.1);
+        }
+
+        .holdings-header {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+            padding: 1rem;
+            font-weight: bold;
+            color: rgba(255, 255, 255, 0.7);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Navigation Button */
+        .nav-button {
+            position: fixed;
+            top: 1rem;
+            left: 1rem;
+            padding: 0.6rem 1.2rem;
+            background: #151A21;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 0;
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            z-index: 1000;
+            font-size: 0.9rem;
+        }
+
+        .nav-button:hover {
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.2), rgba(255, 177, 0, 0.2));
+            border-color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        /* Title Styling */
+        .portfolio-title {
+            text-align: left;
+            margin: 0;
+            font-size: 3.5rem;
+            font-weight: 800;
+            font-family: 'Montserrat', sans-serif;
+            color: #00FF88;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        /* Additional Stats Styling */
+        .advanced-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+        }
+
+        .stat-card .trend {
+            font-size: 0.8rem;
+            margin-top: 0.5rem;
+            padding: 0.3rem 0.6rem;
+            border-radius: 12px;
+            display: inline-block;
+        }
+
+        .trend.up {
+            background: rgba(0, 255, 136, 0.1);
+            color: var(--success);
+        }
+
+        .trend.down {
+            background: rgba(255, 68, 68, 0.1);
+            color: var(--danger);
+        }
+
+        /* Chart Container Styles */
+        .chart-container {
+            background: #151A21;
+            border-radius: 0;
+            padding: 2.5rem;
+            margin-top: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+        }
+        
+        .chart-container h3 {
+            color: var(--accent);
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+        }
+
+        /* Sector Allocation Pie Chart Section */
+        .sector-allocation-section {
+            background: #151A21;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 0;
+            padding: 1.5rem;
+        }
+
+        .sector-allocation-title {
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            text-align: center;
+        }
+
+        .sector-chart-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .pie-chart-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 200px;
+            height: 200px;
+        }
+
+        .sector-legend {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.5rem;
+            width: 100%;
+            margin-top: 0.5rem;
+        }
+
+        .sector-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.5rem;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            font-size: 0.75rem;
+        }
+
+        .sector-info {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .sector-color {
+            width: 12px;
+            height: 12px;
+            border-radius: 2px;
+            flex-shrink: 0;
+        }
+
+        .sector-name {
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .sector-value {
+            font-weight: 600;
+            color: #ffffff;
+            font-size: 0.8rem;
+        }
+
+
+        /* Risk Comparison Section */
+        .risk-comparison-section {
+            background: #151A21;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 0;
+            padding: 1.5rem;
+        }
+
+        .risk-comparison-title {
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .risk-bar-chart-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .risk-bar-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+
+        .risk-bar-label {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.7);
+            display: flex;
+            justify-content: space-between;
+            font-weight: 500;
+        }
+
+        .risk-bar {
+            height: 24px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .risk-bar-fill {
+            height: 100%;
+            background: var(--success);
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 0.5rem;
+            color: #0A0E1A;
+            font-weight: 600;
+            font-size: 0.75rem;
+        }
+
+        #performanceChart {
+            max-height: 400px !important;
+        }
+
+        .chart-controls {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .stock-search {
+            width: 400px;
+        }
+
+        .stock-search input {
+            width: 100%;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 20px;
+        }
+
+        .compare-btn, .market-compare-btn {
+            padding: 0.8rem 1.2rem;
+            background: var(--success);
+            border: none;
+            border-radius: 8px;
+            color: var(--background);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .market-compare-btn {
+            background: var(--accent);
+        }
+
+        .compare-btn:hover, .market-compare-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 255, 136, 0.2);
+        }
+
+        .market-compare-btn:hover {
+            box-shadow: 0 4px 12px rgba(255, 177, 0, 0.2);
+        }
+
+        .comparison-chips {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+        }
+
+        .comparison-chip {
+            padding: 0.5rem 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .remove-chip {
+            cursor: pointer;
+            opacity: 0.7;
+            transition: opacity 0.3s;
+        }
+
+        .remove-chip:hover {
+            opacity: 1;
+        }
+
+        /* Add risk level color styles */
+        .risk-low {
+            background: linear-gradient(135deg, var(--surface) 0%, rgba(0, 255, 136, 0.15) 100%);
+            border-color: rgba(0, 255, 136, 0.3) !important;
+        }
+
+        .risk-moderate {
+            background: linear-gradient(135deg, var(--surface) 0%, rgba(255, 177, 0, 0.15) 100%);
+            border-color: rgba(255, 177, 0, 0.3) !important;
+        }
+
+        .risk-high {
+            background: linear-gradient(135deg, var(--surface) 0%, rgba(255, 68, 68, 0.15) 100%);
+            border-color: rgba(255, 68, 68, 0.3) !important;
+        }
+
+        /* Make the risk card larger */
+        .risk-card {
+            grid-column: 1 / -1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem !important;
+            text-align: center;
+        }
+
+        .risk-card .stat-value {
+            font-size: 2rem;
+            margin: 1rem 0;
+        }
+
+        .risk-indicator {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .risk-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .risk-dot.active-low {
+            background: var(--success);
+            box-shadow: 0 0 10px var(--success);
+        }
+
+        .risk-dot.active-moderate {
+            background: var(--accent);
+            box-shadow: 0 0 10px var(--accent);
+        }
+
+        .risk-dot.active-high {
+            background: var(--danger);
+            box-shadow: 0 0 10px var(--danger);
+        }
+
+        /* Add tooltip styles */
+        .info-icon {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            width: 16px;
+            height: 16px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.7);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .info-icon:hover {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+
+        .tooltip {
+            position: absolute;
+            top: -8px;
+            right: 28px;
+            background: var(--surface);
+            padding: 0.8rem;
+            border-radius: 8px;
+            width: max-content;
+            max-width: 200px;
+            font-size: 0.8rem;
+            color: white;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.2s ease;
+            z-index: 100;
+        }
+
+        .info-icon:hover .tooltip {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(-4px);
+        }
+
+        /* Add styles for the holdings section */
+        .holdings-section {
+            background: #151A21;
+            border-radius: 0;
+            padding: 1.5rem;
+            margin: 0 auto 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            max-width: 1200px;
+        }
+
+        .holdings-header {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            padding: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .holding-row {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            align-items: center;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.2s ease;
+        }
+
+        .holding-row:hover {
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .holdings-section {
+            margin-top: 2rem;
+            background: var(--surface);
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        #holdingsContainer {
+            margin-top: 1rem;
+        }
+
+        .background-lines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .bg-line {
+            position: absolute;
+            width: 100%;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .bg-line:nth-child(1) { top: 20%; }
+        .bg-line:nth-child(2) { top: 40%; }
+        .bg-line:nth-child(3) { top: 60%; }
+        .bg-line:nth-child(4) { top: 80%; }
+        .bg-line:nth-child(5) { top: 100%; }
+
+        .stock-name {
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .shares-count {
+            font-family: monospace;
+            font-size: 0.9rem;
+        }
+
+        .avg-cost, .current-val {
+            font-family: monospace;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .total-ret {
+            font-family: monospace;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .total-ret.positive {
+            color: #47A992;
+        }
+
+        .total-ret.negative {
+            color: #FF6B6B;
+        }
+
+        .return-indicator {
+            font-size: 1.2rem;
+        }
+
+        /* Style the main value displays */
+        #totalValue, #cashAvailable {
+            font-family: monospace;
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: var(--accent);
+            text-shadow: 0 0 10px rgba(255, 177, 0, 0.3);
+        }
+
+        /* Update the comparison section styling */
+        .comparison-section {
+            margin: 0 auto 2rem;
+            background: #151A21;
+            border-radius: 0;
+            padding: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            max-width: 1200px;
+        }
+        
+        .comparison-section-title {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .chart-controls {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            border: none; /* Remove any default borders */
+            margin-bottom: 0.75rem;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            padding: 0.5rem 1rem;
+            font-size: 0.85rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: rgba(255, 255, 255, 0.7);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .tab-btn:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.12);
+        }
+
+        .tab-btn.active {
+            background: var(--success);
+            border-color: var(--success);
+            color: #0A0E1A;
+            font-weight: 600;
+        }
+
+        /* Update search input styling */
+        .stock-search input {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            border-radius: 8px;
+            color: white;
+            font-size: 0.9rem;
+        }
+
+        /* Remove any horizontal lines */
+        .comparison-section::before,
+        .comparison-section::after {
+            display: none;
+        }
+
+        /* Ensure no default borders on containers */
+        .portfolio-container > * {
+            border: none;
+        }
+    </style>
+</head>
+<body>
+    <div style="position: fixed; top: 1rem; left: 1rem; display: flex; gap: 0.75rem; z-index: 1000;">
+        <a href="dashboard.html" class="nav-button" style="display: flex; align-items: center; gap: 0.5rem;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 12H5M12 19l-7-7 7-7"/>
+            </svg>
+            Dashboard
+        </a>
+        <a href="practice.html" class="nav-button" style="display: flex; align-items: center; gap: 0.5rem;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 12H5M12 19l-7-7 7-7"/>
+            </svg>
+            Practice
+        </a>
+    </div>
+
+
+    <div class="portfolio-container">
+        <!-- Update the portfolio summary to remove total return -->
+        <div class="portfolio-header">
+            <h1 class="portfolio-title">My Portfolio</h1>
+            <div class="portfolio-actions">
+                <button class="action-btn weekly-report-btn" onclick="showWeeklyReport()">
+                    <i class="fas fa-chart-bar"></i> Weekly Report
+                </button>
+                <button class="action-btn performance-btn" onclick="showPortfolioPerformance()">
+                    <i class="fas fa-trending-up"></i> Portfolio Performance
+                </button>
+                <button class="watchlist-btn" onclick="openWatchlist()">
+                    <i class="fas fa-eye"></i> Watchlist
+                </button>
+            </div>
+        </div>
+
+        <div class="portfolio-summary">
+            <div class="summary-item">
+                <div class="summary-label">Total Value</div>
+                <div class="summary-value" id="totalValue">$0.00</div>
+            </div>
+            <div class="summary-item">
+                <div class="summary-label">Daily Change</div>
+                <div class="summary-value" id="dailyChange">+0.00%</div>
+            </div>
+            <div class="summary-item">
+                <div class="summary-label">Cash Available</div>
+                <div class="summary-value" id="cashAvailable">$0.00</div>
+            </div>
+        </div>
+
+        <!-- Holdings Section (moved up) -->
+        <div class="holdings-section">
+            <div class="holdings-header">
+                <div>Stock</div>
+                <div>Shares</div>
+                <div>Average Cost</div>
+                <div>Current Value</div>
+                <div>Total Return</div>
+            </div>
+            <div id="holdingsContainer">
+                <!-- Holdings will be dynamically added here -->
+            </div>
+        </div>
+
+        <!-- Stats Grid -->
+        <div class="stats-grid">
+            <div class="stat-card risk-card" id="riskCard">
+                <div class="info-icon">?
+                    <div class="tooltip">Measures portfolio risk based on diversification and stock volatility</div>
+                </div>
+                <div class="stat-title">Risk Assessment</div>
+                <div class="stat-value" id="riskScore">Moderate</div>
+                <div class="stat-subtitle">Based on volatility & diversification</div>
+                <div class="risk-indicator">
+                    <div class="risk-dot" id="lowRisk"></div>
+                    <div class="risk-dot" id="moderateRisk"></div>
+                    <div class="risk-dot" id="highRisk"></div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="info-icon">?
+                    <div class="tooltip">Annual income generated from stock dividends as a percentage of investment</div>
+                </div>
+                <div class="stat-title">Dividend Yield</div>
+                <div class="stat-value" id="dividendYield">2.34%</div>
+                <div class="stat-subtitle">Annual dividend return</div>
+            </div>
+            <div class="stat-card">
+                <div class="info-icon">?
+                    <div class="tooltip">Industry sector with the highest dollar value in your portfolio</div>
+                </div>
+                <div class="stat-title">Sector Allocation</div>
+                <div class="stat-value" id="topSector">Technology</div>
+                <div class="stat-subtitle">Highest weighted sector</div>
+            </div>
+            <div class="stat-card">
+                <div class="info-icon">?
+                    <div class="tooltip">Percentage change in portfolio value over the past year</div>
+                </div>
+                <div class="stat-title">Year Over Year</div>
+                <div class="stat-value" id="yoyReturn">0.00%</div>
+                <div class="stat-subtitle">Performance since last year</div>
+            </div>
+            <div class="stat-card">
+                <div class="info-icon">?
+                    <div class="tooltip">Stock in your portfolio with the highest percentage gain</div>
+                </div>
+                <div class="stat-title">Best Performer</div>
+                <div class="stat-value" id="bestStock">-</div>
+                <div class="stat-subtitle" id="bestStockReturn">+0.00%</div>
+            </div>
+            <div class="stat-card">
+                <div class="info-icon">?
+                    <div class="tooltip">Stock in your portfolio with the largest percentage loss</div>
+                </div>
+                <div class="stat-title">Worst Performer</div>
+                <div class="stat-value" id="worstStock">-</div>
+                <div class="stat-subtitle" id="worstStockReturn">+0.00%</div>
+            </div>
+            <div class="stat-card">
+                <div class="info-icon">?
+                    <div class="tooltip">Total profit or loss since starting your portfolio</div>
+                </div>
+                <div class="stat-title">Total Gains/Losses</div>
+                <div class="stat-value" id="totalGains">$0.00</div>
+                <div class="stat-subtitle">Since inception</div>
+            </div>
+            <div class="stat-card">
+                <div class="info-icon">?
+                    <div class="tooltip">Measures how your portfolio moves relative to the overall market</div>
+                </div>
+                <div class="stat-title">Portfolio Beta</div>
+                <div class="stat-value" id="portfolioBeta">1.00</div>
+                <div class="stat-subtitle">Market volatility comparison</div>
+            </div>
+            <div class="stat-card">
+                <div class="info-icon">?
+                    <div class="tooltip">Number of different market sectors represented in your portfolio</div>
+                </div>
+                <div class="stat-title">Sector Diversity</div>
+                <div class="stat-value" id="sectorDiversity">2</div>
+                <div class="stat-subtitle">Number of sectors invested</div>
+            </div>
+        </div>
+
+        <!-- Charts Section - Centered -->
+        <div style="display: grid; grid-template-columns: 280px 1fr; gap: 1.5rem; margin: 0 auto 2rem; max-width: 1200px;">
+            <!-- Sector Allocation Pie Chart -->
+            <div class="sector-allocation-section">
+                <h3 class="sector-allocation-title">Sector Allocation</h3>
+                <div class="sector-chart-container">
+                    <div class="pie-chart-wrapper">
+                        <canvas id="sectorPieChart" width="200" height="200"></canvas>
+                    </div>
+                    <div class="sector-legend" id="sectorLegend">
+                        <!-- Legend items will be dynamically generated -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Risk Comparison Chart -->
+            <div class="risk-comparison-section">
+                <h3 class="risk-comparison-title">Risk Analysis</h3>
+                <div class="risk-bar-chart-container">
+                    <div class="risk-bar-item">
+                        <div class="risk-bar-label">
+                            <span>Portfolio</span>
+                            <span id="portfolioRiskValue">12.5%</span>
+                        </div>
+                        <div class="risk-bar">
+                            <div class="risk-bar-fill" id="portfolioRiskBar" style="width: 62.5%;">12.5%</div>
+                        </div>
+                    </div>
+                    <div class="risk-bar-item">
+                        <div class="risk-bar-label">
+                            <span>S&P 500</span>
+                            <span>15.0%</span>
+                        </div>
+                        <div class="risk-bar">
+                            <div class="risk-bar-fill" style="width: 75%; background: rgba(255, 177, 0, 0.8);">15.0%</div>
+                        </div>
+                    </div>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid rgba(255, 255, 255, 0.08);">
+                    <div>
+                        <div style="font-size: 0.75rem; color: rgba(255, 255, 255, 0.5); margin-bottom: 0.25rem;">Beta</div>
+                        <div style="font-size: 1.1rem; color: #ffffff; font-weight: 600;" id="portfolioBeta">0.83</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 0.75rem; color: rgba(255, 255, 255, 0.5); margin-bottom: 0.25rem;">Sharpe</div>
+                        <div style="font-size: 1.1rem; color: #ffffff; font-weight: 600;" id="sharpeRatio">1.42</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Trading Performance Chart -->
+        <div class="chart-container">
+            <h3>Trading Performance</h3>
+            <div class="chart-controls">
+                <div class="button-group">
+                    <button class="tab-btn active" onclick="switchTimeframe(this, 'day')">Day</button>
+                    <button class="tab-btn" onclick="switchTimeframe(this, 'week')">Week</button>
+                    <button class="tab-btn" onclick="switchTimeframe(this, 'month')">Month</button>
+                    <button class="tab-btn" onclick="switchTimeframe(this, '3month')">3 Month</button>
+                    <button class="tab-btn" onclick="switchTimeframe(this, '6month')">6 Month</button>
+                    <button class="tab-btn" onclick="switchTimeframe(this, 'ytd')">YTD</button>
+                    <button class="tab-btn" onclick="switchTimeframe(this, '1year')">1 Year</button>
+                    <button class="tab-btn" onclick="switchTimeframe(this, 'all')">All Time</button>
+                </div>
+            </div>
+            <canvas id="performanceChart" style="height: 300px;"></canvas>
+        </div>
+
+        <!-- Comparison Section (shortened) -->
+        <div class="comparison-section">
+            <div class="comparison-section-title">Quick Stock Comparison</div>
+            <div class="chart-controls">
+                <div class="stock-search">
+                    <input type="text" placeholder="Search stocks..." id="stockSearch">
+                </div>
+                <div class="button-group">
+                    <button class="compare-btn" id="compareBtn">Compare</button>
+                </div>
+            </div>
+            <div class="comparison-chips" id="comparisonChips"></div>
+            <canvas id="priceChart" style="height: 180px; margin-top: 1rem;"></canvas>
+        </div>
+    </div>
+
+    <script>
+        // Add number formatting function
+        function formatCurrency(number) {
+            if (number >= 1000000000) {
+                return `$${(number / 1000000000).toFixed(2)}B`;
+            } else if (number >= 1000000) {
+                return `$${(number / 1000000).toFixed(2)}M`;
+            } else if (number >= 1000) {
+                return `$${(number / 1000).toFixed(2)}K`;
+            } else {
+                return `$${number.toFixed(2)}`;
+            }
+        }
+
+        function initializePortfolio() {
+            console.log('Initializing portfolio...');
+            
+            let portfolioData = JSON.parse(localStorage.getItem('portfolioData'));
+            
+            // If no portfolio data exists, create fake data
+            if (!portfolioData || !portfolioData.stocks || Object.keys(portfolioData.stocks).length === 0) {
+                console.log('No portfolio data found, creating sample data...');
+                portfolioData = {
+                    cash: 25000.00,
+                    stocks: {
+                        'Technology': [
+                            { symbol: 'AAPL', shares: 15, price: 175.50, sector: 'Technology' },
+                            { symbol: 'MSFT', shares: 10, price: 380.25, sector: 'Technology' },
+                            { symbol: 'NVDA', shares: 8, price: 485.75, sector: 'Technology' }
+                        ],
+                        'Finance': [
+                            { symbol: 'JPM', shares: 12, price: 145.30, sector: 'Finance' },
+                            { symbol: 'BAC', shares: 20, price: 32.15, sector: 'Finance' }
+                        ],
+                        'Healthcare': [
+                            { symbol: 'JNJ', shares: 10, price: 165.80, sector: 'Healthcare' },
+                            { symbol: 'PFE', shares: 25, price: 42.50, sector: 'Healthcare' }
+                        ]
+                    }
+                };
+                localStorage.setItem('portfolioData', JSON.stringify(portfolioData));
+            }
+            
+            console.log('Loading portfolio data:', portfolioData);
+
+            // Update cash balance with proper selector and formatting
+            const cashElement = document.getElementById('cashAvailable');
+            if (cashElement) {
+                cashElement.textContent = formatCurrency(portfolioData.cash);
+            }
+
+            const holdingsContainer = document.getElementById('holdingsContainer');
+            if (!holdingsContainer) {
+                console.error('Holdings container not found');
+                return;
+            }
+
+            holdingsContainer.innerHTML = '';
+            let totalPortfolioValue = 0;
+
+            Object.keys(portfolioData.stocks).forEach(sector => {
+                const sectorStocks = portfolioData.stocks[sector];
+                
+                sectorStocks.forEach(stock => {
+                    if (stock.shares && stock.shares > 0) {
+                        const currentValue = stock.shares * parseFloat(stock.price);
+                        totalPortfolioValue += currentValue;
+                        const totalReturn = currentValue - (stock.shares * parseFloat(stock.price));
+
+                        const row = document.createElement('div');
+                        row.className = 'holding-row';
+                        row.innerHTML = `
+                            <div class="stock-name">${stock.symbol}</div>
+                            <div class="shares-count">${stock.shares.toFixed(2)}</div>
+                            <div class="avg-cost">${formatCurrency(parseFloat(stock.price))}</div>
+                            <div class="current-val">${formatCurrency(currentValue)}</div>
+                            <div class="total-ret ${totalReturn >= 0 ? 'positive' : 'negative'}">
+                                ${formatCurrency(Math.abs(totalReturn))}
+                                <span class="return-indicator">${totalReturn >= 0 ? '↑' : '↓'}</span>
+                            </div>
+                        `;
+                        holdingsContainer.appendChild(row);
+                    }
+                });
+            });
+
+            // Update total value with proper selector and formatting
+            const totalValueElement = document.getElementById('totalValue');
+            if (totalValueElement) {
+                totalValueElement.textContent = formatCurrency(totalPortfolioValue);
+            }
+
+            // Update sector pie chart
+            setTimeout(() => {
+                initializeSectorPieChart();
+            }, 100);
+        }
+
+        function createBackgroundLines() {
+            const container = document.querySelector('.portfolio-container');
+            if (!container) {
+                console.error('Portfolio container not found');
+                return;
+            }
+
+            const linesContainer = document.createElement('div');
+            linesContainer.className = 'background-lines';
+            
+            // Create 5 lines
+            for (let i = 0; i < 5; i++) {
+                const line = document.createElement('div');
+                line.className = 'bg-line';
+                linesContainer.appendChild(line);
+            }
+            
+            container.appendChild(linesContainer);
+        }
+
+        // Wait for DOM to load, then initialize everything
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('Page loaded, initializing...');
+            if (document.querySelector('.portfolio-container')) {
+                createBackgroundLines();
+            }
+            initializePortfolio();
+        });
+
+            // Refresh when returning to the page - but don't reinitialize charts
+            let visibilityHandler = null;
+            if (!visibilityHandler) {
+                visibilityHandler = () => {
+                    if (document.visibilityState === 'visible') {
+                        console.log('Page became visible, refreshing portfolio');
+                        initializePortfolio();
+                        initializeSectorPieChart();
+                        // Don't reinitialize performance chart - it causes lag
+                    }
+                };
+                document.addEventListener('visibilitychange', visibilityHandler);
+            }
+
+        function openWatchlist() {
+            // Redirect to dedicated watchlist page
+            window.location.href = 'watchlist.html';
+        }
+
+        function showWeeklyReport() {
+            // Create and show weekly report modal
+            const modal = document.createElement('div');
+            modal.className = 'modal-overlay';
+            modal.innerHTML = `
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2>Weekly Portfolio Report</h2>
+                        <button class="close-btn" onclick="this.closest('.modal-overlay').remove()">×</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="report-section">
+                            <h3>Portfolio Summary</h3>
+                            <div class="report-grid">
+                                <div class="report-item">
+                                    <span class="label">Starting Value:</span>
+                                    <span class="value">$100,000.00</span>
+                                </div>
+                                <div class="report-item">
+                                    <span class="label">Ending Value:</span>
+                                    <span class="value">$105,250.00</span>
+                                </div>
+                                <div class="report-item">
+                                    <span class="label">Weekly Return:</span>
+                                    <span class="value positive">+5.25%</span>
+                                </div>
+                                <div class="report-item">
+                                    <span class="label">Best Performer:</span>
+                                    <span class="value">NVDA (+12.3%)</span>
+                                </div>
+                                <div class="report-item">
+                                    <span class="label">Worst Performer:</span>
+                                    <span class="value negative">TSLA (-3.2%)</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="report-section">
+                            <h3>League Performance</h3>
+                            <div class="report-grid">
+                                <div class="report-item">
+                                    <span class="label">League Rank:</span>
+                                    <span class="value">2nd of 8</span>
+                                </div>
+                                <div class="report-item">
+                                    <span class="label">Weekly Matchup:</span>
+                                    <span class="value">Won vs. Trader_John</span>
+                                </div>
+                                <div class="report-item">
+                                    <span class="label">Capital Won:</span>
+                                    <span class="value positive">+$2,625.00</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+        }
+
+        function showPortfolioPerformance() {
+            // Create and show performance modal
+            const modal = document.createElement('div');
+            modal.className = 'modal-overlay';
+            modal.innerHTML = `
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2>Portfolio Performance</h2>
+                        <button class="close-btn" onclick="this.closest('.modal-overlay').remove()">×</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="performance-tabs">
+                            <button class="tab-btn active" onclick="switchTab(this, 'week')">Week</button>
+                            <button class="tab-btn" onclick="switchTab(this, 'month')">Month</button>
+                            <button class="tab-btn" onclick="switchTab(this, '6month')">6 Months</button>
+                            <button class="tab-btn" onclick="switchTab(this, 'year')">Year</button>
+                        </div>
+                        <div class="performance-content">
+                            <div class="performance-chart">
+                                <canvas id="performanceChart"></canvas>
+                            </div>
+                            <div class="performance-stats">
+                                <div class="stat-item">
+                                    <span class="label">Total Return:</span>
+                                    <span class="value positive">+15.25%</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="label">Volatility:</span>
+                                    <span class="value">12.3%</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="label">Sharpe Ratio:</span>
+                                    <span class="value">1.45</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="label">Max Drawdown:</span>
+                                    <span class="value negative">-8.2%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+            
+            // Initialize performance chart - only if not already initialized
+            setTimeout(() => {
+                const ctx = document.getElementById('performanceChart');
+                if (ctx && !ctx.chart) {
+                    ctx.chart = new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
+                            datasets: [{
+                                label: 'Portfolio Value',
+                                data: [100000, 101200, 102800, 104100, 105250],
+                                borderColor: '#00FF88',
+                                backgroundColor: 'rgba(0, 255, 136, 0.1)',
+                                tension: 0.4
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            plugins: {
+                                legend: {
+                                    display: false
+                                }
+                            },
+                            scales: {
+                                y: {
+                                    beginAtZero: false,
+                                    grid: {
+                                        color: 'rgba(255, 255, 255, 0.1)'
+                                    },
+                                    ticks: {
+                                        color: '#ffffff'
+                                    }
+                                },
+                                x: {
+                                    grid: {
+                                        color: 'rgba(255, 255, 255, 0.1)'
+                                    },
+                                    ticks: {
+                                        color: '#ffffff'
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
+            }, 100);
+        }
+
+        function switchTab(btn, period) {
+            // Remove active class from all tabs
+            document.querySelectorAll('.tab-btn').forEach(tab => tab.classList.remove('active'));
+            // Add active class to clicked tab
+            btn.classList.add('active');
+            // Here you would update the chart data based on the selected period
+        }
+
+        function switchTimeframe(btn, timeframe) {
+            // Remove active class from all timeframe buttons
+            document.querySelectorAll('.chart-controls .tab-btn').forEach(tab => tab.classList.remove('active'));
+            // Add active class to clicked button
+            btn.classList.add('active');
+            
+            // Update chart based on timeframe
+            updatePerformanceChart(timeframe);
+        }
+
+        function updatePerformanceChart(timeframe) {
+            const ctx = document.getElementById('performanceChart');
+            if (!ctx) {
+                console.warn('Chart canvas not found');
+                return;
+            }
+
+            // Prevent multiple chart instances
+            if (window.performanceChartInstance) {
+                try {
+                    window.performanceChartInstance.destroy();
+                } catch (e) {
+                    console.warn('Error destroying chart:', e);
+                }
+                window.performanceChartInstance = null;
+            }
+
+            // Sample data for different timeframes
+            const sampleData = {
+                day: {
+                    labels: ['9:30', '10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '1:00', '1:30', '2:00', '2:30', '3:00', '3:30', '4:00'],
+                    data: [100000, 100250, 100180, 100420, 100380, 100550, 100480, 100620, 100580, 100750, 100680, 100820, 100780, 100950]
+                },
+                week: {
+                    labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
+                    data: [100000, 100200, 100800, 101100, 101250]
+                },
+                month: {
+                    labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+                    data: [100000, 101200, 102800, 104100]
+                },
+                '3month': {
+                    labels: ['Month 1', 'Month 2', 'Month 3'],
+                    data: [100000, 102500, 105800]
+                },
+                '6month': {
+                    labels: ['Month 1', 'Month 2', 'Month 3', 'Month 4', 'Month 5', 'Month 6'],
+                    data: [100000, 101500, 103200, 105800, 108200, 110500]
+                },
+                ytd: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                    data: [100000, 101200, 102800, 104100, 105500, 107200, 108800, 110500, 112200, 113800, 115500, 117200]
+                },
+                '1year': {
+                    labels: ['Q1', 'Q2', 'Q3', 'Q4'],
+                    data: [100000, 105200, 110800, 117200]
+                },
+                all: {
+                    labels: ['Start', '3M', '6M', '1Y', '2Y', '3Y'],
+                    data: [100000, 102500, 105800, 117200, 125800, 142300]
+                }
+            };
+
+            const chartData = sampleData[timeframe] || sampleData.day;
+
+            // Create new chart instance
+            try {
+                window.performanceChartInstance = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: chartData.labels,
+                    datasets: [{
+                        label: 'Portfolio Value',
+                        data: chartData.data,
+                        borderColor: '#00FF88',
+                        backgroundColor: 'rgba(0, 255, 136, 0.1)',
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.4,
+                        pointBackgroundColor: '#00FF88',
+                        pointBorderColor: '#ffffff',
+                        pointBorderWidth: 2,
+                        pointRadius: 6,
+                        pointHoverRadius: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: false,
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            },
+                            ticks: {
+                                color: '#ffffff',
+                                callback: function(value) {
+                                    return '$' + (value / 1000).toFixed(0) + 'K';
+                                }
+                            }
+                        },
+                        x: {
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            },
+                            ticks: {
+                                color: '#ffffff'
+                            }
+                        }
+                    },
+                    interaction: {
+                        intersect: false,
+                        mode: 'index'
+                    }
+                }
+                });
+            } catch (error) {
+                console.error('Error creating chart:', error);
+            }
+        }
+
+        // Initialize the performance chart when page loads - only once
+        let chartInitialized = false;
+        let chartInstance = null;
+        let sectorPieChart = null;
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            if (!chartInitialized) {
+                const ctx = document.getElementById('performanceChart');
+                if (ctx) {
+                    setTimeout(() => {
+                        if (!chartInstance) {
+                            updatePerformanceChart('day');
+                            chartInitialized = true;
+                        }
+                    }, 500);
+                }
+            }
+            initializeSectorPieChart();
+        });
+
+        // Initialize Sector Allocation Pie Chart
+        function initializeSectorPieChart() {
+            const ctx = document.getElementById('sectorPieChart');
+            if (!ctx) return;
+
+            // Calculate sector allocation from portfolio
+            const portfolioData = JSON.parse(localStorage.getItem('portfolioData') || '{}');
+            const sectorData = calculateSectorAllocation(portfolioData);
+
+            const sectorColors = [
+                '#00FF88', '#FFB100', '#1E3888', '#47A992', '#FF4444',
+                '#9D4EDD', '#4ECDC4', '#FF6B6B', '#95E1D3', '#F38181'
+            ];
+
+            if (sectorPieChart) {
+                sectorPieChart.destroy();
+            }
+
+            sectorPieChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: sectorData.map(s => s.sector),
+                    datasets: [{
+                        data: sectorData.map(s => s.value),
+                        backgroundColor: sectorColors.slice(0, sectorData.length),
+                        borderWidth: 0,
+                        cutout: '75%'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            backgroundColor: '#151A21',
+                            borderColor: 'rgba(255, 255, 255, 0.1)',
+                            borderWidth: 1,
+                            titleColor: '#ffffff',
+                            bodyColor: '#ffffff',
+                            padding: 12,
+                            callbacks: {
+                                label: function(context) {
+                                    const label = context.label || '';
+                                    const value = context.parsed || 0;
+                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                    const percentage = ((value / total) * 100).toFixed(1);
+                                    return `${label}: $${value.toLocaleString()} (${percentage}%)`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Update legend
+            updateSectorLegend(sectorData, sectorColors);
+        }
+
+        function calculateSectorAllocation(portfolioData) {
+            const sectors = {};
+            
+            if (portfolioData.stocks) {
+                Object.keys(portfolioData.stocks).forEach(sector => {
+                    const sectorStocks = portfolioData.stocks[sector];
+                    let sectorValue = 0;
+                    
+                    sectorStocks.forEach(stock => {
+                        if (stock.shares && stock.shares > 0) {
+                            sectorValue += stock.shares * parseFloat(stock.price || 0);
+                        }
+                    });
+                    
+                    if (sectorValue > 0) {
+                        sectors[sector] = sectorValue;
+                    }
+                });
+            }
+
+            // If no data, show sample data
+            if (Object.keys(sectors).length === 0) {
+                return [
+                    { sector: 'Technology', value: 45000 },
+                    { sector: 'Healthcare', value: 25000 },
+                    { sector: 'Finance', value: 20000 },
+                    { sector: 'Energy', value: 10000 }
+                ];
+            }
+
+            return Object.keys(sectors).map(sector => ({
+                sector: sector,
+                value: sectors[sector]
+            })).sort((a, b) => b.value - a.value);
+        }
+
+        function updateSectorLegend(sectorData, colors) {
+            const legend = document.getElementById('sectorLegend');
+            const total = sectorData.reduce((sum, s) => sum + s.value, 0);
+
+            legend.innerHTML = sectorData.map((sector, index) => {
+                const percentage = ((sector.value / total) * 100).toFixed(1);
+                return `
+                    <div class="sector-item">
+                        <div class="sector-info">
+                            <div class="sector-color" style="background: ${colors[index]}"></div>
+                            <div class="sector-name">${sector.sector}</div>
+                        </div>
+                        <div class="sector-value">${percentage}%</div>
+                    </div>
+                `;
+            }).join('');
+        }
+    </script>
+</body>
+</html> 

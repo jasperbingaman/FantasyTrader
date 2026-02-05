@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Stock League - Intermediate Trading Path</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Orbitron:wght@400;500;600;700;800;900&display=swap');
+
+        :root {
+            --primary: #f59e0b;
+            --secondary: #d97706;
+            --accent: #10b981;
+            --success: #10b981;
+            --danger: #ef4444;
+            --background: #0a0a0a;
+            --surface: #1a1a1a;
+            --text-primary: #ffffff;
+            --text-secondary: #a1a1aa;
+            --glow: rgba(245, 158, 11, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--background);
+            color: var(--text-primary);
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            background: rgba(26, 26, 26, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(245, 158, 11, 0.2);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .back-btn {
+            background: rgba(245, 158, 11, 0.1);
+            color: var(--primary);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .back-btn:hover {
+            background: rgba(245, 158, 11, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .page-title {
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #ffffff 0%, #f59e0b 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Main Container */
+        .main-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Course Overview */
+        .course-overview {
+            background: rgba(26, 26, 26, 0.95);
+            border: 2px solid var(--primary);
+            border-radius: 20px;
+            padding: 3rem;
+            margin-bottom: 3rem;
+            text-align: center;
+        }
+
+        .course-title {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #ffffff 0%, #f59e0b 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .course-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+        }
+
+        .course-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .stat-card {
+            background: rgba(245, 158, 11, 0.1);
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--primary);
+            display: block;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Modules Grid */
+        .modules-section {
+            margin-top: 3rem;
+        }
+
+        .modules-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .module-card {
+            background: rgba(26, 26, 26, 0.95);
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            border-radius: 16px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .module-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .module-card:hover::before {
+            opacity: 1;
+        }
+
+        .module-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+            box-shadow: 0 15px 35px rgba(245, 158, 11, 0.1);
+        }
+
+        .module-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1.5rem;
+        }
+
+        .module-number {
+            width: 50px;
+            height: 50px;
+            background: var(--primary);
+            color: var(--background);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 1.2rem;
+        }
+
+        .module-status {
+            background: rgba(245, 158, 11, 0.2);
+            color: var(--primary);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .module-status.completed {
+            background: rgba(16, 185, 129, 0.3);
+            color: var(--success);
+        }
+
+        .module-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin: 1rem 0;
+        }
+
+        .module-description {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .module-features {
+            list-style: none;
+            margin-bottom: 1.5rem;
+        }
+
+        .module-features li {
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .module-features li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        .module-progress {
+            margin: 1.5rem 0;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 0.5rem;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        .progress-text {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .module-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .module-btn {
+            background: rgba(245, 158, 11, 0.1);
+            color: var(--primary);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-size: 0.9rem;
+            flex: 1;
+        }
+
+        .module-btn:hover {
+            background: rgba(245, 158, 11, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .start-btn {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+
+        .start-btn:hover {
+            box-shadow: 0 8px 20px rgba(245, 158, 11, 0.3);
+        }
+
+        /* Charts and Graphics */
+        .chart-container {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .chart-title {
+            color: var(--primary);
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .price-chart {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(180deg, 
+                rgba(245, 158, 11, 0.1) 0%, 
+                rgba(245, 158, 11, 0.05) 50%, 
+                rgba(239, 68, 68, 0.05) 100%);
+            border-radius: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .chart-line {
+            position: absolute;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            top: 50%;
+            left: 0;
+            width: 100%;
+            transform: translateY(-50%);
+            animation: chartMove 8s ease-in-out infinite;
+        }
+
+        @keyframes chartMove {
+            0%, 100% { transform: translateY(-50%) scaleX(1); }
+            50% { transform: translateY(-50%) scaleX(1.2); }
+        }
+
+        .candlestick-chart {
+            display: flex;
+            align-items: end;
+            justify-content: center;
+            gap: 4px;
+            height: 150px;
+            margin: 1rem 0;
+        }
+
+        .candlestick {
+            width: 8px;
+            background: var(--primary);
+            border-radius: 2px;
+            position: relative;
+        }
+
+        .candlestick::before {
+            content: '';
+            position: absolute;
+            width: 2px;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.6);
+            left: 50%;
+            transform: translateX(-50%);
+            top: -10px;
+        }
+
+        .candlestick.red {
+            background: var(--danger);
+        }
+
+        .pattern-chart {
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            gap: 2px;
+            height: 120px;
+            margin: 1rem 0;
+        }
+
+        .pattern-bar {
+            background: var(--primary);
+            border-radius: 2px;
+            position: relative;
+        }
+
+        .pattern-bar::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.6);
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .indicator-chart {
+            width: 100%;
+            height: 150px;
+            background: rgba(245, 158, 11, 0.05);
+            border-radius: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .indicator-line {
+            position: absolute;
+            height: 2px;
+            background: var(--primary);
+            top: 50%;
+            left: 0;
+            width: 100%;
+            transform: translateY(-50%);
+            animation: indicatorMove 6s ease-in-out infinite;
+        }
+
+        @keyframes indicatorMove {
+            0%, 100% { transform: translateY(-50%) scaleX(1); }
+            50% { transform: translateY(-50%) scaleX(1.1); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .course-stats {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .modules-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .course-title {
+                font-size: 2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .main-container {
+                padding: 1rem;
+            }
+            
+            .course-overview {
+                padding: 2rem 1rem;
+            }
+            
+            .course-stats {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="header-content">
+            <button class="back-btn" onclick="window.location.href='learn.html'">
+                ← Back to Learning Hub
+            </button>
+            <h1 class="page-title">Intermediate Trading Path</h1>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Course Overview -->
+        <div class="course-overview">
+            <h1 class="course-title">Intermediate Trading Course</h1>
+            <p class="course-subtitle">
+                Advance your trading skills with advanced analysis, chart patterns, and proven strategies. 
+                Build on your foundation and develop professional trading techniques.
+            </p>
+
+            <div class="course-stats">
+                <div class="stat-card">
+                    <span class="stat-number">6</span>
+                    <span class="stat-label">Modules</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">30+</span>
+                    <span class="stat-label">Lessons</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">20+</span>
+                    <span class="stat-label">Quizzes</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modules Section -->
+        <div class="modules-section">
+            <h2 style="font-size: 2rem; margin-bottom: 2rem; text-align: center; color: var(--text-primary);">
+                Course Modules
+            </h2>
+            
+            <div class="modules-grid">
+                <!-- Module 1: Advanced Chart Patterns -->
+                <div class="module-card" onclick="openModule(0)">
+                    <div class="module-header">
+                        <div class="module-number">1</div>
+                        <span class="module-status" id="status-0">Not Started</span>
+                    </div>
+                    <h3 class="module-title">Advanced Chart Patterns</h3>
+                    <p class="module-description">
+                        Master complex chart patterns including triangles, flags, wedges, and reversal patterns.
+                    </p>
+                    <ul class="module-features">
+                        <li>Triangle Patterns</li>
+                        <li>Flag & Pennant Patterns</li>
+                        <li>Wedge Formations</li>
+                        <li>Reversal Patterns</li>
+                    </ul>
+                    
+
+
+                    <div class="module-progress">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progress-0" style="width: 0%"></div>
+                        </div>
+                        <div class="progress-text">0% Complete</div>
+                    </div>
+
+                    <div class="module-actions">
+                        <button class="module-btn start-btn" onclick="startModule(0)">Start Module</button>
+                        <button class="module-btn" onclick="viewModule(0)">Preview</button>
+                    </div>
+                </div>
+
+                <!-- Module 2: Technical Indicators -->
+                <div class="module-card" onclick="openModule(1)">
+                    <div class="module-header">
+                        <div class="module-number">2</div>
+                        <span class="module-status" id="status-1">Not Started</span>
+                    </div>
+                    <h3 class="module-title">Technical Indicators</h3>
+                    <p class="module-description">
+                        Learn to use RSI, MACD, Bollinger Bands, and other powerful technical indicators.
+                    </p>
+                    <ul class="module-features">
+                        <li>RSI & Momentum</li>
+                        <li>MACD & Signal Lines</li>
+                        <li>Bollinger Bands</li>
+                        <li>Moving Averages</li>
+                    </ul>
+                    
+
+
+                    <div class="module-progress">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progress-1" style="width: 0%"></div>
+                        </div>
+                        <div class="progress-text">0% Complete</div>
+                    </div>
+
+                    <div class="module-actions">
+                        <button class="module-btn start-btn" onclick="startModule(1)">Start Module</button>
+                        <button class="module-btn" onclick="viewModule(1)">Preview</button>
+                    </div>
+                </div>
+
+                <!-- Module 3: Options Strategies -->
+                <div class="module-card" onclick="openModule(2)">
+                    <div class="module-header">
+                        <div class="module-number">3</div>
+                        <span class="module-status" id="status-2">Not Started</span>
+                    </div>
+                    <h3 class="module-title">Options Strategies</h3>
+                    <p class="module-description">
+                        Master basic options strategies including calls, puts, spreads, and covered calls.
+                    </p>
+                    <ul class="module-features">
+                        <li>Call & Put Basics</li>
+                        <li>Covered Calls</li>
+                        <li>Bull & Bear Spreads</li>
+                        <li>Risk Management</li>
+                    </ul>
+                    
+
+
+                    <div class="module-progress">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progress-2" style="width: 0%"></div>
+                        </div>
+                        <div class="progress-text">0% Complete</div>
+                    </div>
+
+                    <div class="module-actions">
+                        <button class="module-btn start-btn" onclick="startModule(2)">Start Module</button>
+                        <button class="module-btn" onclick="viewModule(2)">Preview</button>
+                    </div>
+                </div>
+
+                <!-- Module 4: Swing Trading -->
+                <div class="module-card" onclick="openModule(3)">
+                    <div class="module-header">
+                        <div class="module-number">4</div>
+                        <span class="module-status" id="status-3">Not Started</span>
+                    </div>
+                    <h3 class="module-title">Swing Trading</h3>
+                    <p class="module-description">
+                        Learn swing trading techniques for medium-term positions and trend following.
+                    </p>
+                    <ul class="module-features">
+                        <li>Trend Identification</li>
+                        <li>Entry & Exit Timing</li>
+                        <li>Position Sizing</li>
+                        <li>Risk Management</li>
+                    </ul>
+                    
+
+
+                    <div class="module-progress">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progress-3" style="width: 0%"></div>
+                        </div>
+                        <div class="progress-text">0% Complete</div>
+                    </div>
+
+                    <div class="module-actions">
+                        <button class="module-btn start-btn" onclick="startModule(3)">Start Module</button>
+                        <button class="module-btn" onclick="viewModule(3)">Preview</button>
+                    </div>
+                </div>
+
+                <!-- Module 5: Market Analysis -->
+                <div class="module-card" onclick="openModule(4)">
+                    <div class="module-header">
+                        <div class="module-number">5</div>
+                        <span class="module-status" id="status-4">Not Started</span>
+                    </div>
+                    <h3 class="module-title">Market Analysis</h3>
+                    <p class="module-description">
+                        Master sector rotation, market breadth, and intermarket analysis techniques.
+                    </p>
+                    <ul class="module-features">
+                        <li>Sector Rotation</li>
+                        <li>Market Breadth</li>
+                        <li>Intermarket Analysis</li>
+                        <li>Economic Indicators</li>
+                    </ul>
+                    
+
+
+                    <div class="module-progress">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progress-4" style="width: 0%"></div>
+                        </div>
+                        <div class="progress-text">0% Complete</div>
+                    </div>
+
+                    <div class="module-actions">
+                        <button class="module-btn start-btn" onclick="startModule(4)">Start Module</button>
+                        <button class="module-btn" onclick="viewModule(4)">Preview</button>
+                    </div>
+                </div>
+
+                <!-- Module 6: Risk Management -->
+                <div class="module-card" onclick="openModule(5)">
+                    <div class="module-header">
+                        <div class="module-number">6</div>
+                        <span class="module-status" id="status-5">Not Started</span>
+                    </div>
+                    <h3 class="module-title">Advanced Risk Management</h3>
+                    <p class="module-description">
+                        Develop sophisticated risk management strategies and position sizing techniques.
+                    </p>
+                    <ul class="module-features">
+                        <li>Position Sizing</li>
+                        <li>Stop-Loss Strategies</li>
+                        <li>Portfolio Risk</li>
+                        <li>Correlation Analysis</li>
+                    </ul>
+                    
+
+
+                    <div class="module-progress">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progress-5" style="width: 0%"></div>
+                        </div>
+                        <div class="progress-text">0% Complete</div>
+                    </div>
+
+                    <div class="module-actions">
+                        <button class="module-btn start-btn" onclick="startModule(5)">Start Module</button>
+                        <button class="module-btn" onclick="viewModule(5)">Preview</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Module data
+        const modules = [
+            {
+                title: "Advanced Chart Patterns",
+                lessons: [
+                    "Triangle Patterns",
+                    "Flag & Pennant Patterns",
+                    "Wedge Formations",
+                    "Reversal Patterns",
+                    "Continuation Patterns"
+                ],
+                quizzes: [
+                    "Pattern Recognition Quiz",
+                    "Pattern Trading Test",
+                    "Advanced Patterns Assessment"
+                ]
+            },
+            {
+                title: "Technical Indicators",
+                lessons: [
+                    "RSI & Momentum",
+                    "MACD & Signal Lines",
+                    "Bollinger Bands",
+                    "Moving Averages",
+                    "Volume Indicators"
+                ],
+                quizzes: [
+                    "Indicator Usage Quiz",
+                    "Signal Generation Test",
+                    "Indicator Combination Assessment"
+                ]
+            },
+            {
+                title: "Options Strategies",
+                lessons: [
+                    "Call & Put Basics",
+                    "Covered Calls",
+                    "Bull & Bear Spreads",
+                    "Risk Management",
+                    "Options Greeks"
+                ],
+                quizzes: [
+                    "Options Basics Quiz",
+                    "Strategy Implementation Test",
+                    "Risk Management Assessment"
+                ]
+            },
+            {
+                title: "Swing Trading",
+                lessons: [
+                    "Trend Identification",
+                    "Entry & Exit Timing",
+                    "Position Sizing",
+                    "Risk Management",
+                    "Trade Management"
+                ],
+                quizzes: [
+                    "Swing Trading Quiz",
+                    "Timing Test",
+                    "Risk Management Assessment"
+                ]
+            },
+            {
+                title: "Market Analysis",
+                lessons: [
+                    "Sector Rotation",
+                    "Market Breadth",
+                    "Intermarket Analysis",
+                    "Economic Indicators",
+                    "News Trading"
+                ],
+                quizzes: [
+                    "Market Analysis Quiz",
+                    "Sector Analysis Test",
+                    "Economic Impact Assessment"
+                ]
+            },
+            {
+                title: "Advanced Risk Management",
+                lessons: [
+                    "Position Sizing",
+                    "Stop-Loss Strategies",
+                    "Portfolio Risk",
+                    "Correlation Analysis",
+                    "Risk Metrics"
+                ],
+                quizzes: [
+                    "Risk Management Quiz",
+                    "Position Sizing Test",
+                    "Portfolio Risk Assessment"
+                ]
+            }
+        ];
+
+        // Module functions
+        function startModule(moduleIndex) {
+            const module = modules[moduleIndex];
+            alert(`Starting ${module.title} Module!\n\n📚 Lessons: ${module.lessons.length}\n📝 Quizzes: ${module.quizzes.length}\n\nThis module will cover:\n${module.lessons.join('\n')}\n\nGet ready to advance your trading skills!`);
+            
+            // Update status
+            document.getElementById(`status-${moduleIndex}`).textContent = 'In Progress';
+            document.getElementById(`status-${moduleIndex}`).className = 'module-status';
+            
+            // Simulate progress
+            simulateProgress(moduleIndex);
+        }
+
+        function viewModule(moduleIndex) {
+            const module = modules[moduleIndex];
+            alert(`${module.title} Module Preview:\n\n📚 Lessons:\n${module.lessons.join('\n')}\n\n📝 Quizzes:\n${module.quizzes.join('\n')}\n\n⏱️ Estimated Time: 1.5-2 weeks\n🎯 Difficulty: Intermediate\n\nThis module provides advanced coverage of ${module.title.toLowerCase()} with interactive content and assessments.`);
+        }
+
+        function openModule(moduleIndex) {
+            // In a real app, this would open the module content
+            viewModule(moduleIndex);
+        }
+
+        function simulateProgress(moduleIndex) {
+            const progressBar = document.getElementById(`progress-${moduleIndex}`);
+            const progressText = progressBar.nextElementSibling;
+            let progress = 0;
+            
+            const interval = setInterval(() => {
+                progress += Math.random() * 15;
+                if (progress >= 100) {
+                    progress = 100;
+                    clearInterval(interval);
+                    document.getElementById(`status-${moduleIndex}`).textContent = 'Completed';
+                    document.getElementById(`status-${moduleIndex}`).className = 'module-status completed';
+                }
+                
+                progressBar.style.width = progress + '%';
+                progressText.textContent = Math.round(progress) + '% Complete';
+            }, 1000);
+        }
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            // Ensure all progress bars start at 0%
+            const progressBars = document.querySelectorAll('.progress-fill');
+            progressBars.forEach(bar => {
+                bar.style.width = '0%';
+            });
+        });
+    </script>
+</body>
+</html> 

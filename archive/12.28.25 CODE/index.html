@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Fantasy Trader</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: 
+                linear-gradient(135deg, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.5) 100%),
+                url('1f6c654f-09d9-4900-8f9f-492d3704ffe2.png') center/cover no-repeat;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .logo-container {
+            position: absolute;
+            top: 35%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 70%;
+            height: 70%;
+            background: url('ChatGPT Image Sep 10, 2025, 12_10_53 AM.png') center/contain no-repeat;
+            opacity: 1.2;
+            z-index: 1;
+            filter: brightness(1.1) contrast(1.1);
+        }
+
+        .content {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        .slogan {
+            font-size: 0.9rem;
+            color: #ffffff;
+            font-weight: 300;
+            letter-spacing: 1px;
+            margin-top: 19rem;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+        }
+
+        .start-button {
+            background: linear-gradient(135deg, #00ff96 0%, #00d4aa 50%, #00ff96 100%);
+            border: 2px solid rgba(0, 255, 150, 0.5);
+            padding: 18px 35px;
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #000000;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-family: 'Orbitron', 'Segoe UI', Arial, sans-serif;
+            box-shadow: 
+                0 10px 30px rgba(0, 255, 150, 0.4),
+                0 0 0 0 rgba(0, 255, 150, 0.7),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+            margin-top: 2rem;
+            width: fit-content;
+            backdrop-filter: blur(15px);
+            text-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+        }
+
+        .start-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .start-button::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.1) 50%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .start-button:hover::before {
+            left: 100%;
+        }
+
+        .start-button:hover::after {
+            opacity: 1;
+        }
+
+        .start-button:hover {
+            transform: translateY(-6px) scale(1.03);
+            box-shadow: 
+                0 20px 40px rgba(0, 255, 150, 0.6),
+                0 0 0 0 rgba(0, 255, 150, 0.7),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            border-color: rgba(0, 255, 150, 0.8);
+            text-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
+        }
+
+        .start-button:active {
+            transform: translateY(-3px) scale(0.98);
+        }
+    </style>
+</head>
+<body>
+    <div class="logo-container"></div>
+    
+    <div class="content">
+        <p class="slogan">COMPETE. LEARN. WIN.</p>
+        <button class="start-button" onclick="window.location.href='signup.html'">START</button>
+    </div>
+</body>
+</html> 

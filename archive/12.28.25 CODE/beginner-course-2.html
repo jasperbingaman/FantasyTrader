@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beginner Course - Module 2: Reading Stock Charts</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1E3888;
+            --secondary: #47A992;
+            --accent: #FFB100;
+            --success: #00FF88;
+            --background: #0B1622;
+            --surface: #162A3D;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: var(--background);
+            color: #ffffff;
+            line-height: 1.6;
+        }
+
+        .header {
+            background: rgba(22, 42, 61, 0.95);
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid rgba(0, 255, 136, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .back-button {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .back-button:hover {
+            background: rgba(0, 255, 136, 0.1);
+            border-color: var(--success);
+        }
+
+        .progress-bar {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .progress-text {
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .progress-track {
+            width: 200px;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--success);
+            width: 40%; /* Module 2 = 40% */
+            transition: width 0.3s ease;
+        }
+
+        .main-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .module-title {
+            color: var(--accent);
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .module-subtitle {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1.2rem;
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .content-section {
+            background: rgba(22, 42, 61, 0.8);
+            border: 1px solid rgba(0, 255, 136, 0.1);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            color: var(--success);
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .content-text {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.1rem;
+            line-height: 1.7;
+            margin-bottom: 1.5rem;
+        }
+
+        .chart-demo {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 2rem;
+            margin: 1.5rem 0;
+            text-align: center;
+        }
+
+        .chart-placeholder {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(45deg, #1a1a1a 25%, transparent 25%), 
+                        linear-gradient(-45deg, #1a1a1a 25%, transparent 25%), 
+                        linear-gradient(45deg, transparent 75%, #1a1a1a 75%), 
+                        linear-gradient(-45deg, transparent 75%, #1a1a1a 75%);
+            background-size: 20px 20px;
+            background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent);
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .highlight-box {
+            background: rgba(255, 177, 0, 0.1);
+            border: 1px solid rgba(255, 177, 0, 0.3);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .highlight-title {
+            color: var(--accent);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .term-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .term-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 1.5rem;
+        }
+
+        .term-title {
+            color: var(--success);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .term-definition {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.95rem;
+        }
+
+        .navigation-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 3rem;
+        }
+
+        .nav-button {
+            background: rgba(22, 42, 61, 0.95);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            color: var(--success);
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .nav-button:hover {
+            background: rgba(0, 255, 136, 0.1);
+            border-color: var(--success);
+            transform: translateY(-2px);
+        }
+
+        .quiz-section {
+            background: rgba(22, 42, 61, 0.8);
+            border: 1px solid rgba(255, 177, 0, 0.2);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+
+        .quiz-question {
+            color: var(--accent);
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .quiz-option {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .quiz-option:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: var(--accent);
+        }
+
+        .quiz-option.correct {
+            background: rgba(0, 255, 136, 0.1);
+            border-color: var(--success);
+        }
+
+        .quiz-option.incorrect {
+            background: rgba(255, 68, 68, 0.1);
+            border-color: #ff4444;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="learn.html" class="back-button">← Back to Learning</a>
+        <div class="progress-bar">
+            <span class="progress-text">Module 2 of 5</span>
+            <div class="progress-track">
+                <div class="progress-fill"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="main-container">
+        <h1 class="module-title">Module 2: Reading Stock Charts</h1>
+        <p class="module-subtitle">Learn to understand stock price movements and basic chart analysis</p>
+
+        <div class="content-section">
+            <h2 class="section-title">Understanding Stock Charts</h2>
+            <p class="content-text">
+                Stock charts are visual representations of a stock's price over time. They help you see patterns and trends that can inform your trading decisions.
+            </p>
+            
+            <div class="chart-demo">
+                <div class="chart-placeholder">Stock Price Chart Example</div>
+                <p style="color: rgba(255, 255, 255, 0.7); font-size: 0.9rem;">
+                    Charts show price on the Y-axis and time on the X-axis
+                </p>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">Key Chart Terms</h2>
+            <div class="term-grid">
+                <div class="term-card">
+                    <div class="term-title">Open Price</div>
+                    <div class="term-definition">The price when the market opens for trading</div>
+                </div>
+                <div class="term-card">
+                    <div class="term-title">Close Price</div>
+                    <div class="term-definition">The final price when the market closes</div>
+                </div>
+                <div class="term-card">
+                    <div class="term-title">High</div>
+                    <div class="term-definition">The highest price reached during the trading period</div>
+                </div>
+                <div class="term-card">
+                    <div class="term-title">Low</div>
+                    <div class="term-definition">The lowest price reached during the trading period</div>
+                </div>
+                <div class="term-card">
+                    <div class="term-title">Volume</div>
+                    <div class="term-definition">Number of shares traded during the period</div>
+                </div>
+                <div class="term-card">
+                    <div class="term-title">Market Cap</div>
+                    <div class="term-definition">Total value of all company shares (Price × Total Shares)</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">Basic Chart Patterns</h2>
+            <p class="content-text">
+                Recognizing patterns in stock charts can help you make better trading decisions. Here are some common patterns:
+            </p>
+
+            <div class="highlight-box">
+                <div class="highlight-title">Uptrend</div>
+                <p>When a stock's price consistently moves higher over time. This usually indicates positive momentum and investor confidence.</p>
+            </div>
+
+            <div class="highlight-box">
+                <div class="highlight-title">Downtrend</div>
+                <p>When a stock's price consistently moves lower over time. This may indicate declining performance or negative sentiment.</p>
+            </div>
+
+            <div class="highlight-box">
+                <div class="highlight-title">Support Level</div>
+                <p>A price level where the stock tends to stop falling and bounce back up. Think of it as a "floor" for the stock price.</p>
+            </div>
+
+            <div class="highlight-box">
+                <div class="highlight-title">Resistance Level</div>
+                <p>A price level where the stock tends to stop rising and fall back down. Think of it as a "ceiling" for the stock price.</p>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">Reading Price Changes</h2>
+            <p class="content-text">
+                Stock prices are often shown with color coding:
+            </p>
+            <ul style="color: rgba(255, 255, 255, 0.9); margin-left: 1.5rem; line-height: 1.7;">
+                <li><strong style="color: var(--success);">Green:</strong> Price went up (positive change)</li>
+                <li><strong style="color: #ff4444;">Red:</strong> Price went down (negative change)</li>
+                <li><strong style="color: var(--accent);">Yellow/White:</strong> No change or neutral</li>
+            </ul>
+        </div>
+
+        <div class="quiz-section">
+            <h3 class="quiz-question">Quick Quiz: What does a green stock price typically indicate?</h3>
+            <div class="quiz-options">
+                <div class="quiz-option" onclick="checkAnswer(this, 'correct')">
+                    The stock price increased from the previous period
+                </div>
+                <div class="quiz-option" onclick="checkAnswer(this, 'incorrect')">
+                    The stock price decreased from the previous period
+                </div>
+                <div class="quiz-option" onclick="checkAnswer(this, 'incorrect')">
+                    The stock is currently at its highest price ever
+                </div>
+                <div class="quiz-option" onclick="checkAnswer(this, 'incorrect')">
+                    The company is making a profit
+                </div>
+            </div>
+        </div>
+
+        <div class="navigation-buttons">
+            <a href="beginner-course-1.html" class="nav-button">← Previous Module</a>
+            <button class="nav-button" onclick="completeModule()">Complete Module</button>
+            <a href="beginner-course-3.html" class="nav-button">Next Module →</a>
+        </div>
+    </div>
+
+    <script>
+        function checkAnswer(option, result) {
+            // Remove previous selections
+            document.querySelectorAll('.quiz-option').forEach(opt => {
+                opt.classList.remove('correct', 'incorrect');
+            });
+            
+            // Add result class
+            option.classList.add(result);
+            
+            // Show feedback
+            if (result === 'correct') {
+                setTimeout(() => {
+                    alert('Correct! Green indicates the stock price went up from the previous period.');
+                }, 500);
+            } else {
+                setTimeout(() => {
+                    alert('Not quite right. Green indicates the stock price increased from the previous period.');
+                }, 500);
+            }
+        }
+
+        function completeModule() {
+            localStorage.setItem('module2Completed', 'true');
+            alert('Great job! You\'ve completed Module 2. You can now move on to the next module.');
+        }
+    </script>
+</body>
+</html> 

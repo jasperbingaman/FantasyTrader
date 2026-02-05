@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beginner Course - Stock League</title>
+</head>
+<body>
+    <div class="gradient-overlay"></div>
+    
+    <button class="back-btn" onclick="window.location.href='learn.html'">
+        <span>←</span> Back to Learning Hub
+    </button>
+
+    <div class="course-container">
+        <div class="course-header">
+            <div class="title-wrapper">
+                <h1>BEGINNER COURSE</h1>
+                <div class="title-underline"></div>
+            </div>
+            <p class="course-intro">Your journey into stock trading starts here</p>
+        </div>
+
+        <div class="modules-list">
+            <div class="module-card active">
+                <div class="card-content">
+                    <div class="module-number">01</div>
+                    <div class="module-info">
+                        <h2>Understanding Stocks</h2>
+                        <p>Learn the fundamentals of stock market investing</p>
+                        <div class="topics">
+                            <span class="topic">Stock Basics</span>
+                            <span class="topic">Market Cap</span>
+                            <span class="topic">Trading Basics</span>
+                        </div>
+                    </div>
+                    <div class="module-status">
+                        <div class="status-indicator incomplete">
+                            <span class="status-dot"></span>
+                            Not Started
+                        </div>
+                        <a href="module1.html" class="start-btn">Begin Module →</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="module-card locked">
+                <div class="card-content">
+                    <div class="module-number">02</div>
+                    <div class="module-info">
+                        <h2>Reading Stock Charts</h2>
+                        <p>Master basic chart patterns and technical analysis</p>
+                        <div class="topics">
+                            <span class="topic">Price Action</span>
+                            <span class="topic">Chart Types</span>
+                            <span class="topic">Key Patterns</span>
+                        </div>
+                    </div>
+                    <div class="module-status">
+                        <div class="status-indicator locked">
+                            <span class="status-dot"></span>
+                            Locked
+                        </div>
+                        <button class="start-btn locked" disabled>Complete Module 1 First</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="module-card locked">
+                <div class="card-content">
+                    <div class="module-number">03</div>
+                    <div class="module-info">
+                        <h2>Types of Orders</h2>
+                        <p>Understand different order types and when to use them effectively</p>
+                        <div class="topics">
+                            <span class="topic">Market Orders</span>
+                            <span class="topic">Limit Orders</span>
+                            <span class="topic">Stop Orders</span>
+                        </div>
+                    </div>
+                    <div class="module-status">
+                        <div class="status-indicator locked">
+                            <span class="status-dot"></span>
+                            Locked
+                        </div>
+                        <button class="start-btn locked" disabled>Complete Module 2 First</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="module-card locked">
+                <div class="card-content">
+                    <div class="module-number">04</div>
+                    <div class="module-info">
+                        <h2>Building a Portfolio</h2>
+                        <p>Learn how to create a balanced portfolio suited to your goals</p>
+                        <div class="topics">
+                            <span class="topic">Diversification</span>
+                            <span class="topic">Asset Types</span>
+                            <span class="topic">Balance</span>
+                        </div>
+                    </div>
+                    <div class="module-status">
+                        <div class="status-indicator locked">
+                            <span class="status-dot"></span>
+                            Locked
+                        </div>
+                        <button class="start-btn locked" disabled>Complete Module 3 First</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="module-card locked">
+                <div class="card-content">
+                    <div class="module-number">05</div>
+                    <div class="module-info">
+                        <h2>Risk Management</h2>
+                        <p>Essential strategies to protect your investments and manage risk</p>
+                        <div class="topics">
+                            <span class="topic">Position Sizing</span>
+                            <span class="topic">Stop Losses</span>
+                            <span class="topic">Risk/Reward</span>
+                        </div>
+                    </div>
+                    <div class="module-status">
+                        <div class="status-indicator locked">
+                            <span class="status-dot"></span>
+                            Locked
+                        </div>
+                        <button class="start-btn locked" disabled>Complete Module 4 First</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<style>
+    body {
+        background: #0B1622;
+        color: #fff;
+        margin: 0;
+        padding: 2rem;
+        font-family: 'Segoe UI', sans-serif;
+        min-height: 100vh;
+        position: relative;
+    }
+
+    .gradient-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: radial-gradient(circle at top right, rgba(0, 255, 136, 0.1), transparent 60%),
+                    radial-gradient(circle at bottom left, rgba(0, 255, 136, 0.05), transparent 60%);
+        pointer-events: none;
+        z-index: -1;
+    }
+
+    .back-btn {
+        background: rgba(0, 255, 136, 0.1);
+        color: #00FF88;
+        border: none;
+        padding: 1rem 1.5rem;
+        border-radius: 12px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+        margin-bottom: 3rem;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+    }
+
+    .back-btn:hover {
+        background: rgba(0, 255, 136, 0.15);
+        transform: translateX(-5px);
+    }
+
+    .course-header {
+        text-align: center;
+        margin-bottom: 4rem;
+    }
+
+    .title-wrapper {
+        display: inline-block;
+        position: relative;
+    }
+
+    .course-header h1 {
+        font-size: 3.5rem;
+        background: linear-gradient(90deg, #00FF88, #48ff00);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin: 0;
+        letter-spacing: 2px;
+    }
+
+    .title-underline {
+        height: 3px;
+        background: linear-gradient(90deg, #00FF88, transparent);
+        margin-top: 5px;
+    }
+
+    .course-intro {
+        color: rgba(255, 255, 255, 0.8);
+        font-size: 1.2rem;
+        margin-top: 1rem;
+    }
+
+    .modules-list {
+        max-width: 900px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+
+    .module-card {
+        background: rgba(11, 22, 34, 0.95);
+        border: 1px solid rgba(0, 255, 136, 0.1);
+        border-radius: 16px;
+        padding: 2rem;
+        transition: all 0.3s ease;
+    }
+
+    .module-card.active:hover {
+        transform: translateY(-5px);
+        border-color: rgba(0, 255, 136, 0.3);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .card-content {
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+    }
+
+    .module-number {
+        font-size: 2.5rem;
+        font-weight: bold;
+        color: #00FF88;
+        opacity: 0.8;
+        min-width: 60px;
+    }
+
+    .module-info {
+        flex: 1;
+    }
+
+    .module-info h2 {
+        margin: 0;
+        font-size: 1.4rem;
+        color: #fff;
+    }
+
+    .module-info p {
+        margin: 0.5rem 0 1rem;
+        color: rgba(255, 255, 255, 0.7);
+        font-size: 1rem;
+        line-height: 1.4;
+    }
+
+    .topics {
+        display: flex;
+        gap: 0.8rem;
+        flex-wrap: wrap;
+    }
+
+    .topic {
+        background: rgba(0, 255, 136, 0.1);
+        padding: 0.4rem 1rem;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        color: #00FF88;
+    }
+
+    .module-status {
+        min-width: 200px;
+        text-align: right;
+    }
+
+    .status-indicator {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+        font-size: 0.9rem;
+        color: rgba(255, 255, 255, 0.6);
+    }
+
+    .status-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #FF4444;
+    }
+
+    .start-btn {
+        background: rgba(0, 255, 136, 0.15);
+        color: #00FF88;
+        border: none;
+        padding: 0.8rem 1.5rem;
+        border-radius: 12px;
+        cursor: pointer;
+        font-size: 1rem;
+        text-decoration: none;
+        display: inline-block;
+        transition: all 0.3s ease;
+    }
+
+    .start-btn:hover:not(.locked) {
+        background: rgba(0, 255, 136, 0.25);
+        transform: translateX(5px);
+    }
+
+    .module-card.locked {
+        opacity: 0.7;
+        cursor: not-allowed;
+    }
+
+    .start-btn.locked {
+        background: rgba(255, 255, 255, 0.1);
+        color: rgba(255, 255, 255, 0.4);
+        cursor: not-allowed;
+        font-size: 0.9rem;
+    }
+</style>
+
+<script>
+    // Check completion status from localStorage
+    document.addEventListener('DOMContentLoaded', () => {
+        const moduleStatuses = JSON.parse(localStorage.getItem('moduleStatuses')) || {};
+        // Update UI based on completion status
+    });
+</script>
+</body>
+</html> 

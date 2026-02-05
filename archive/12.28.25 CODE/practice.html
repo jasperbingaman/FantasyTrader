@@ -202,75 +202,137 @@
             font-family: 'Space Grotesk', sans-serif;
             background: linear-gradient(135deg, #ffffff 0%, var(--success) 50%, var(--accent) 100%);
             -webkit-background-clip: text;
+            background-clip: text;
             -webkit-text-fill-color: transparent;
             letter-spacing: -0.5px;
         }
 
         /* Main Content */
         .main-content {
-            margin-top: 90px;
-            padding: 3rem 2rem;
+            margin-top: 60px;
+            padding: 1.5rem 2rem;
             position: relative;
             z-index: 1;
-            min-height: calc(100vh - 90px);
+            min-height: calc(100vh - 60px);
         }
 
         .hero-section {
             text-align: center;
-            margin-bottom: 4rem;
-            max-width: 1200px;
+            margin-bottom: 2rem;
+            max-width: 900px;
             margin-left: auto;
             margin-right: auto;
         }
 
         .hero-title {
-            font-size: 4.5rem;
+            font-size: 2.5rem;
             font-weight: 800;
             font-family: 'Space Grotesk', sans-serif;
-            margin-bottom: 1rem;
+            margin-bottom: 0.5rem;
             line-height: 1.1;
             background: linear-gradient(135deg, #ffffff 0%, var(--success) 50%, var(--accent) 100%);
             -webkit-background-clip: text;
+            background-clip: text;
             -webkit-text-fill-color: transparent;
             text-shadow: 0 0 40px rgba(0, 255, 136, 0.3);
-            letter-spacing: -2px;
+            letter-spacing: -1px;
         }
 
         .hero-subtitle {
-            font-size: 1.4rem;
+            font-size: 1rem;
             color: var(--text-secondary);
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.25rem;
             font-weight: 500;
         }
 
         .hero-tagline {
-            font-size: 1rem;
+            font-size: 0.85rem;
             color: rgba(255, 255, 255, 0.6);
             font-style: italic;
         }
 
         .practice-cards {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-            gap: 2.5rem;
-            max-width: 1200px;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+            max-width: 900px;
             margin: 0 auto;
-            padding: 2rem 0;
+            padding: 1rem 0;
         }
 
         .practice-card {
             background: linear-gradient(135deg, rgba(22, 42, 61, 0.8) 0%, rgba(11, 22, 34, 0.9) 100%);
             border: 2px solid rgba(0, 255, 136, 0.2);
-            border-radius: 24px;
-            padding: 3rem;
+            border-radius: 16px;
+            padding: 2rem;
             cursor: pointer;
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             position: relative;
             overflow: hidden;
             text-decoration: none;
-            display: block;
+            display: flex;
+            flex-direction: column;
+            min-height: 450px;
             backdrop-filter: blur(20px);
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Background decorative elements */
+        .practice-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            opacity: 0.08;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Chart icon background for trading card */
+        .practice-card.trading-card::after {
+            background-image: 
+                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'%3E%3Cpath d='M10 250 L50 220 L90 200 L130 180 L150 160 L170 140 L190 120 L210 100 L230 85 L250 70 L270 60 L290 50 L310 45 L330 40 L350 35 L370 30 L390 25' stroke='%2300FF88' stroke-width='3' fill='none' stroke-linecap='round' opacity='0.15'/%3E%3Cpath d='M20 240 L60 210 L100 190 L140 170 L160 150 L180 130 L200 110 L220 95 L240 80 L260 70 L280 60 L300 55 L320 50 L340 45 L360 40 L380 35' stroke='%2300FF88' stroke-width='2.5' fill='none' stroke-linecap='round' opacity='0.12'/%3E%3Cpath d='M15 260 L55 230 L95 210 L135 190 L155 170 L175 150 L195 130 L215 115 L235 100 L255 90 L275 80 L295 75 L315 70 L335 65 L355 60 L375 55 L395 50' stroke='%2300FF88' stroke-width='2' fill='none' stroke-linecap='round' opacity='0.1'/%3E%3Cpath d='M30 230 L70 200 L110 180 L150 160 L170 140 L190 120 L210 105 L230 90 L250 80 L270 70 L290 65 L310 60 L330 55 L350 50 L370 45 L390 40' stroke='%2300FF88' stroke-width='2' fill='none' stroke-linecap='round' opacity='0.13'/%3E%3Cpath d='M25 245 L65 215 L105 195 L145 175 L165 155 L185 135 L205 115 L225 100 L245 85 L265 75 L285 65 L305 60 L325 55 L345 50 L365 45 L385 40' stroke='%2300FF88' stroke-width='2.5' fill='none' stroke-linecap='round' opacity='0.11'/%3E%3Cpath d='M5 270 L45 240 L85 220 L125 200 L145 180 L165 160 L185 140 L205 120 L225 105 L245 90 L265 80 L285 70 L305 65 L325 60 L345 55 L365 50 L385 45' stroke='%2300FF88' stroke-width='2' fill='none' stroke-linecap='round' opacity='0.09'/%3E%3Cpath d='M10 250 L10 280 M50 220 L50 280 M90 200 L90 280 M130 180 L130 280 M150 160 L150 280 M170 140 L170 280 M190 120 L190 280 M210 100 L210 280 M230 85 L230 280 M250 70 L250 280 M270 60 L270 280 M290 50 L290 280 M310 45 L310 280 M330 40 L330 280 M350 35 L350 280 M370 30 L370 280 M390 25 L390 280' stroke='%2300FF88' stroke-width='1' opacity='0.08'/%3E%3Cpath d='M0 250 L400 250 M0 220 L400 220 M0 190 L400 190 M0 160 L400 160 M0 130 L400 130 M0 100 L400 100 M0 70 L400 70 M0 40 L400 40' stroke='%2300FF88' stroke-width='1' opacity='0.06'/%3E%3C/svg%3E"),
+                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 120'%3E%3Cpath d='M10 100 L30 85 L50 70 L70 60 L90 55 L110 50 L130 45 L150 40 L170 35 L190 30' stroke='%2300FF88' stroke-width='3' fill='none' stroke-linecap='round'/%3E%3Cpath d='M10 100 L30 90 L50 75 L70 65 L90 58 L110 52 L130 48 L150 42 L170 38 L190 32' stroke='%2300FF88' stroke-width='2' fill='none' stroke-linecap='round' opacity='0.6'/%3E%3Ccircle cx='190' cy='30' r='4' fill='%2300FF88'/%3E%3Cpath d='M10 100 L10 110 M30 85 L30 110 M50 70 L50 110 M70 60 L70 110 M90 55 L90 110 M110 50 L110 110 M130 45 L130 110 M150 40 L150 110 M170 35 L170 110 M190 30 L190 110' stroke='%2300FF88' stroke-width='1' opacity='0.3'/%3E%3C/svg%3E");
+            background-size: 100% 100%, 180px 120px;
+            background-position: center, right -20px bottom -20px;
+            background-repeat: no-repeat, no-repeat;
+        }
+
+        /* Numbers background for portfolio card */
+        .practice-card.portfolio-card::after {
+            background-image: 
+                repeating-linear-gradient(
+                    0deg,
+                    transparent,
+                    transparent 40px,
+                    rgba(0, 255, 136, 0.03) 40px,
+                    rgba(0, 255, 136, 0.03) 41px
+                ),
+                repeating-linear-gradient(
+                    90deg,
+                    transparent,
+                    transparent 40px,
+                    rgba(0, 255, 136, 0.03) 40px,
+                    rgba(0, 255, 136, 0.03) 41px
+                );
+        }
+
+        .practice-card.portfolio-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'%3E%3Ctext x='20' y='40' font-family='Courier New' font-size='14' fill='%2300FF88' opacity='0.12'%3E+24.5%%3C/text%3E%3Ctext x='180' y='60' font-family='Courier New' font-size='12' fill='%2300FF88' opacity='0.1'%3E$1,234,567%3C/text%3E%3Ctext x='30' y='100' font-family='Courier New' font-size='13' fill='%2300FF88' opacity='0.11'%3E$89.45%3C/text%3E%3Ctext x='200' y='120' font-family='Courier New' font-size='14' fill='%2300FF88' opacity='0.13'%3E+$12.34%3C/text%3E%3Ctext x='50' y='160' font-family='Courier New' font-size='12' fill='%2300FF88' opacity='0.1'%3E-2.1%%3C/text%3E%3Ctext x='220' y='180' font-family='Courier New' font-size='13' fill='%2300FF88' opacity='0.12'%3E$456,789%3C/text%3E%3Ctext x='80' y='220' font-family='Courier New' font-size='14' fill='%2300FF88' opacity='0.11'%3E+18.2%%3C/text%3E%3Ctext x='250' y='240' font-family='Courier New' font-size='12' fill='%2300FF88' opacity='0.1'%3E$2,891,234%3C/text%3E%3Ctext x='120' y='280' font-family='Courier New' font-size='13' fill='%2300FF88' opacity='0.12'%3E$156.78%3C/text%3E%3C/svg%3E");
+            background-size: 100% 100%;
+            background-position: center;
+            background-repeat: no-repeat;
+            z-index: 0;
+            pointer-events: none;
         }
 
         .practice-card::before {
@@ -282,6 +344,7 @@
             height: 100%;
             background: linear-gradient(90deg, transparent, rgba(0, 255, 136, 0.1), transparent);
             transition: left 0.5s;
+            z-index: 1;
         }
 
         .practice-card:hover::before {
@@ -305,6 +368,7 @@
             justify-content: center;
             position: relative;
             transition: all 0.4s ease;
+            z-index: 2;
         }
 
         .practice-card:hover .card-icon {
@@ -321,20 +385,24 @@
         }
 
         .card-title {
-            font-size: 2.2rem;
+            font-size: 1.6rem;
             font-weight: 700;
             font-family: 'Space Grotesk', sans-serif;
             color: #ffffff;
-            margin-bottom: 1rem;
+            margin-bottom: 0.75rem;
             text-align: center;
+            position: relative;
+            z-index: 2;
         }
 
         .card-description {
-            font-size: 1.1rem;
+            font-size: 0.9rem;
             color: var(--text-secondary);
-            line-height: 1.7;
+            line-height: 1.5;
             text-align: center;
-            margin-bottom: 2rem;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 2;
         }
 
         .card-features {
@@ -344,14 +412,25 @@
             display: flex;
             flex-direction: column;
             gap: 1rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .portfolio-card .card-features {
+            margin-top: -1.2rem;
+        }
+        
+        .card-features {
+            margin-top: 0.3rem;
         }
 
         .card-features li {
             color: rgba(255, 255, 255, 0.8);
-            font-size: 0.95rem;
-            padding-left: 2rem;
+            font-size: 0.85rem;
+            padding-left: 1.5rem;
             position: relative;
             display: flex;
+            margin-bottom: 0.4rem;
             align-items: center;
         }
 
@@ -372,31 +451,111 @@
         }
 
         .card-cta {
-            margin-top: 2rem;
+            margin-top: auto;
             text-align: center;
-            padding: 1rem;
-            background: linear-gradient(135deg, rgba(0, 255, 136, 0.15), rgba(0, 255, 136, 0.05));
-            border: 1px solid rgba(0, 255, 136, 0.3);
-            border-radius: 12px;
-            color: var(--success);
-            font-weight: 600;
-            font-size: 1rem;
-            transition: all 0.3s ease;
+            padding: 1.2rem 2rem;
+            background: linear-gradient(135deg, var(--success) 0%, #00e677 100%);
+            border: 3px solid var(--success);
+            border-radius: 20px;
+            color: #0B1622;
+            font-weight: 900;
+            font-size: 1.3rem;
+            font-family: 'Space Grotesk', sans-serif;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            z-index: 2;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            box-shadow: 
+                0 0 0 3px rgba(0, 255, 136, 0.4),
+                0 10px 30px rgba(0, 255, 136, 0.3),
+                inset 0 3px 6px rgba(255, 255, 255, 0.25),
+                inset 0 -2px 4px rgba(0, 0, 0, 0.1);
+            transform-style: preserve-3d;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            clip-path: polygon(
+                0% 0%,
+                100% 0%,
+                100% calc(100% - 8px),
+                calc(100% - 8px) 100%,
+                8px 100%,
+                0% calc(100% - 8px)
+            );
+        }
+
+        .card-cta::before {
+            content: '';
+            position: absolute;
+            top: 4px;
+            left: 4px;
+            right: -4px;
+            bottom: -4px;
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.4), rgba(0, 255, 136, 0.2));
+            border-radius: 16px;
+            z-index: -1;
+            filter: blur(8px);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .card-cta::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                repeating-linear-gradient(
+                    0deg,
+                    transparent,
+                    transparent 3px,
+                    rgba(0, 0, 0, 0.08) 3px,
+                    rgba(0, 0, 0, 0.08) 6px
+                ),
+                repeating-linear-gradient(
+                    90deg,
+                    transparent,
+                    transparent 3px,
+                    rgba(255, 255, 255, 0.1) 3px,
+                    rgba(255, 255, 255, 0.1) 6px
+                );
+            border-radius: 20px;
+            pointer-events: none;
+            opacity: 0.4;
+            mix-blend-mode: overlay;
         }
 
         .practice-card:hover .card-cta {
-            background: linear-gradient(135deg, rgba(0, 255, 136, 0.25), rgba(0, 255, 136, 0.15));
-            border-color: var(--success);
-            transform: scale(1.05);
+            background: linear-gradient(135deg, #00ffaa 0%, var(--success) 100%);
+            transform: translateY(-6px) scale(1.08);
+            box-shadow: 
+                0 0 0 4px rgba(0, 255, 136, 0.6),
+                0 15px 40px rgba(0, 255, 136, 0.5),
+                inset 0 4px 8px rgba(255, 255, 255, 0.35),
+                inset 0 -3px 6px rgba(0, 0, 0, 0.15);
+            border-color: #00ffcc;
+            clip-path: polygon(
+                0% 0%,
+                100% 0%,
+                100% calc(100% - 10px),
+                calc(100% - 10px) 100%,
+                10px 100%,
+                0% calc(100% - 10px)
+            );
+        }
+
+        .practice-card:hover .card-cta::before {
+            opacity: 1;
         }
 
         .stats-bar {
-            max-width: 1200px;
-            margin: 4rem auto 0;
-            padding: 2rem;
+            max-width: 900px;
+            margin: 2rem auto 0;
+            padding: 1.5rem;
             background: linear-gradient(135deg, rgba(22, 42, 61, 0.6), rgba(11, 22, 34, 0.8));
             border: 1px solid rgba(0, 255, 136, 0.2);
-            border-radius: 20px;
+            border-radius: 16px;
             backdrop-filter: blur(20px);
             display: flex;
             justify-content: space-around;
@@ -414,6 +573,7 @@
             font-family: 'Space Grotesk', sans-serif;
             background: linear-gradient(135deg, var(--success), var(--accent));
             -webkit-background-clip: text;
+            background-clip: text;
             -webkit-text-fill-color: transparent;
             display: block;
             margin-bottom: 0.5rem;
@@ -463,6 +623,16 @@
                 font-size: 1.8rem;
             }
             
+            .card-cta {
+                padding: 1rem 1.5rem;
+                font-size: 1.1rem;
+                letter-spacing: 1px;
+            }
+            
+            .practice-card {
+                min-height: 400px;
+            }
+            
             .stats-bar {
                 flex-direction: column;
                 gap: 1.5rem;
@@ -506,7 +676,7 @@
         </div>
 
         <div class="practice-cards">
-            <a href="trading.html" class="practice-card">
+            <a href="trading.html" class="practice-card trading-card">
                 <div class="card-icon">
                     <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z"/>
@@ -518,14 +688,13 @@
                 </p>
                 <ul class="card-features">
                     <li>Real-time market prices</li>
-                    <li>Advanced order types</li>
                     <li>Performance analytics</li>
                     <li>Risk-free environment</li>
                 </ul>
-                <div class="card-cta">Start Trading →</div>
+                <div class="card-cta">Start Trading</div>
             </a>
 
-            <a href="portfolio.html" class="practice-card">
+            <a href="portfolio.html" class="practice-card portfolio-card">
                 <div class="card-icon">
                     <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-5 14H4V6h11v12zm5 0h-3V6h3v12z"/>
@@ -537,15 +706,14 @@
                     Construct and manage a diversified portfolio. Track performance, analyze holdings, and optimize your strategy.
                 </p>
                 <ul class="card-features">
-                    <li>Multi-asset portfolio</li>
                     <li>Performance tracking</li>
                     <li>Diversification analysis</li>
                     <li>Historical insights</li>
                 </ul>
-                <div class="card-cta">View Portfolio →</div>
-            </a>
-        </div>
-
+                <div class="card-cta">View Portfolio</div>
+                </a>
+            </div>
+            
         <div class="stats-bar">
             <div class="stat-item">
                 <span class="stat-value">100%</span>

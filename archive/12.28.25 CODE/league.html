@@ -1,0 +1,1282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock League</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #1E3888;
+            --secondary: #47A992;
+            --accent: #FFB100;
+            --background: #0B1622;
+            --surface: #162A3D;
+            --success: #00FF88;
+            --danger: #FF4444;
+            --neon-glow: 0 0 20px rgba(0, 255, 136, 0.3);
+            --hombre-gradient: linear-gradient(90deg, #FFB100 0%, #00FF88 100%);
+        }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: var(--background);
+            color: #ffffff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Floating Tickers */
+        .floating-tickers {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .ticker {
+            position: absolute;
+            color: rgba(0, 255, 136, 0.25);
+            font-family: monospace;
+            font-size: 1rem;
+            white-space: nowrap;
+            animation: float-up 15s linear infinite;
+            opacity: 0.6;
+            transform: translateY(100vh);
+        }
+
+        .ticker.price-up {
+            color: rgba(0, 255, 136, 0.25);
+        }
+
+        .ticker.price-down {
+            color: rgba(255, 68, 68, 0.25);
+        }
+
+        .ticker.down {
+            animation: float-down var(--duration) linear infinite;
+        }
+
+        @keyframes float-up {
+            from { transform: translateY(100vh); }
+            to { transform: translateY(-100vh); }
+        }
+
+        @keyframes float-down {
+            from { transform: translateY(-100px); }
+            to { transform: translateY(100vh); }
+        }
+
+        .selection-container {
+            max-width: 1000px;
+            padding: 3rem;
+            background: rgba(22, 42, 61, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: var(--neon-glow);
+            position: relative;
+            z-index: 1;
+        }
+
+        .welcome-message {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .welcome-message h1 {
+            font-size: 3.5rem;
+            margin: 0;
+            background: linear-gradient(45deg, var(--success), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: var(--neon-glow);
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .option-card {
+            background: rgba(255,255,255,0.04);
+            border: 1.5px solid rgba(0,255,136,0.13);
+            border-radius: 18px;
+            padding: 2.5rem 2rem 2rem 2rem;
+            text-align: center;
+            flex: 1 1 0;
+            min-width: 220px;
+            max-width: 320px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-shadow: 0 2px 16px 0 rgba(0,255,136,0.07);
+            transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+        }
+
+        .option-card:hover {
+            transform: translateY(-6px) scale(1.03);
+            border-color: var(--success);
+            box-shadow: 0 8px 32px 0 rgba(0,255,136,0.18);
+        }
+
+        .option-card h2 {
+            color: #FFB100;
+            font-size: 2rem;
+            margin-bottom: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .option-card p {
+            color: rgba(255,255,255,0.85);
+            font-size: 1.1rem;
+            margin-bottom: 1.7rem;
+        }
+
+        .create-league, .join-form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .start-btn, .action-btn {
+            background: var(--hombre-gradient);
+            color: #0B1622;
+            border: none;
+            padding: 1rem 2.2rem;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 1.15rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            box-shadow: 0 2px 12px 0 rgba(255,177,0,0.10), 0 0 0 2px rgba(0,255,136,0.08);
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-top: 0.5rem;
+        }
+
+        .start-btn:hover, .action-btn:hover {
+            transform: translateY(-2px) scale(1.04);
+            box-shadow: 0 6px 24px 0 rgba(0,255,136,0.18);
+        }
+
+        .join-form {
+            display: flex;
+            flex-direction: row;
+            gap: 0.5rem;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+        }
+
+        .join-form input {
+            background: rgba(255,255,255,0.07);
+            border: 1.5px solid rgba(0,255,136,0.13);
+            padding: 0.9rem 1.2rem;
+            border-radius: 10px;
+            color: #fff;
+            font-size: 1.1rem;
+            min-width: 120px;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            flex: 1 1 0;
+            box-sizing: border-box;
+        }
+
+        .join-form input:focus {
+            border-color: var(--success);
+            box-shadow: 0 0 0 2px rgba(0,255,136,0.13);
+        }
+
+        .join-form .action-btn {
+            padding: 0.9rem 1.7rem;
+            margin-top: 0;
+            font-size: 1.1rem;
+            border-radius: 10px;
+            white-space: nowrap;
+        }
+
+        .active-leagues {
+            margin-top: 2.5rem;
+            background: rgba(255,255,255,0.03);
+            border-radius: 14px;
+            padding: 1.5rem 1.5rem 1rem 1.5rem;
+            overflow: hidden;
+        }
+
+        .active-leagues h2 {
+            font-size: 1.5rem;
+            color: #00FF88;
+            margin-bottom: 1.2rem;
+            font-weight: 700;
+        }
+
+        .leagues-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            margin-top: 0.5rem;
+        }
+
+        .league-card {
+            background: rgba(11, 22, 34, 0.95);
+            border: 1px solid rgba(0, 255, 136, 0.15);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin-bottom: 12px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            min-height: 80px;
+            box-sizing: border-box;
+        }
+
+        .league-card:hover {
+            border-color: #00FF88;
+            background: rgba(11, 22, 34, 1);
+            box-shadow: 0 2px 10px rgba(0, 255, 136, 0.1);
+        }
+
+        .league-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex: 1;
+            min-width: 0;
+        }
+
+        .league-avatar {
+            width: 40px;
+            height: 40px;
+            background: #00FF88;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            color: #000;
+            font-size: 1.1rem;
+        }
+
+        .league-info {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            min-width: 0;
+            flex: 1;
+        }
+
+        .league-name {
+            color: #ffffff;
+            font-size: 1.2rem;
+            font-weight: 700;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .league-code {
+            color: #00FF88;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .league-center {
+            flex: 1.5;
+            display: flex;
+            justify-content: center;
+            min-width: 0;
+        }
+
+        .league-stats {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .stat {
+            color: rgba(255, 255, 255, 0.85);
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            white-space: nowrap;
+        }
+
+        .stat i {
+            color: #00FF88;
+            font-size: 0.9rem;
+        }
+
+        .league-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-shrink: 0;
+        }
+
+        .league-status {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .league-status.pending {
+            background: rgba(255, 193, 7, 0.1);
+            color: #FFB100;
+            border: 1px solid rgba(255, 193, 7, 0.2);
+        }
+
+        .league-status.drafting {
+            background: rgba(33, 150, 243, 0.1);
+            color: #2196F3;
+            border: 1px solid rgba(33, 150, 243, 0.2);
+        }
+
+        .league-status.active {
+            background: rgba(0, 255, 136, 0.1);
+            color: #00FF88;
+            border: 1px solid rgba(0, 255, 136, 0.2);
+        }
+
+        .league-status.completed {
+            background: rgba(255, 255, 255, 0.05);
+            color: rgba(255, 255, 255, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .league-btn {
+            background: #00FF88;
+            color: #000;
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+        }
+
+        .league-btn:hover {
+            background: #00CC6A;
+            transform: scale(1.05);
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        .text-primary {
+            color: #ffffff;
+        }
+
+
+
+        .no-leagues {
+            text-align: center;
+            padding: 60px 20px;
+            background: linear-gradient(135deg, rgba(22, 42, 61, 0.8), rgba(11, 22, 34, 0.9));
+            border-radius: 20px;
+            border: 2px dashed rgba(0, 255, 136, 0.3);
+        }
+
+        .no-leagues-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--success), var(--accent));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 2rem;
+            color: var(--background);
+            font-weight: 900;
+        }
+
+        .no-leagues h3 {
+            color: var(--success);
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .no-leagues p {
+            font-size: 1.1rem;
+            margin: 0 0 20px 0;
+            color: var(--text-secondary);
+        }
+
+        .create-first-btn {
+            background: linear-gradient(135deg, var(--success), var(--accent));
+            color: var(--background);
+            border: none;
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .create-first-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 255, 136, 0.4);
+        }
+
+        .go-to-league-btn {
+            background: linear-gradient(135deg, var(--success), var(--accent));
+            border: none;
+            color: #000;
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .go-to-league-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 255, 136, 0.4);
+        }
+
+        .league-action-btn {
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .draft-demo-btn {
+            background: linear-gradient(90deg, var(--accent), var(--success));
+            color: var(--background);
+        }
+
+        .draft-demo-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(255, 177, 0, 0.3);
+        }
+
+        .waiting-draft-btn {
+            background: rgba(33, 150, 243, 0.1);
+            color: #2196F3;
+            border: 1px solid rgba(33, 150, 243, 0.3);
+        }
+
+        .waiting-draft-btn:hover {
+            background: rgba(33, 150, 243, 0.2);
+            color: #fff;
+        }
+
+        /* Draft Demo Modal */
+        .draft-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(11, 22, 34, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .draft-modal-content {
+            background: rgba(22, 42, 61, 0.95);
+            border-radius: 20px;
+            padding: 2rem;
+            max-width: 800px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            box-shadow: 0 0 40px rgba(0, 255, 136, 0.1);
+        }
+
+        .draft-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .draft-header h2 {
+            color: var(--accent);
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .draft-header p {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1.1rem;
+        }
+
+        .draft-order {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            border: 1px solid rgba(0, 255, 136, 0.1);
+        }
+
+        .draft-pick {
+            text-align: center;
+            flex: 1;
+        }
+
+        .pick-number {
+            background: var(--accent);
+            color: var(--background);
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 0.5rem;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        .pick-player {
+            font-size: 0.9rem;
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .available-stocks {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .stock-option {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(0, 255, 136, 0.1);
+            border-radius: 10px;
+            padding: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .stock-option:hover {
+            border-color: var(--success);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 255, 136, 0.1);
+        }
+
+        .stock-option.selected {
+            border-color: var(--accent);
+            background: rgba(255, 177, 0, 0.1);
+        }
+
+        .stock-symbol {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 0.3rem;
+        }
+
+        .stock-name {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 0.5rem;
+        }
+
+        .stock-price {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--success);
+        }
+
+        .stock-change {
+            font-size: 0.8rem;
+            color: var(--danger);
+        }
+
+        .stock-change.positive {
+            color: var(--success);
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: #fff;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        .close-modal:hover {
+            background: rgba(255, 68, 68, 0.2);
+            color: var(--danger);
+        }
+
+        /* Waiting for Draft Screen */
+        .waiting-draft-screen {
+            background: rgba(22, 42, 61, 0.95);
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+            border: 1px solid rgba(33, 150, 243, 0.2);
+            margin-top: 1rem;
+        }
+
+        .waiting-icon {
+            font-size: 3rem;
+            color: #2196F3;
+            margin-bottom: 1rem;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .waiting-title {
+            color: #2196F3;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .waiting-subtitle {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .draft-countdown {
+            background: rgba(33, 150, 243, 0.1);
+            border-radius: 10px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .countdown-time {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #2196F3;
+        }
+
+        .countdown-label {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+        }
+
+        .league-participants {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            justify-content: center;
+            margin-top: 1rem;
+        }
+
+        .participant {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+            color: #fff;
+        }
+
+        .participant.ready {
+            background: rgba(0, 255, 136, 0.2);
+            color: var(--success);
+        }
+
+        /* Back button styling */
+        .back-button {
+            position: absolute;
+            top: 2rem;
+            left: 2rem;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(0, 255, 136, 0.1));
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 500;
+            backdrop-filter: blur(10px);
+        }
+
+        .back-button:hover {
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.2), rgba(255, 177, 0, 0.2));
+            border-color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        .popup-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(11, 22, 34, 0.8);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .popup-content {
+            background: rgba(22, 42, 61, 0.8);
+            padding: 2.5rem;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: var(--neon-glow);
+            border: 1px solid rgba(0, 255, 136, 0.1);
+            animation: popup-appear 0.3s ease;
+            min-width: 300px;
+            backdrop-filter: blur(10px);
+        }
+
+        @keyframes popup-appear {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        #leagueCode {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(0, 255, 136, 0.2);
+            border-radius: 12px;
+            padding: 15px;
+            width: 200px;
+            text-align: center;
+            color: white;
+            font-size: 1.5rem;
+            letter-spacing: 5px;
+            margin: 20px 0;
+        }
+
+        .league-input {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(0, 255, 136, 0.2);
+            border-radius: 8px;
+            padding: 12px;
+            width: 100%;
+            color: white;
+            margin: 10px 0;
+            font-size: 1rem;
+        }
+
+        .popup-content input:focus {
+            outline: none;
+            border-color: var(--success);
+            box-shadow: 0 0 15px rgba(0, 255, 136, 0.3);
+        }
+
+        .popup-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 1rem;
+        }
+
+        .popup-button {
+            padding: 12px 28px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .popup-button.cancel {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .popup-button.confirm {
+            background: var(--success);
+            color: black;
+            border: none;
+        }
+
+        .popup-button:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Add helper text */
+        .code-helper {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            background: linear-gradient(to right, var(--success), #ffffff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 15px rgba(0, 255, 136, 0.3);
+            font-weight: 500;
+        }
+
+        .dashboard-btn {
+            position: fixed;
+            top: 24px;
+            left: 24px;
+            background: rgba(255,255,255,0.10);
+            color: #00FF88;
+            border: 1.5px solid rgba(0,255,136,0.3);
+            padding: 0.85rem 1.7rem 0.85rem 1.2rem;
+            border-radius: 32px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+            font-size: 1.1rem;
+            font-weight: 700;
+            z-index: 2;
+            box-shadow: 0 2px 12px 0 rgba(0,255,136,0.10);
+            transition: background 0.2s, color 0.2s, box-shadow 0.2s, border-color 0.2s;
+            backdrop-filter: blur(5px);
+        }
+
+        .dashboard-btn:hover {
+            background: rgba(0,255,136,0.13);
+            color: #fff;
+            border-color: #00FF88;
+        }
+
+        .dashboard-btn .menu-icon {
+            font-size: 1.3rem;
+            margin-right: 0.3rem;
+        }
+
+        .league-container {
+            max-width: 700px;
+            margin: 40px auto 30px auto;
+            padding: 30px 25px 25px 25px;
+            background: rgba(22, 42, 61, 0.95);
+            border-radius: 24px;
+            box-shadow: 0 8px 40px 0 rgba(0,255,136,0.10);
+            position: relative;
+            z-index: 1;
+        }
+
+        .league-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .league-header h1 {
+            font-size: 3rem;
+            margin: 0;
+            background: var(--hombre-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: var(--neon-glow);
+            font-weight: 800;
+            letter-spacing: 2px;
+        }
+
+        .league-header p {
+            color: rgba(255,255,255,0.8);
+            font-size: 1.2rem;
+            margin-top: 10px;
+            margin-bottom: 0;
+        }
+
+        .league-options {
+            display: flex;
+            justify-content: center;
+            align-items: stretch;
+            gap: 2.5rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .option-card.join {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body>
+    <button class="dashboard-btn" onclick="window.location.href='dashboard.html'">
+        <span class="menu-icon">≡</span>
+        Dashboard
+    </button>
+
+    <div class="league-container">
+        <div class="league-header">
+            <h1>STOCK LEAGUE</h1>
+            <p>Compete with friends in stock trading competitions</p>
+        </div>
+
+        <div class="league-options">
+            <div class="option-card create">
+                <h2>Create League</h2>
+                <p>Start a new trading competition</p>
+                <div class="create-league">
+                    <button onclick="window.location.href='create-league.html'" class="start-btn">
+                        START NOW
+                    </button>
+                </div>
+            </div>
+
+            <div class="option-card join">
+                <h2>Join League</h2>
+                <p>Enter an existing competition</p>
+                <button class="start-btn" onclick="openJoinPopup()">Enter Code</button>
+            </div>
+        </div>
+
+        <div class="active-leagues">
+            <h2>Your Active Leagues</h2>
+            <div id="leaguesList" class="leagues-grid">
+                <!-- League cards will be dynamically generated here -->
+            </div>
+        </div>
+    </div>
+
+    <div class="floating-tickers" id="floatingTickers"></div>
+
+    <!-- Draft Demo Modal -->
+    <div id="draftModal" class="draft-modal">
+        <div class="draft-modal-content">
+            <button class="close-modal" onclick="closeDraftModal()">×</button>
+            <div class="draft-header">
+                <h2>Snake Draft Demo</h2>
+                <p>Preview the top companies available for selection</p>
+            </div>
+            
+            <div class="draft-order">
+                <div class="draft-pick">
+                    <div class="pick-number">1</div>
+                    <div class="pick-player">You</div>
+                </div>
+                <div class="draft-pick">
+                    <div class="pick-number">2</div>
+                    <div class="pick-player">Alex</div>
+                </div>
+                <div class="draft-pick">
+                    <div class="pick-number">3</div>
+                    <div class="pick-player">Sarah</div>
+                </div>
+                <div class="draft-pick">
+                    <div class="pick-number">4</div>
+                    <div class="pick-player">Mike</div>
+                </div>
+                <div class="draft-pick">
+                    <div class="pick-number">5</div>
+                    <div class="pick-player">Emma</div>
+                </div>
+                <div class="draft-pick">
+                    <div class="pick-number">6</div>
+                    <div class="pick-player">David</div>
+                </div>
+            </div>
+
+            <div class="available-stocks" id="availableStocks">
+                <!-- Stock options will be dynamically generated -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Join League Popup -->
+    <div id="joinPopup" class="popup-overlay">
+        <div class="popup-content">
+            <div class="code-helper">Enter your league code</div>
+            <input type="text" maxlength="12" id="popupLeagueCode" placeholder="League Code" class="league-input">
+            <div class="popup-buttons">
+                <button class="popup-button cancel" onclick="closeJoinPopup()">Cancel</button>
+                <button class="popup-button confirm" onclick="submitJoinCode()">Join</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Enhanced floating tickers - removed duplicate function
+
+        function openJoinPopup() {
+            document.getElementById('joinPopup').style.display = 'flex';
+            setTimeout(() => {
+                document.getElementById('popupLeagueCode').focus();
+            }, 100);
+        }
+
+        function closeJoinPopup() {
+            document.getElementById('joinPopup').style.display = 'none';
+        }
+
+        function submitJoinCode() {
+            const code = document.getElementById('popupLeagueCode').value.trim();
+            if (code.length < 3) {
+                alert('Please enter a valid league code.');
+                return;
+            }
+            // You can add your join logic here, e.g. redirect or AJAX
+            alert('Attempting to join league: ' + code);
+            closeJoinPopup();
+        }
+
+        // Optional: close popup on Escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') closeJoinPopup();
+        });
+
+        function loadActiveLeagues() {
+            const leagues = JSON.parse(localStorage.getItem('stockLeagues') || '[]');
+            const leaguesList = document.getElementById('leaguesList');
+            
+            if (leagues.length === 0) {
+                leaguesList.innerHTML = `
+                    <div class="no-leagues" style="text-align: center; padding: 60px 20px; background: linear-gradient(135deg, rgba(22, 42, 61, 0.8), rgba(11, 22, 34, 0.9)); border-radius: 20px; border: 2px dashed rgba(0, 255, 136, 0.3);">
+                        <div style="width: 80px; height: 80px; background: linear-gradient(135deg, var(--success), var(--accent)); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 2rem; color: var(--background); font-weight: 900;">
+                            <i class="fas fa-plus"></i>
+                        </div>
+                        <h3 style="color: var(--success); font-size: 1.5rem; margin-bottom: 10px;">No Active Leagues</h3>
+                        <p style="color: var(--text-secondary); font-size: 1.1rem; margin-bottom: 20px;">Create or join a league to start competing!</p>
+                        <button onclick="window.location.href='create-league.html'" style="background: linear-gradient(135deg, var(--success), var(--accent)); color: var(--background); border: none; padding: 12px 24px; border-radius: 12px; font-weight: 700; cursor: pointer; transition: all 0.3s ease;">
+                            Create Your First League
+                        </button>
+                    </div>
+                `;
+                return;
+            }
+
+            leaguesList.innerHTML = leagues.map(league => {
+                const isOwner = league.owner === 'currentUser';
+                const endDate = new Date(league.createdAt);
+                endDate.setMonth(endDate.getMonth() + league.duration);
+                
+                // Calculate time until draft
+                const draftDate = new Date(league.draftDate);
+                const now = new Date();
+                const timeUntilDraft = draftDate - now;
+                const hoursUntilDraft = Math.floor(timeUntilDraft / (1000 * 60 * 60));
+                const minutesUntilDraft = Math.floor((timeUntilDraft % (1000 * 60 * 60)) / (1000 * 60));
+                
+                return `
+                    <div class="league-card">
+                        <div class="league-left">
+                            <div class="league-avatar">${league.name.charAt(0).toUpperCase()}</div>
+                            <div class="league-info">
+                                <div class="league-name">${league.name}</div>
+                                <div class="league-code">${league.leagueCode}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="league-center">
+                            <div class="league-stats">
+                                <span class="stat"><i class="fas fa-users"></i> ${league.players} Players</span>
+                                <span class="stat"><i class="fas fa-dollar-sign"></i> ${league.capitalTransferPercentage}% Transfer</span>
+                                <span class="stat"><i class="fas fa-clock"></i> Draft in ${hoursUntilDraft}h ${minutesUntilDraft}m</span>
+                            </div>
+                        </div>
+                        
+                        <div class="league-right">
+                            <div class="league-status ${league.status}">${getStatusText(league.status)}</div>
+                            <button class="league-btn" onclick="goToLeague('${league.leagueCode}')">
+                                <i class="fas fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function getStatusText(status) {
+            switch(status) {
+                case 'pending': return 'Waiting for Draft';
+                case 'drafting': return 'Draft in Progress';
+                case 'active': return 'League Active';
+                case 'completed': return 'League Completed';
+                default: return 'Unknown';
+            }
+        }
+
+        function getStatusIcon(status) {
+            switch(status) {
+                case 'pending': return 'clock';
+                case 'drafting': return 'users';
+                case 'active': return 'play';
+                case 'completed': return 'trophy';
+                default: return 'question';
+            }
+        }
+
+        function openDraftDemo(leagueId) {
+            document.getElementById('draftModal').style.display = 'flex';
+            loadAvailableStocks();
+        }
+
+        function closeDraftModal() {
+            document.getElementById('draftModal').style.display = 'none';
+        }
+
+        function loadAvailableStocks() {
+            const topStocks = [
+                { symbol: 'AAPL', name: 'Apple Inc.', price: '178.39', change: '+1.2%', positive: true },
+                { symbol: 'MSFT', name: 'Microsoft Corp.', price: '338.11', change: '+0.9%', positive: true },
+                { symbol: 'GOOGL', name: 'Alphabet Inc.', price: '142.65', change: '-0.8%', positive: false },
+                { symbol: 'AMZN', name: 'Amazon.com Inc.', price: '145.24', change: '-1.1%', positive: false },
+                { symbol: 'TSLA', name: 'Tesla Inc.', price: '248.50', change: '+2.3%', positive: true },
+                { symbol: 'META', name: 'Meta Platforms Inc.', price: '334.92', change: '+1.5%', positive: true },
+                { symbol: 'NVDA', name: 'NVIDIA Corp.', price: '487.16', change: '+2.8%', positive: true },
+                { symbol: 'BRK.A', name: 'Berkshire Hathaway', price: '567,890', change: '+0.5%', positive: true },
+                { symbol: 'JPM', name: 'JPMorgan Chase', price: '156.78', change: '-0.3%', positive: false },
+                { symbol: 'JNJ', name: 'Johnson & Johnson', price: '167.45', change: '+0.7%', positive: true },
+                { symbol: 'V', name: 'Visa Inc.', price: '245.67', change: '+1.1%', positive: true },
+                { symbol: 'PG', name: 'Procter & Gamble', price: '156.89', change: '-0.2%', positive: false }
+            ];
+
+            const availableStocks = document.getElementById('availableStocks');
+            availableStocks.innerHTML = topStocks.map(stock => `
+                <div class="stock-option" onclick="selectStock('${stock.symbol}')">
+                    <div class="stock-symbol">${stock.symbol}</div>
+                    <div class="stock-name">${stock.name}</div>
+                    <div class="stock-price">$${stock.price}</div>
+                    <div class="stock-change ${stock.positive ? 'positive' : ''}">${stock.change}</div>
+                </div>
+            `).join('');
+        }
+
+        function selectStock(symbol) {
+            // Remove previous selections
+            document.querySelectorAll('.stock-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            
+            // Select clicked stock
+            event.target.closest('.stock-option').classList.add('selected');
+            
+            // Show selection feedback
+            setTimeout(() => {
+                alert(`You selected ${symbol}! This would be your first pick in the actual draft.`);
+            }, 100);
+        }
+
+        function enterDraft(leagueId) {
+            // This would redirect to the actual draft room
+            alert('Entering draft room... This would launch the live draft experience.');
+        }
+
+        function openLeague(leagueId) {
+            window.location.href = `your-league.html?id=${leagueId}`;
+        }
+
+        function goToLeague(leagueCode) {
+            // Redirect to the actual league page
+            console.log(`Going to league: ${leagueCode}`);
+            window.location.href = `your-league.html?code=${leagueCode}`;
+        }
+
+        // Initialize floating tickers
+        function initFloatingTickers() {
+            const tickerContainer = document.getElementById('floatingTickers');
+            const stocks = ['AAPL', 'MSFT', 'NVDA', 'GOOGL', 'TSLA', 'META', 'AMZN', 'NFLX', 'AMD', 'INTC', 'ORCL', 'CRM', 'ADBE', 'PYPL', 'UBER', 'JPM', 'BAC', 'WFC', 'GS', 'MS'];
+            
+            // Clear any existing tickers first
+            tickerContainer.innerHTML = '';
+            
+            // Create initial batch of tickers
+            for (let i = 0; i < 15; i++) {
+                createTicker();
+            }
+            
+            // Create new tickers every 2 seconds
+            setInterval(createTicker, 2000);
+        }
+
+        function createTicker() {
+            const tickerContainer = document.getElementById('floatingTickers');
+            const stocks = ['AAPL', 'MSFT', 'NVDA', 'GOOGL', 'TSLA', 'META', 'AMZN', 'NFLX', 'AMD', 'INTC', 'ORCL', 'CRM', 'ADBE', 'PYPL', 'UBER', 'JPM', 'BAC', 'WFC', 'GS', 'MS'];
+            
+            const ticker = document.createElement('div');
+            const isGoingUp = Math.random() > 0.5;
+            ticker.className = `ticker ${isGoingUp ? 'price-up' : 'price-down'} ${isGoingUp ? '' : 'down'}`;
+            
+            const randomStock = stocks[Math.floor(Math.random() * stocks.length)];
+            const randomPrice = (Math.random() * 1000 + 50).toFixed(2);
+            const randomChange = (Math.random() * 20 - 10).toFixed(2);
+            const changeSymbol = randomChange > 0 ? '+' : '';
+            
+            ticker.textContent = `${randomStock} $${randomPrice} ${changeSymbol}${randomChange}`;
+            
+            // Position ticker randomly across screen width
+            ticker.style.left = Math.random() * 80 + 10 + '%';
+            
+            // Set animation duration
+            const duration = 15 + Math.random() * 10;
+            ticker.style.animationDuration = `${duration}s`;
+            
+            // Random delay for staggered effect
+            ticker.style.animationDelay = `${Math.random() * 5}s`;
+            
+            tickerContainer.appendChild(ticker);
+            
+            // Remove ticker after animation
+            setTimeout(() => {
+                if (ticker.parentNode) {
+                    ticker.parentNode.removeChild(ticker);
+                }
+            }, (duration + 5) * 1000);
+        }
+
+        // Load leagues when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('League page loaded!');
+            loadActiveLeagues();
+            initFloatingTickers();
+            
+            // Test if we can access localStorage
+            try {
+                const testLeagues = localStorage.getItem('stockLeagues');
+                console.log('Current leagues in localStorage:', testLeagues);
+            } catch (error) {
+                console.error('Error accessing localStorage:', error);
+            }
+        });
+    </script>
+</body>
+</html> 

@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Fantasy Trader - Stock League</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Import modern fonts */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&display=swap');
+
+        :root {
+            --primary: #10b981;
+            --secondary: #059669;
+            --accent: #f59e0b;
+            --success: #10b981;
+            --danger: #ef4444;
+            --background: #0a0a0a;
+            --surface: #1a1a1a;
+            --text-primary: #ffffff;
+            --text-secondary: #a1a1aa;
+            --glow: rgba(16, 185, 129, 0.3);
+            --gold: #ffd700;
+            --silver: #c0c0c0;
+            --bronze: #cd7f32;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #000000;
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Modern Background */
+        .modern-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            background: #000000;
+        }
+
+        /* Floating Elements */
+        .floating-elements {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 3;
+            pointer-events: none;
+        }
+
+        .floating-element {
+            position: absolute;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(5, 150, 105, 0.1));
+            backdrop-filter: blur(10px);
+            animation: float 20s ease-in-out infinite;
+        }
+
+        .floating-element:nth-child(1) {
+            width: 300px;
+            height: 300px;
+            top: 10%;
+            left: 5%;
+            animation-delay: 0s;
+        }
+
+        .floating-element:nth-child(2) {
+            width: 200px;
+            height: 200px;
+            top: 60%;
+            right: 10%;
+            animation-delay: -5s;
+        }
+
+        .floating-element:nth-child(3) {
+            width: 150px;
+            height: 150px;
+            bottom: 20%;
+            left: 20%;
+            animation-delay: -10s;
+        }
+
+        @keyframes float {
+            0%, 100% { 
+                transform: translateY(0px) rotate(0deg);
+                opacity: 0.3;
+            }
+            50% { 
+                transform: translateY(-20px) rotate(180deg);
+                opacity: 0.6;
+            }
+        }
+
+        /* Floating Tickers */
+        .floating-tickers {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .ticker {
+            position: absolute;
+            font-family: 'Rajdhani', monospace;
+            font-size: 0.9rem;
+            font-weight: 600;
+            opacity: 0.1;
+            white-space: nowrap;
+            animation: floatUp 15s linear infinite;
+        }
+
+        .ticker.green {
+            color: var(--success);
+        }
+
+        .ticker.red {
+            color: var(--danger);
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(100vh) translateX(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.1;
+            }
+            90% {
+                opacity: 0.1;
+            }
+            100% {
+                transform: translateY(-100px) translateX(0);
+                opacity: 0;
+            }
+        }
+
+        /* Main Content */
+        .main-container {
+            position: relative;
+            z-index: 10;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .main-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 4rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #ffffff 0%, var(--primary) 50%, var(--secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 30px rgba(16, 185, 129, 0.5);
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+        }
+
+        .tagline {
+            font-size: 1.5rem;
+            color: var(--text-secondary);
+            font-weight: 300;
+            margin-bottom: 40px;
+        }
+
+        /* Navigation Menu */
+        .nav-menu {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+
+        .nav-card {
+            background: rgba(26, 26, 26, 0.8);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            border-radius: 20px;
+            padding: 40px 30px;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .nav-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary);
+            box-shadow: 0 20px 40px rgba(16, 185, 129, 0.3);
+        }
+
+        .nav-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .nav-icon {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+
+        .nav-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 15px;
+        }
+
+        .nav-description {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .nav-btn {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border: none;
+            color: white;
+            padding: 12px 24px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4);
+        }
+
+        /* Challenges & Achievements Section */
+        .challenges-section {
+            background: rgba(26, 26, 26, 0.8);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 60px;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: 15px;
+        }
+
+        .section-subtitle {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        .challenges-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .challenge-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(16, 185, 129, 0.1);
+            border-radius: 15px;
+            padding: 25px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .challenge-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(5, 150, 105, 0.1));
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+            transform-origin: left;
+        }
+
+        .challenge-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .challenge-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+        }
+
+        .challenge-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .challenge-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .challenge-reward {
+            background: linear-gradient(135deg, var(--gold), #ffed4e);
+            color: #000;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .challenge-description {
+            color: var(--text-secondary);
+            margin-bottom: 15px;
+            line-height: 1.5;
+            position: relative;
+            z-index: 2;
+        }
+
+        .challenge-progress {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            height: 8px;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .progress-bar {
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            height: 100%;
+            border-radius: 10px;
+            transition: width 0.3s ease;
+        }
+
+        .challenge-status {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .status-text {
+            color: var(--text-secondary);
+        }
+
+        .status-value {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        /* Achievements Grid */
+        .achievements-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .achievement-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(16, 185, 129, 0.1);
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .achievement-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(5, 150, 105, 0.1));
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+            transform-origin: left;
+        }
+
+        .achievement-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .achievement-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+        }
+
+        .achievement-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .achievement-icon.unlocked {
+            color: var(--gold);
+        }
+
+        .achievement-icon.locked {
+            color: var(--text-secondary);
+            opacity: 0.5;
+        }
+
+        .achievement-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .achievement-description {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            line-height: 1.4;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .main-title {
+                font-size: 2.5rem;
+            }
+            
+            .nav-menu {
+                grid-template-columns: 1fr;
+            }
+            
+            .challenges-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .achievements-grid {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Modern Background -->
+    <div class="modern-background"></div>
+    
+    <!-- Floating Elements -->
+    <div class="floating-elements">
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+    </div>
+
+    <!-- Floating Tickers -->
+    <div class="floating-tickers" id="floatingTickers"></div>
+
+    <!-- Main Content -->
+    <div class="main-container">
+        <!-- Header -->
+        <div class="header">
+            <h1 class="main-title">Fantasy Trader</h1>
+            <p class="tagline">Compete. Learn. Win. Dominate the Stock Market.</p>
+        </div>
+
+        <!-- Navigation Menu -->
+        <div class="nav-menu">
+            <div class="nav-card" onclick="navigateTo('league.html')">
+                <div class="nav-icon">
+                    <i class="fas fa-trophy"></i>
+                </div>
+                <h3 class="nav-title">Stock Leagues</h3>
+                <p class="nav-description">Join or create fantasy stock trading leagues. Compete against other traders in weekly matchups.</p>
+                <button class="nav-btn">Enter Leagues</button>
+            </div>
+
+            <div class="nav-card" onclick="navigateTo('portfolio.html')">
+                <div class="nav-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <h3 class="nav-title">Portfolio</h3>
+                <p class="nav-description">Track your investments, view performance analytics, and manage your watchlist.</p>
+                <button class="nav-btn">View Portfolio</button>
+            </div>
+
+            <div class="nav-card" onclick="navigateTo('trading.html')">
+                <div class="nav-icon">
+                    <i class="fas fa-exchange-alt"></i>
+                </div>
+                <h3 class="nav-title">Trading</h3>
+                <p class="nav-description">Execute trades, analyze charts, and discover new investment opportunities.</p>
+                <button class="nav-btn">Start Trading</button>
+            </div>
+
+            <div class="nav-card" onclick="navigateTo('learn.html')">
+                <div class="nav-icon">
+                    <i class="fas fa-graduation-cap"></i>
+                </div>
+                <h3 class="nav-title">Learn</h3>
+                <p class="nav-description">Master trading strategies, understand market fundamentals, and improve your skills.</p>
+                <button class="nav-btn">Start Learning</button>
+            </div>
+
+            <div class="nav-card" onclick="navigateTo('news.html')">
+                <div class="nav-icon">
+                    <i class="fas fa-newspaper"></i>
+                </div>
+                <h3 class="nav-title">Market News</h3>
+                <p class="nav-description">Stay updated with the latest market news, earnings reports, and market analysis.</p>
+                <button class="nav-btn">Read News</button>
+            </div>
+
+            <div class="nav-card" onclick="navigateTo('dashboard.html')">
+                <div class="nav-icon">
+                    <i class="fas fa-tachometer-alt"></i>
+                </div>
+                <h3 class="nav-title">Dashboard</h3>
+                <p class="nav-description">Your central hub for all trading activities, league standings, and quick actions.</p>
+                <button class="nav-btn">Go to Dashboard</button>
+            </div>
+        </div>
+
+        <!-- Challenges & Achievements Section -->
+        <div class="challenges-section">
+            <div class="section-header">
+                <h2 class="section-title">Challenges & Achievements</h2>
+                <p class="section-subtitle">Complete challenges to earn rewards and unlock achievements</p>
+            </div>
+
+            <!-- Active Challenges -->
+            <h3 style="color: var(--primary); margin-bottom: 20px; font-size: 1.5rem;">Active Challenges</h3>
+            <div class="challenges-grid">
+                <div class="challenge-card">
+                    <div class="challenge-header">
+                        <h4 class="challenge-title">First Trade</h4>
+                        <span class="challenge-reward">+100 XP</span>
+                    </div>
+                    <p class="challenge-description">Make your first stock trade to earn experience points</p>
+                    <div class="challenge-progress">
+                        <div class="progress-bar" style="width: 100%"></div>
+                    </div>
+                    <div class="challenge-status">
+                        <span class="status-text">Progress</span>
+                        <span class="status-value">Completed!</span>
+                    </div>
+                </div>
+
+                <div class="challenge-card">
+                    <div class="challenge-header">
+                        <h4 class="challenge-title">League Champion</h4>
+                        <span class="challenge-reward">+500 XP</span>
+                    </div>
+                    <p class="challenge-description">Win a stock league to unlock this achievement</p>
+                    <div class="challenge-progress">
+                        <div class="progress-bar" style="width: 0%"></div>
+                    </div>
+                    <div class="challenge-status">
+                        <span class="status-text">Progress</span>
+                        <span class="status-value">0/1</span>
+                    </div>
+                </div>
+
+                <div class="challenge-card">
+                    <div class="challenge-header">
+                        <h4 class="challenge-title">Diversification Master</h4>
+                        <span class="challenge-reward">+300 XP</span>
+                    </div>
+                    <p class="challenge-description">Hold stocks from 5 different sectors simultaneously</p>
+                    <div class="challenge-progress">
+                        <div class="progress-bar" style="width: 60%"></div>
+                    </div>
+                    <div class="challenge-status">
+                        <span class="status-text">Progress</span>
+                        <span class="status-value">3/5</span>
+                    </div>
+                </div>
+
+                <div class="challenge-card">
+                    <div class="challenge-header">
+                        <h4 class="challenge-title">Profit Streak</h4>
+                        <span class="challenge-reward">+200 XP</span>
+                    </div>
+                    <p class="challenge-description">Have 3 consecutive profitable trading days</p>
+                    <div class="challenge-progress">
+                        <div class="progress-bar" style="width: 33%"></div>
+                    </div>
+                    <div class="challenge-status">
+                        <span class="status-text">Progress</span>
+                        <span class="status-value">1/3</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Achievements -->
+            <h3 style="color: var(--primary); margin-bottom: 20px; font-size: 1.5rem;">Achievements</h3>
+            <div class="achievements-grid">
+                <div class="achievement-card">
+                    <div class="achievement-icon unlocked">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <h4 class="achievement-title">First Steps</h4>
+                    <p class="achievement-description">Complete your first challenge</p>
+                </div>
+
+                <div class="achievement-card">
+                    <div class="achievement-icon unlocked">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h4 class="achievement-title">Chart Reader</h4>
+                    <p class="achievement-description">View 10 different stock charts</p>
+                </div>
+
+                <div class="achievement-card">
+                    <div class="achievement-icon locked">
+                        <i class="fas fa-trophy"></i>
+                    </div>
+                    <h4 class="achievement-title">League Winner</h4>
+                    <p class="achievement-description">Win your first stock league</p>
+                </div>
+
+                <div class="achievement-card">
+                    <div class="achievement-icon locked">
+                        <i class="fas fa-rocket"></i>
+                    </div>
+                    <h4 class="achievement-title">Millionaire</h4>
+                    <p class="achievement-description">Grow your portfolio to $1M+</p>
+                </div>
+
+                <div class="achievement-card">
+                    <div class="achievement-icon locked">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h4 class="achievement-title">Risk Manager</h4>
+                    <p class="achievement-description">Maintain positive returns for 30 days</p>
+                </div>
+
+                <div class="achievement-card">
+                    <div class="achievement-icon locked">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h4 class="achievement-title">Social Trader</h4>
+                    <p class="achievement-description">Join 5 different leagues</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize floating tickers
+        function initFloatingTickers() {
+            const tickerContainer = document.getElementById('floatingTickers');
+            const stocks = ['AAPL', 'MSFT', 'NVDA', 'GOOGL', 'TSLA', 'META', 'AMZN', 'NFLX', 'AMD', 'INTC', 'ORCL', 'CRM', 'ADBE', 'PYPL', 'UBER'];
+            
+            setInterval(() => {
+                const ticker = document.createElement('div');
+                ticker.className = `ticker ${Math.random() > 0.5 ? 'green' : 'red'}`;
+                
+                const randomStock = stocks[Math.floor(Math.random() * stocks.length)];
+                const randomPrice = (Math.random() * 1000 + 50).toFixed(2);
+                const randomChange = (Math.random() * 20 - 10).toFixed(2);
+                const changeSymbol = randomChange > 0 ? '+' : '';
+                
+                ticker.textContent = `${randomStock} $${randomPrice} ${changeSymbol}${randomChange}`;
+                ticker.style.left = Math.random() * 100 + '%';
+                ticker.style.animationDelay = Math.random() * 5 + 's';
+                
+                tickerContainer.appendChild(ticker);
+                
+                // Remove ticker after animation
+                setTimeout(() => {
+                    if (ticker.parentNode) {
+                        ticker.parentNode.removeChild(ticker);
+                    }
+                }, 15000);
+            }, 2000);
+        }
+
+        // Navigation function
+        function navigateTo(url) {
+            window.location.href = url;
+        }
+
+        // Initialize everything when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            initFloatingTickers();
+        });
+    </script>
+</body>
+</html>
