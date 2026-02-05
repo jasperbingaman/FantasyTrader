@@ -1089,10 +1089,10 @@
                 // Success!
                 showSuccess('Account created! Redirecting to get started...', formContainer);
 
-                // Redirect to tutorial after signup
+                // Redirect to app after signup
                 setTimeout(() => {
                     closeAuth();
-                    window.location.href = 'dashboard.html';
+                    window.location.href = 'app.html';
                 }, 1500);
 
             } catch (err) {
@@ -1142,8 +1142,8 @@
                 setTimeout(() => {
                     closeAuth();
                     updateNavigation(user);
-                    // Redirect to dashboard/league page
-                    window.location.href = 'dashboard.html';
+                    // Redirect to app
+                    window.location.href = 'app.html';
                 }, 1000);
 
             } catch (err) {
@@ -1180,15 +1180,15 @@
                 // Update hero buttons
                 const heroCTA = document.querySelector('.hero-buttons .btn-primary');
                 if (heroCTA) {
-                    heroCTA.textContent = 'Go to Dashboard';
-                    heroCTA.onclick = () => window.location.href = 'dashboard.html';
+                    heroCTA.textContent = 'Go to App';
+                    heroCTA.onclick = () => window.location.href = 'app.html';
                 }
 
                 // Update bottom CTA
                 const ctaCTA = document.querySelector('.cta-section .btn-primary');
                 if (ctaCTA) {
-                    ctaCTA.textContent = 'Go to Dashboard';
-                    ctaCTA.onclick = () => window.location.href = 'dashboard.html';
+                    ctaCTA.textContent = 'Go to App';
+                    ctaCTA.onclick = () => window.location.href = 'app.html';
                 }
             }
         });
