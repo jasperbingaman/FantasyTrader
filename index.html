@@ -764,6 +764,23 @@
             .footer-content { flex-direction: column; gap: 24px; text-align: center; }
             .footer-links { flex-wrap: wrap; justify-content: center; }
         }
+
+        /* Loading Spinner */
+        .spinner {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: spin 0.6s linear infinite;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
     </style>
 </head>
 <body>
@@ -1071,12 +1088,16 @@
             setButtonLoading(submitBtn, true);
 
             try {
+                console.log('Attempting sign up...');
                 const { user, error } = await signUp(email, password, {
                     firstName,
                     lastName
                 });
 
                 if (error) {
+                    console.error('Sign up error:', error);
+                    setButtonLoading(submitBtn, false);
+                    
                     if (error.message.includes('already registered')) {
                         showError('This email is already registered. Please sign in.', formContainer);
                         setTimeout(() => switchAuth('login'), 2000);
@@ -1087,19 +1108,20 @@
                 }
 
                 // Success!
+                console.log('Sign up successful, redirecting...');
                 showSuccess('Account created! Redirecting to get started...', formContainer);
 
-                // Redirect to app after signup
+                // Keep loading spinner active during redirect
                 setTimeout(() => {
                     closeAuth();
+                    console.log('Redirecting to app.html');
                     window.location.href = 'app.html';
                 }, 1500);
 
             } catch (err) {
-                showError('An unexpected error occurred. Please try again.', formContainer);
-                console.error('Signup error:', err);
-            } finally {
+                console.error('Unexpected signup error:', err);
                 setButtonLoading(submitBtn, false);
+                showError('An unexpected error occurred. Please try again.', formContainer);
             }
         }
 
@@ -1123,9 +1145,13 @@
             setButtonLoading(submitBtn, true);
 
             try {
+                console.log('Attempting sign in...');
                 const { user, session, error } = await signIn(email, password);
 
                 if (error) {
+                    console.error('Sign in error:', error);
+                    setButtonLoading(submitBtn, false);
+                    
                     if (error.message.includes('Invalid login')) {
                         showError('Invalid email or password.', formContainer);
                     } else if (error.message.includes('Email not confirmed')) {
@@ -1137,20 +1163,22 @@
                 }
 
                 // Success!
+                console.log('Sign in successful, redirecting...');
                 showSuccess('Welcome back! Redirecting...', formContainer);
 
+                // Keep loading spinner active during redirect
                 setTimeout(() => {
                     closeAuth();
                     updateNavigation(user);
                     // Redirect to app
+                    console.log('Redirecting to app.html');
                     window.location.href = 'app.html';
                 }, 1000);
 
             } catch (err) {
-                showError('An unexpected error occurred. Please try again.', formContainer);
-                console.error('Login error:', err);
-            } finally {
+                console.error('Unexpected login error:', err);
                 setButtonLoading(submitBtn, false);
+                showError('An unexpected error occurred. Please try again.', formContainer);
             }
         }
 

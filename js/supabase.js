@@ -387,12 +387,14 @@ async function handleLogout(event) {
  */
 function setButtonLoading(button, isLoading) {
     if (isLoading) {
-        button.dataset.originalText = button.textContent;
-        button.textContent = 'Loading...';
+        button.dataset.originalText = button.innerHTML;
+        button.innerHTML = '<span class="spinner"></span>Loading...';
         button.disabled = true;
+        button.style.opacity = '0.8';
     } else {
-        button.textContent = button.dataset.originalText || button.textContent;
+        button.innerHTML = button.dataset.originalText || button.innerHTML;
         button.disabled = false;
+        button.style.opacity = '1';
     }
 }
 
