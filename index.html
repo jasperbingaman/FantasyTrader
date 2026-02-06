@@ -1033,11 +1033,17 @@
     <!-- Supabase Auth Script -->
     <script src="js/supabase.js"></script>
     <script>
+        // Debug: Verify script is loading
+        console.log('✓ Auth script loaded');
+        console.log('✓ Supabase client:', typeof supabase !== 'undefined' ? 'available' : 'MISSING');
+        console.log('✓ Helper functions:', typeof setButtonLoading, typeof showError, typeof showSuccess);
+        
         // ============================================
         // AUTH MODAL FUNCTIONS
         // ============================================
 
         function openAuth(type) {
+            console.log('openAuth called with type:', type);
             document.getElementById('authOverlay').classList.add('active');
             switchAuth(type);
             // Clear any previous errors
@@ -1062,7 +1068,9 @@
         // ============================================
 
         async function handleSignup(e) {
+            console.log('handleSignup called');
             e.preventDefault();
+            console.log('Form submission prevented, processing...');
 
             const submitBtn = e.target.querySelector('button[type="submit"]');
             const formContainer = document.getElementById('signupForm');
@@ -1073,22 +1081,27 @@
             const email = document.getElementById('signupEmail').value.trim();
             const password = document.getElementById('signupPassword').value;
 
+            console.log('Form values:', { firstName, lastName, email, password: '***' });
+
             // Validate
             if (!firstName || !lastName || !email || !password) {
+                console.log('Validation failed: missing fields');
                 showError('Please fill in all fields.', formContainer);
                 return;
             }
 
             if (password.length < 6) {
+                console.log('Validation failed: password too short');
                 showError('Password must be at least 6 characters.', formContainer);
                 return;
             }
 
             // Show loading state
+            console.log('Setting button to loading state...');
             setButtonLoading(submitBtn, true);
 
             try {
-                console.log('Attempting sign up...');
+                console.log('Attempting sign up with Supabase...');
                 const { user, error } = await signUp(email, password, {
                     firstName,
                     lastName
@@ -1126,7 +1139,9 @@
         }
 
         async function handleLogin(e) {
+            console.log('handleLogin called');
             e.preventDefault();
+            console.log('Form submission prevented, processing...');
 
             const submitBtn = e.target.querySelector('button[type="submit"]');
             const formContainer = document.getElementById('loginForm');
@@ -1135,17 +1150,21 @@
             const email = document.getElementById('loginEmail').value.trim();
             const password = document.getElementById('loginPassword').value;
 
+            console.log('Login form values:', { email, password: '***' });
+
             // Validate
             if (!email || !password) {
+                console.log('Validation failed: missing email or password');
                 showError('Please enter your email and password.', formContainer);
                 return;
             }
 
             // Show loading state
+            console.log('Setting button to loading state...');
             setButtonLoading(submitBtn, true);
 
             try {
-                console.log('Attempting sign in...');
+                console.log('Attempting sign in with Supabase...');
                 const { user, session, error } = await signIn(email, password);
 
                 if (error) {
