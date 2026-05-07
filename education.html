@@ -175,37 +175,51 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 48px;
+            gap: 20px;
             flex-wrap: wrap;
             margin-bottom: 40px;
         }
 
         .partner {
             display: flex;
+            flex-direction: column;
             align-items: center;
-            gap: 12px;
-            padding: 16px 24px;
+            gap: 10px;
+            padding: 20px 24px;
             background: var(--bg-card);
             border: 1px solid var(--border-subtle);
-            border-radius: 12px;
+            border-radius: 16px;
+            min-width: 150px;
+            transition: all 0.3s;
+        }
+
+        .partner:hover {
+            border-color: var(--border-accent);
+            transform: translateY(-2px);
         }
 
         .partner-logo {
-            width: 40px;
-            height: 40px;
-            border-radius: 8px;
+            width: 56px;
+            height: 56px;
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: 700;
-            font-size: 14px;
+            overflow: hidden;
+            position: relative;
+            padding: 8px;
+            background: white;
+            border: 1px solid var(--border-subtle);
         }
 
-        .partner-logo.mit { background: #a31f34; color: white; }
-        .partner-logo.rice { background: #00205b; color: white; }
+        .partner-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
 
-        .partner-name { font-weight: 600; }
-        .partner-type { font-size: 12px; color: var(--text-muted); }
+        .partner-name { font-weight: 700; font-size: 14px; text-align: center; }
+        .partner-type { font-size: 11px; color: var(--text-muted); text-align: center; }
 
         /* Stats */
         .stats-bar {
@@ -300,6 +314,10 @@
         .course-level.advanced { background: rgba(255, 107, 53, 0.2); color: var(--accent-orange); }
         .course-level.mit { background: rgba(163, 31, 52, 0.2); color: #a31f34; }
         .course-level.rice { background: rgba(0, 32, 91, 0.2); color: #5b8def; }
+        .course-level.yale { background: rgba(0, 53, 107, 0.2); color: #00356b; }
+        .course-level.wharton { background: rgba(1, 31, 91, 0.2); color: #011F5B; }
+        .course-level.stanford { background: rgba(140, 21, 21, 0.2); color: #8C1515; }
+        .course-level.nyu { background: rgba(87, 6, 140, 0.2); color: #57068c; }
 
         .course-title {
             font-size: 18px;
@@ -528,11 +546,274 @@
             font-size: 12px;
         }
 
+        /* Beginner Curriculum Modules */
+        .module-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .module-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+
+        .module-card:hover {
+            border-color: var(--border-accent);
+        }
+
+        .module-top {
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+            padding: 24px;
+            cursor: pointer;
+        }
+
+        .module-number {
+            flex-shrink: 0;
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            background: var(--gradient-hero);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 22px;
+            font-weight: 700;
+        }
+
+        .module-info { flex: 1; }
+
+        .module-info h3 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .module-source {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .module-source.yale-source { color: #00356b; }
+        .module-source.mit-source { color: #a31f34; }
+        .module-source.stanford-source { color: #8C1515; }
+        .module-source.wharton-source { color: #011F5B; }
+        .module-source.nyu-source { color: #57068c; }
+        .module-source.rice-source { color: #00205b; }
+
+        .module-desc {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+
+        .module-meta {
+            display: flex;
+            gap: 16px;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .module-toggle {
+            flex-shrink: 0;
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: rgba(0, 0, 0, 0.03);
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            color: var(--text-muted);
+            transition: all 0.2s;
+        }
+
+        .module-toggle:hover { background: rgba(0, 179, 104, 0.08); color: var(--accent-green); }
+        .module-card.open .module-toggle { transform: rotate(180deg); }
+
+        .module-content {
+            display: none;
+            padding: 0 24px 24px;
+            padding-left: 92px;
+        }
+
+        .module-card.open .module-content { display: block; }
+
+        .lesson-list {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 20px;
+        }
+
+        .lesson-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border-subtle);
+            font-size: 14px;
+        }
+
+        .lesson-list li:last-child { border-bottom: none; }
+
+        .lesson-num {
+            flex-shrink: 0;
+            width: 24px;
+            height: 24px;
+            border-radius: 6px;
+            background: rgba(0, 179, 104, 0.08);
+            color: var(--accent-green);
+            font-size: 11px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .lesson-detail { flex: 1; }
+        .lesson-detail strong { display: block; color: var(--text-primary); margin-bottom: 2px; }
+        .lesson-detail span { color: var(--text-secondary); font-size: 13px; }
+
+        .key-takeaways {
+            background: rgba(0, 179, 104, 0.04);
+            border: 1px solid var(--border-accent);
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin-bottom: 16px;
+        }
+
+        .key-takeaways h4 {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--accent-green);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .key-takeaways ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .key-takeaways ul li {
+            font-size: 13px;
+            color: var(--text-secondary);
+            padding: 4px 0;
+            padding-left: 18px;
+            position: relative;
+        }
+
+        .key-takeaways ul li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--accent-green);
+            font-weight: 700;
+        }
+
+        .module-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--accent-green);
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+            transition: gap 0.2s;
+        }
+
+        .module-link:hover { gap: 12px; }
+
+        /* Credits Section */
+        .credits-section {
+            padding: 40px 0;
+            border-top: 1px solid var(--border-subtle);
+            margin-top: 40px;
+        }
+
+        .credits-header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .credits-header h3 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .credits-header p {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .credits-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+
+        .credit-card {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 16px 20px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.2s;
+        }
+
+        .credit-card:hover {
+            border-color: var(--border-accent);
+            transform: translateY(-2px);
+        }
+
+        .credit-logo {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 11px;
+            flex-shrink: 0;
+        }
+
+        .credit-info .credit-name {
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .credit-info .credit-desc {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
         @media (max-width: 768px) {
             .nav-links { display: none; }
-            .partners { flex-direction: column; }
+            .partners { gap: 12px; }
+            .partner { min-width: 120px; padding: 14px 16px; }
             .stats-bar { flex-wrap: wrap; gap: 24px; }
             .paths-grid { grid-template-columns: 1fr; }
+            .module-content { padding-left: 24px; }
+            .module-top { gap: 12px; }
+            .credits-grid { grid-template-columns: 1fr; }
             .footer-content { flex-direction: column; gap: 24px; text-align: center; }
         }
     </style>
@@ -560,18 +841,46 @@
         <div class="container">
             <div class="hero-badge">📚 Education Center</div>
             <h1>Learn Investing from <span class="text-gradient">the Best</span></h1>
-            <p>Access world-class courses from MIT, Rice University, and our expert curriculum. Build real investing knowledge — completely free.</p>
+            <p>Access world-class courses from Yale, MIT, Stanford, Wharton, NYU Stern, and Rice University. Build real investing knowledge — completely free.</p>
             
             <div class="partners">
                 <div class="partner">
-                    <div class="partner-logo mit">MIT</div>
+                    <div class="partner-logo"><img src="images/yale-logo.svg" alt="Yale"></div>
+                    <div>
+                        <div class="partner-name">Yale University</div>
+                        <div class="partner-type">Financial Markets</div>
+                    </div>
+                </div>
+                <div class="partner">
+                    <div class="partner-logo"><img src="images/mit-logo.svg" alt="MIT"></div>
                     <div>
                         <div class="partner-name">MIT OpenCourseWare</div>
                         <div class="partner-type">Finance Theory & FinTech</div>
                     </div>
                 </div>
                 <div class="partner">
-                    <div class="partner-logo rice">RICE</div>
+                    <div class="partner-logo"><img src="images/stanford-logo.svg" alt="Stanford"></div>
+                    <div>
+                        <div class="partner-name">Stanford GSB</div>
+                        <div class="partner-type">Stocks & Bonds</div>
+                    </div>
+                </div>
+                <div class="partner">
+                    <div class="partner-logo"><img src="images/wharton-logo.svg" alt="Wharton"></div>
+                    <div>
+                        <div class="partner-name">Wharton School</div>
+                        <div class="partner-type">Corporate Finance</div>
+                    </div>
+                </div>
+                <div class="partner">
+                    <div class="partner-logo"><img src="images/nyu-logo.svg" alt="NYU"></div>
+                    <div>
+                        <div class="partner-name">NYU Stern</div>
+                        <div class="partner-type">Valuation & Finance</div>
+                    </div>
+                </div>
+                <div class="partner">
+                    <div class="partner-logo"><img src="images/rice-logo.svg" alt="Rice"></div>
                     <div>
                         <div class="partner-name">Rice University</div>
                         <div class="partner-type">Investment & Portfolio</div>
@@ -585,15 +894,15 @@
     <div class="container">
         <div class="stats-bar">
             <div class="stat-item">
-                <div class="stat-number">25+</div>
+                <div class="stat-number">6</div>
+                <div class="stat-label">Universities</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">16</div>
                 <div class="stat-label">Courses</div>
             </div>
             <div class="stat-item">
-                <div class="stat-number">120+</div>
-                <div class="stat-label">Modules</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-number">50+</div>
+                <div class="stat-number">100+</div>
                 <div class="stat-label">Hours</div>
             </div>
             <div class="stat-item">
@@ -617,19 +926,409 @@
                     <div class="path-icon">🌱</div>
                     <h3>Beginner Path</h3>
                     <p>Master the fundamentals of markets, investing basics, and reading financial statements.</p>
-                    <div class="path-courses">3 courses • 3.5 hours</div>
+                    <div class="path-courses">5 courses • 10 hours</div>
                 </div>
                 <div class="path-card">
                     <div class="path-icon">📊</div>
                     <h3>Intermediate Path</h3>
                     <p>Learn technical and fundamental analysis, sector strategies, and portfolio construction.</p>
-                    <div class="path-courses">4 courses • 10 hours</div>
+                    <div class="path-courses">6 courses • 40 hours</div>
                 </div>
                 <div class="path-card">
                     <div class="path-icon">🚀</div>
                     <h3>Advanced Path</h3>
                     <p>Master options strategies, algorithmic trading, and advanced portfolio management.</p>
-                    <div class="path-courses">5 courses • 15 hours</div>
+                    <div class="path-courses">5 courses • 50 hours</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Beginner Curriculum -->
+    <section class="section">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-label">Beginner Curriculum</div>
+                <h2 class="section-title">Start Here: The Fundamentals</h2>
+                <p class="section-subtitle">Five modules that take you from zero to confident investor, built from the best introductory material at each university.</p>
+            </div>
+
+            <div class="module-list">
+
+                <!-- Module 1 -->
+                <div class="module-card">
+                    <div class="module-top" onclick="this.parentElement.classList.toggle('open')">
+                        <div class="module-number">1</div>
+                        <div class="module-info">
+                            <h3>What Are Financial Markets?</h3>
+                            <div class="module-source yale-source">Sourced from Yale — Prof. Robert Shiller (ECON 252)</div>
+                            <p class="module-desc">Understand why financial markets exist, who participates in them, and how stocks, bonds, and other securities actually work.</p>
+                            <div class="module-meta">
+                                <span>📚 5 lessons</span>
+                                <span>⏱️ 2 hours</span>
+                                <span>🌱 Beginner</span>
+                            </div>
+                        </div>
+                        <button class="module-toggle">▼</button>
+                    </div>
+                    <div class="module-content">
+                        <ol class="lesson-list">
+                            <li>
+                                <span class="lesson-num">1.1</span>
+                                <div class="lesson-detail">
+                                    <strong>Why Financial Markets Exist</strong>
+                                    <span>Markets let people trade risk, raise capital, and invest savings. This lesson covers how markets channel money from savers to companies that need it — and why that matters for the economy.</span>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="lesson-num">1.2</span>
+                                <div class="lesson-detail">
+                                    <strong>Stocks: Owning a Piece of a Company</strong>
+                                    <span>When you buy a share, you own a fraction of that company. Learn what stock prices represent, how companies issue shares through IPOs, and how supply and demand drive price changes.</span>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="lesson-num">1.3</span>
+                                <div class="lesson-detail">
+                                    <strong>Bonds: Lending Money for Interest</strong>
+                                    <span>Bonds are loans you make to companies or governments. Understand face value, coupon rates, maturity dates, and why bonds are considered less risky than stocks.</span>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="lesson-num">1.4</span>
+                                <div class="lesson-detail">
+                                    <strong>Market Participants & Exchanges</strong>
+                                    <span>Who's trading? Retail investors, institutional investors, market makers, and brokers. Learn how orders flow through exchanges like NYSE and NASDAQ to match buyers with sellers.</span>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="lesson-num">1.5</span>
+                                <div class="lesson-detail">
+                                    <strong>Market Efficiency & Behavioral Finance</strong>
+                                    <span>Are markets rational? Shiller's Nobel Prize-winning research shows how human psychology — overconfidence, herd behavior, and fear — creates bubbles and crashes.</span>
+                                </div>
+                            </li>
+                        </ol>
+                        <div class="key-takeaways">
+                            <h4>Key Takeaways</h4>
+                            <ul>
+                                <li>Markets exist to connect people who have capital with people who need it</li>
+                                <li>Stocks represent ownership; bonds represent debt</li>
+                                <li>Prices are set by supply and demand on exchanges</li>
+                                <li>Human psychology plays a major role in market movements</li>
+                            </ul>
+                        </div>
+                        <a href="https://oyc.yale.edu/economics/econ-252" target="_blank" class="module-link">Start this module on Yale OCW →</a>
+                    </div>
+                </div>
+
+                <!-- Module 2 -->
+                <div class="module-card">
+                    <div class="module-top" onclick="this.parentElement.classList.toggle('open')">
+                        <div class="module-number">2</div>
+                        <div class="module-info">
+                            <h3>The Time Value of Money</h3>
+                            <div class="module-source mit-source">Sourced from MIT — Prof. Andrew Lo (15.401) &amp; Wharton Corporate Finance</div>
+                            <p class="module-desc">A dollar today is worth more than a dollar tomorrow. Master the single most important concept in finance — and the math behind every investment decision.</p>
+                            <div class="module-meta">
+                                <span>📚 4 lessons</span>
+                                <span>⏱️ 2 hours</span>
+                                <span>🌱 Beginner</span>
+                            </div>
+                        </div>
+                        <button class="module-toggle">▼</button>
+                    </div>
+                    <div class="module-content">
+                        <ol class="lesson-list">
+                            <li>
+                                <span class="lesson-num">2.1</span>
+                                <div class="lesson-detail">
+                                    <strong>Present Value & Future Value</strong>
+                                    <span>If someone offers you $1,000 today or $1,000 in a year, which do you take? Learn why money has a time dimension and how to calculate what future cash flows are worth right now.</span>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="lesson-num">2.2</span>
+                                <div class="lesson-detail">
+                                    <strong>Compound Interest: The Eighth Wonder</strong>
+                                    <span>Einstein supposedly called it the most powerful force in the universe. Understand how compounding turns small, consistent investments into large sums over time — and how it works against you with debt.</span>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="lesson-num">2.3</span>
+                                <div class="lesson-detail">
+                                    <strong>Discount Rates & Net Present Value</strong>
+                                    <span>How do companies decide which projects to invest in? NPV analysis compares the present value of all future cash flows against today's cost. If NPV is positive, the investment creates value.</span>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="lesson-num">2.4</span>
+                                <div class="lesson-detail">
+                                    <strong>Applying TVM: Loans, Mortgages & Retirement</strong>
+                                    <span>Use time value of money to evaluate real decisions: How much do you need to save monthly to retire at 65? What does a 30-year mortgage really cost? These formulas have daily practical value.</span>
+                                </div>
+                            </li>
+                        </ol>
+                        <div class="key-takeaways">
+                            <h4>Key Takeaways</h4>
+                            <ul>
+                                <li>Money today is worth more than the same amount in the future due to earning potential</li>
+                                <li>Compound interest accelerates growth exponentially over time</li>
+                                <li>NPV is the standard tool for evaluating any investment or project</li>
+                                <li>These formulas apply directly to mortgages, retirement, and everyday decisions</li>
+                            </ul>
+                        </div>
+                        <a href="https://ocw.mit.edu/courses/15-401-finance-theory-i-fall-2008/" target="_blank" class="module-link">Start this module on MIT OCW →</a>
+                    </div>
+                </div>
+
+                <!-- Module 3 -->
+                <div class="module-card">
+                    <div class="module-top" onclick="this.parentElement.classList.toggle('open')">
+                        <div class="module-number">3</div>
+                        <div class="module-info">
+                            <h3>Reading Financial Statements</h3>
+                            <div class="module-source nyu-source">Sourced from NYU Stern — Prof. Aswath Damodaran (Foundations of Finance)</div>
+                            <p class="module-desc">Every public company tells its financial story through three documents. Learn to read them — and spot the difference between a healthy business and a risky one.</p>
+                            <div class="module-meta">
+                                <span>📚 4 lessons</span>
+                                <span>⏱️ 2 hours</span>
+                                <span>🌱 Beginner</span>
+                            </div>
+                        </div>
+                        <button class="module-toggle">▼</button>
+                    </div>
+                    <div class="module-content">
+                        <ol class="lesson-list">
+                            <li>
+                                <span class="lesson-num">3.1</span>
+                                <div class="lesson-detail">
+                                    <strong>The Income Statement</strong>
+                                    <span>Revenue, expenses, and profit — the income statement shows how much a company earned over a period. Learn to read revenue growth, operating margins, and net income to gauge profitability.</span>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="lesson-num">3.2</span>
+                                <div class="lesson-detail">
+                                    <strong>The Balance Sheet</strong>
+                                    <span>Assets = Liabilities + Equity. The balance sheet is a snapshot of what a company owns and owes. Learn to assess financial health by examining debt levels, cash reserves, and shareholder equity.</span>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="lesson-num">3.3</span>
+                                <div class="lesson-detail">
+                                    <strong>The Cash Flow Statement</strong>
+                                    <span>Profit isn't the same as cash. A company can be profitable on paper and still run out of money. Learn how operating, investing, and financing cash flows reveal the true financial picture.</span>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="lesson-num">3.4</span>
+                                <div class="lesson-detail">
+                                    <strong>Key Ratios & Red Flags</strong>
+                                    <span>P/E ratio, debt-to-equity, return on equity, free cash flow yield. These ratios let you compare companies at a glance — and spot warning signs like unsustainable debt or declining margins.</span>
+                                </div>
+                            </li>
+                        </ol>
+                        <div class="key-takeaways">
+                            <h4>Key Takeaways</h4>
+                            <ul>
+                                <li>The income statement shows profitability; the balance sheet shows financial position</li>
+                                <li>Cash flow is more important than accounting profit for assessing real health</li>
+                                <li>Financial ratios let you compare companies across industries and sizes</li>
+                                <li>Always look at all three statements together — no single one tells the full story</li>
+                            </ul>
+                        </div>
+                        <a href="https://pages.stern.nyu.edu/~adamodar/New_Home_Page/webcastfoundationsonline.htm" target="_blank" class="module-link">Start this module on NYU Stern →</a>
+                    </div>
+                </div>
+
+                <!-- Module 4 -->
+                <div class="module-card">
+                    <div class="module-top" onclick="this.parentElement.classList.toggle('open')">
+                        <div class="module-number">4</div>
+                        <div class="module-info">
+                            <h3>Risk, Return & Diversification</h3>
+                            <div class="module-source stanford-source">Sourced from Stanford GSB — Prof. Joshua Rauh &amp; MIT Portfolio Theory</div>
+                            <p class="module-desc">Higher returns come with higher risk — but smart diversification lets you reduce risk without sacrificing returns. The core insight behind modern portfolio theory.</p>
+                            <div class="module-meta">
+                                <span>📚 5 lessons</span>
+                                <span>⏱️ 2.5 hours</span>
+                                <span>🌱 Beginner</span>
+                            </div>
+                        </div>
+                        <button class="module-toggle">▼</button>
+                    </div>
+                    <div class="module-content">
+                        <ol class="lesson-list">
+                            <li>
+                                <span class="lesson-num">4.1</span>
+                                <div class="lesson-detail">
+                                    <strong>The Risk-Return Tradeoff</strong>
+                                    <span>Historically, stocks return ~10% per year but can drop 30%+ in a bad year. Bonds return ~5% but rarely lose more than 10%. Learn why higher expected returns always come with more volatility.</span>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="lesson-num">4.2</span>
+                                <div class="lesson-detail">
+                                    <strong>Measuring Risk: Volatility & Standard Deviation</strong>
+                                    <span>Risk isn't a gut feeling — it's measurable. Standard deviation quantifies how much an investment's returns swing around its average. Higher standard deviation means more uncertainty.</span>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="lesson-num">4.3</span>
+                                <div class="lesson-detail">
+                                    <strong>Diversification: Don't Put All Eggs in One Basket</strong>
+                                    <span>Owning 30 different stocks is less risky than owning 1 — even if each individual stock is equally risky. Diversification works because stocks don't all move together at the same time.</span>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="lesson-num">4.4</span>
+                                <div class="lesson-detail">
+                                    <strong>Correlation & the Efficient Frontier</strong>
+                                    <span>The magic of diversification depends on correlation. When assets aren't perfectly correlated, combining them creates portfolios with better risk-return profiles — the efficient frontier.</span>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="lesson-num">4.5</span>
+                                <div class="lesson-detail">
+                                    <strong>Beta & Systematic Risk</strong>
+                                    <span>You can diversify away company-specific risk, but you can't diversify away market risk. Beta measures how sensitive a stock is to overall market movements — the risk that gets rewarded.</span>
+                                </div>
+                            </li>
+                        </ol>
+                        <div class="key-takeaways">
+                            <h4>Key Takeaways</h4>
+                            <ul>
+                                <li>Higher expected returns always come with higher risk — there's no free lunch</li>
+                                <li>Diversification reduces risk without reducing expected return</li>
+                                <li>Correlation between assets determines how effective diversification is</li>
+                                <li>Only systematic (market) risk is rewarded — diversifiable risk is not</li>
+                            </ul>
+                        </div>
+                        <a href="https://www.gsb.stanford.edu/newsroom/school-news/learn-about-stocks-bonds-investing-free-online-course" target="_blank" class="module-link">Start this module on Stanford GSB →</a>
+                    </div>
+                </div>
+
+                <!-- Module 5 -->
+                <div class="module-card">
+                    <div class="module-top" onclick="this.parentElement.classList.toggle('open')">
+                        <div class="module-number">5</div>
+                        <div class="module-info">
+                            <h3>Making Your First Investment</h3>
+                            <div class="module-source rice-source">Sourced from Rice University — Investment Strategies &amp; Stanford Mind Over Money</div>
+                            <p class="module-desc">Put everything together. Set a goal, choose a strategy, and understand the practical mechanics of building a real portfolio.</p>
+                            <div class="module-meta">
+                                <span>📚 4 lessons</span>
+                                <span>⏱️ 1.5 hours</span>
+                                <span>🌱 Beginner</span>
+                            </div>
+                        </div>
+                        <button class="module-toggle">▼</button>
+                    </div>
+                    <div class="module-content">
+                        <ol class="lesson-list">
+                            <li>
+                                <span class="lesson-num">5.1</span>
+                                <div class="lesson-detail">
+                                    <strong>Setting Investment Goals & Time Horizons</strong>
+                                    <span>Are you saving for retirement in 30 years or a house in 5? Your time horizon determines how much risk you can take. Learn to define clear, measurable goals before choosing any investment.</span>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="lesson-num">5.2</span>
+                                <div class="lesson-detail">
+                                    <strong>Index Funds vs. Individual Stocks</strong>
+                                    <span>Warren Buffett recommends index funds for most people — and the data backs him up. Learn why broad market index funds outperform the majority of professional fund managers over the long run.</span>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="lesson-num">5.3</span>
+                                <div class="lesson-detail">
+                                    <strong>Asset Allocation & Dollar-Cost Averaging</strong>
+                                    <span>Deciding how much to put in stocks vs. bonds vs. cash is the single biggest driver of returns. Dollar-cost averaging — investing a fixed amount regularly — removes the pressure of market timing.</span>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="lesson-num">5.4</span>
+                                <div class="lesson-detail">
+                                    <strong>Common Mistakes & Behavioral Traps</strong>
+                                    <span>Panic selling in downturns, chasing hot stocks, overtrading — these behavioral mistakes destroy more wealth than bad stock picks. Learn to recognize and avoid the most common investor errors.</span>
+                                </div>
+                            </li>
+                        </ol>
+                        <div class="key-takeaways">
+                            <h4>Key Takeaways</h4>
+                            <ul>
+                                <li>Define your goal and time horizon before choosing any investment</li>
+                                <li>Index funds offer broad diversification at minimal cost</li>
+                                <li>Asset allocation matters more than individual stock selection</li>
+                                <li>The biggest enemy of investment returns is your own emotions</li>
+                            </ul>
+                        </div>
+                        <a href="https://online.rice.edu/courses/investment-strategies-portfolio-analysis" target="_blank" class="module-link">Start this module on Rice Online →</a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Yale Courses -->
+    <section class="section">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-label">Yale University</div>
+                <h2 class="section-title">Financial Markets</h2>
+                <p class="section-subtitle">Learn from Nobel Prize-winning economist Robert Shiller.</p>
+            </div>
+
+            <div class="course-grid">
+                <div class="course-card">
+                    <div class="course-header">
+                        <span class="course-level yale">Yale</span>
+                        <h3 class="course-title">Financial Markets</h3>
+                        <p class="course-source">Prof. Robert Shiller (Nobel Laureate) • Yale</p>
+                    </div>
+                    <div class="course-body">
+                        <p class="course-description">Overview of ideas, methods, and institutions that allow society to manage risks and foster enterprise. Covers securities, insurance, and banking industries.</p>
+                        <div class="course-meta">
+                            <span>📚 23 lectures</span>
+                            <span>⏱️ 17 hours</span>
+                        </div>
+                        <div class="course-topics">
+                            <span class="topic-tag">Risk Management</span>
+                            <span class="topic-tag">Behavioral Finance</span>
+                            <span class="topic-tag">Securities</span>
+                            <span class="topic-tag">Banking</span>
+                        </div>
+                        <div class="course-cta">
+                            <a href="https://oyc.yale.edu/economics/econ-252" target="_blank">Open on Yale OCW →</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="course-card">
+                    <div class="course-header">
+                        <span class="course-level yale">Yale</span>
+                        <h3 class="course-title">Financial Markets (Updated)</h3>
+                        <p class="course-source">Prof. Robert Shiller (Nobel Laureate) • Yale via Coursera</p>
+                    </div>
+                    <div class="course-body">
+                        <p class="course-description">Updated 2016-2017 lectures with student salons, chalk talks, and interviews. Deep dive into the functioning of financial markets and institutions.</p>
+                        <div class="course-meta">
+                            <span>📚 7 modules</span>
+                            <span>⏱️ 33 hours</span>
+                        </div>
+                        <div class="course-topics">
+                            <span class="topic-tag">Insurance</span>
+                            <span class="topic-tag">CAPM</span>
+                            <span class="topic-tag">Options</span>
+                            <span class="topic-tag">Investment Banking</span>
+                        </div>
+                        <div class="course-cta">
+                            <a href="https://www.coursera.org/learn/financial-markets-global" target="_blank">Open on Coursera →</a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -805,12 +1504,273 @@
         </div>
     </section>
 
+    <!-- Stanford Courses -->
+    <section class="section">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-label">Stanford Graduate School of Business</div>
+                <h2 class="section-title">Stocks, Bonds & Financial Wellness</h2>
+                <p class="section-subtitle">Free self-paced courses from Stanford GSB featuring Nobel Prize-winning economist William Sharpe.</p>
+            </div>
+
+            <div class="course-grid">
+                <div class="course-card">
+                    <div class="course-header">
+                        <span class="course-level stanford">Stanford GSB</span>
+                        <h3 class="course-title">Stocks and Bonds: Risks and Returns</h3>
+                        <p class="course-source">Prof. Joshua Rauh • Stanford GSB</p>
+                    </div>
+                    <div class="course-body">
+                        <p class="course-description">Finance fundamentals behind stocks and bonds, plus how to make smart decisions as an investor. Features a panel discussion with Nobel laureate William Sharpe.</p>
+                        <div class="course-meta">
+                            <span>📚 5 sections</span>
+                            <span>⏱️ 4 hours</span>
+                        </div>
+                        <div class="course-topics">
+                            <span class="topic-tag">Stocks</span>
+                            <span class="topic-tag">Bonds</span>
+                            <span class="topic-tag">Risk & Return</span>
+                            <span class="topic-tag">Asset Management</span>
+                        </div>
+                        <div class="course-cta">
+                            <a href="https://www.gsb.stanford.edu/newsroom/school-news/learn-about-stocks-bonds-investing-free-online-course" target="_blank">Open on Stanford GSB →</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="course-card">
+                    <div class="course-header">
+                        <span class="course-level stanford">Stanford</span>
+                        <h3 class="course-title">Mind Over Money: Financial Wellness</h3>
+                        <p class="course-source">Stanford Student Services</p>
+                    </div>
+                    <div class="course-body">
+                        <p class="course-description">Self-paced modules covering four key areas of personal finance to build lasting financial wellness and smart money habits.</p>
+                        <div class="course-meta">
+                            <span>📚 4 modules</span>
+                            <span>⏱️ 2 hours</span>
+                        </div>
+                        <div class="course-topics">
+                            <span class="topic-tag">Personal Finance</span>
+                            <span class="topic-tag">Budgeting</span>
+                            <span class="topic-tag">Saving</span>
+                            <span class="topic-tag">Financial Planning</span>
+                        </div>
+                        <div class="course-cta">
+                            <a href="https://mindovermoney.stanford.edu/learning-modules" target="_blank">Open on Stanford →</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Wharton Courses -->
+    <section class="section">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-label">Wharton School — University of Pennsylvania</div>
+                <h2 class="section-title">Corporate Finance & Financial Modeling</h2>
+                <p class="section-subtitle">Free courses from one of the world's top business schools.</p>
+            </div>
+
+            <div class="course-grid">
+                <div class="course-card">
+                    <div class="course-header">
+                        <span class="course-level wharton">Wharton</span>
+                        <h3 class="course-title">Introduction to Corporate Finance</h3>
+                        <p class="course-source">Wharton School • UPenn via Coursera</p>
+                    </div>
+                    <div class="course-body">
+                        <p class="course-description">Fundamentals of finance applied to real-world situations spanning personal finance, corporate decision-making, and financial intermediation.</p>
+                        <div class="course-meta">
+                            <span>📚 4 weeks</span>
+                            <span>⏱️ 10 hours</span>
+                        </div>
+                        <div class="course-topics">
+                            <span class="topic-tag">Time Value of Money</span>
+                            <span class="topic-tag">DCF Analysis</span>
+                            <span class="topic-tag">Capital Budgeting</span>
+                            <span class="topic-tag">NPV & IRR</span>
+                        </div>
+                        <div class="course-cta">
+                            <a href="https://www.coursera.org/learn/wharton-finance" target="_blank">Open on Coursera →</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="course-card">
+                    <div class="course-header">
+                        <span class="course-level wharton">Wharton</span>
+                        <h3 class="course-title">Business and Financial Modeling</h3>
+                        <p class="course-source">Wharton School • UPenn via Coursera</p>
+                    </div>
+                    <div class="course-body">
+                        <p class="course-description">Learn to use spreadsheet models to build frameworks for data-driven financial decisions across business contexts.</p>
+                        <div class="course-meta">
+                            <span>📚 5 courses</span>
+                            <span>⏱️ 15 hours</span>
+                        </div>
+                        <div class="course-topics">
+                            <span class="topic-tag">Spreadsheet Models</span>
+                            <span class="topic-tag">Quantitative Analysis</span>
+                            <span class="topic-tag">Decision Making</span>
+                            <span class="topic-tag">Forecasting</span>
+                        </div>
+                        <div class="course-cta">
+                            <a href="https://www.coursera.org/specializations/wharton-business-financial-modeling" target="_blank">Open on Coursera →</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- NYU Stern Courses -->
+    <section class="section">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-label">NYU Stern School of Business</div>
+                <h2 class="section-title">Valuation & Finance Foundations</h2>
+                <p class="section-subtitle">Free courses from Professor Aswath Damodaran, widely regarded as the "Dean of Valuation."</p>
+            </div>
+
+            <div class="course-grid">
+                <div class="course-card">
+                    <div class="course-header">
+                        <span class="course-level nyu">NYU Stern</span>
+                        <h3 class="course-title">Foundations of Finance</h3>
+                        <p class="course-source">Prof. Aswath Damodaran • NYU Stern</p>
+                    </div>
+                    <div class="course-body">
+                        <p class="course-description">12 short webcasts introducing the basics of finance — from financial statements to risk and return fundamentals.</p>
+                        <div class="course-meta">
+                            <span>📚 12 webcasts</span>
+                            <span>⏱️ 4 hours</span>
+                        </div>
+                        <div class="course-topics">
+                            <span class="topic-tag">Financial Statements</span>
+                            <span class="topic-tag">Risk & Return</span>
+                            <span class="topic-tag">Cost of Capital</span>
+                            <span class="topic-tag">Basics</span>
+                        </div>
+                        <div class="course-cta">
+                            <a href="https://pages.stern.nyu.edu/~adamodar/New_Home_Page/webcastfoundationsonline.htm" target="_blank">Open on NYU Stern →</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="course-card">
+                    <div class="course-header">
+                        <span class="course-level nyu">NYU Stern</span>
+                        <h3 class="course-title">Valuation</h3>
+                        <p class="course-source">Prof. Aswath Damodaran • NYU Stern</p>
+                    </div>
+                    <div class="course-body">
+                        <p class="course-description">25 webcasts covering the full scope of company valuation — the same material taught in Damodaran's legendary semester-long MBA course.</p>
+                        <div class="course-meta">
+                            <span>📚 25 webcasts</span>
+                            <span>⏱️ 8 hours</span>
+                        </div>
+                        <div class="course-topics">
+                            <span class="topic-tag">DCF Valuation</span>
+                            <span class="topic-tag">Relative Valuation</span>
+                            <span class="topic-tag">Real Options</span>
+                            <span class="topic-tag">Pricing</span>
+                        </div>
+                        <div class="course-cta">
+                            <a href="https://pages.stern.nyu.edu/~adamodar/New_Home_Page/webcastvalonline.htm" target="_blank">Open on NYU Stern →</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="course-card">
+                    <div class="course-header">
+                        <span class="course-level nyu">NYU Stern</span>
+                        <h3 class="course-title">Investment Philosophies</h3>
+                        <p class="course-source">Prof. Aswath Damodaran • NYU Stern</p>
+                    </div>
+                    <div class="course-body">
+                        <p class="course-description">Explore the major investment philosophies — value, growth, momentum, and more — and learn which strategies work and why.</p>
+                        <div class="course-meta">
+                            <span>📚 15 webcasts</span>
+                            <span>⏱️ 5 hours</span>
+                        </div>
+                        <div class="course-topics">
+                            <span class="topic-tag">Value Investing</span>
+                            <span class="topic-tag">Growth Investing</span>
+                            <span class="topic-tag">Market Timing</span>
+                            <span class="topic-tag">Contrarian</span>
+                        </div>
+                        <div class="course-cta">
+                            <a href="https://pages.stern.nyu.edu/~adamodar/New_Home_Page/onlineclass.htm" target="_blank">Open on NYU Stern →</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- CTA -->
     <section class="section" style="text-align: center; padding: 40px 0;">
         <div class="container">
             <h2 style="font-size: 36px; margin-bottom: 16px;">Ready to <span class="text-gradient">Start Learning?</span></h2>
             <p style="color: var(--text-secondary); font-size: 18px; margin-bottom: 32px;">Access all courses inside the FantasyTrader app.</p>
             <a href="app.html" class="btn btn-primary" style="padding: 16px 32px; font-size: 16px;">Open App →</a>
+        </div>
+    </section>
+
+    <!-- Credits & Attribution -->
+    <section class="credits-section">
+        <div class="container">
+            <div class="credits-header">
+                <h3>Course Materials Sourced From</h3>
+                <p>FantasyTrader curates free, publicly available course materials from these world-class institutions. All content belongs to the respective universities and instructors.</p>
+            </div>
+            <div class="credits-grid">
+                <a href="https://oyc.yale.edu/economics/econ-252" target="_blank" class="credit-card">
+                    <div class="credit-logo"><img src="images/yale-logo.svg" alt="Yale" style="width:100%;height:100%;object-fit:contain;"></div>
+                    <div class="credit-info">
+                        <div class="credit-name">Yale University</div>
+                        <div class="credit-desc">Open Yale Courses — ECON 252 by Prof. Robert Shiller</div>
+                    </div>
+                </a>
+                <a href="https://ocw.mit.edu/courses/15-401-finance-theory-i-fall-2008/" target="_blank" class="credit-card">
+                    <div class="credit-logo"><img src="images/mit-logo.svg" alt="MIT" style="width:100%;height:100%;object-fit:contain;"></div>
+                    <div class="credit-info">
+                        <div class="credit-name">MIT OpenCourseWare</div>
+                        <div class="credit-desc">15.401 Finance Theory & 15.S08 FinTech</div>
+                    </div>
+                </a>
+                <a href="https://www.gsb.stanford.edu/newsroom/school-news/learn-about-stocks-bonds-investing-free-online-course" target="_blank" class="credit-card">
+                    <div class="credit-logo"><img src="images/stanford-logo.svg" alt="Stanford" style="width:100%;height:100%;object-fit:contain;"></div>
+                    <div class="credit-info">
+                        <div class="credit-name">Stanford GSB</div>
+                        <div class="credit-desc">Stocks & Bonds by Prof. Joshua Rauh; Mind Over Money</div>
+                    </div>
+                </a>
+                <a href="https://www.coursera.org/learn/wharton-finance" target="_blank" class="credit-card">
+                    <div class="credit-logo"><img src="images/wharton-logo.svg" alt="Wharton" style="width:100%;height:100%;object-fit:contain;"></div>
+                    <div class="credit-info">
+                        <div class="credit-name">Wharton School</div>
+                        <div class="credit-desc">Corporate Finance & Financial Modeling via Coursera</div>
+                    </div>
+                </a>
+                <a href="https://pages.stern.nyu.edu/~adamodar/" target="_blank" class="credit-card">
+                    <div class="credit-logo"><img src="images/nyu-logo.svg" alt="NYU" style="width:100%;height:100%;object-fit:contain;"></div>
+                    <div class="credit-info">
+                        <div class="credit-name">NYU Stern</div>
+                        <div class="credit-desc">Foundations, Valuation & Investment by Prof. Damodaran</div>
+                    </div>
+                </a>
+                <a href="https://online.rice.edu/courses/investment-strategies-portfolio-analysis" target="_blank" class="credit-card">
+                    <div class="credit-logo"><img src="images/rice-logo.svg" alt="Rice" style="width:100%;height:100%;object-fit:contain;"></div>
+                    <div class="credit-info">
+                        <div class="credit-name">Rice University</div>
+                        <div class="credit-desc">Global Markets, Behavioral Finance & Investment Strategies</div>
+                    </div>
+                </a>
+            </div>
         </div>
     </section>
 
@@ -828,7 +1788,7 @@
                 <a href="education.html">Learn</a>
                 <a href="app.html">App</a>
             </div>
-            <div class="footer-copy">© 2025 FantasyTrader. Built at UNC.</div>
+            <div class="footer-copy">© 2025 FantasyTrader.</div>
         </div>
     </footer>
 
@@ -837,6 +1797,16 @@
     <script>
         // Course data with IDs for tracking
         const courses = {
+            'yale-financial-markets': {
+                name: 'Financial Markets',
+                totalModules: 23,
+                source: 'Yale'
+            },
+            'yale-financial-markets-coursera': {
+                name: 'Financial Markets (Updated)',
+                totalModules: 7,
+                source: 'Yale via Coursera'
+            },
             'mit-finance-theory-1': {
                 name: 'Finance Theory I: Present Value',
                 totalModules: 4,
@@ -866,6 +1836,41 @@
                 name: 'Investment Strategies',
                 totalModules: 6,
                 source: 'Rice University'
+            },
+            'stanford-stocks-bonds': {
+                name: 'Stocks and Bonds: Risks and Returns',
+                totalModules: 5,
+                source: 'Stanford GSB'
+            },
+            'stanford-mind-over-money': {
+                name: 'Mind Over Money: Financial Wellness',
+                totalModules: 4,
+                source: 'Stanford'
+            },
+            'wharton-corporate-finance': {
+                name: 'Introduction to Corporate Finance',
+                totalModules: 4,
+                source: 'Wharton'
+            },
+            'wharton-financial-modeling': {
+                name: 'Business and Financial Modeling',
+                totalModules: 5,
+                source: 'Wharton'
+            },
+            'nyu-foundations': {
+                name: 'Foundations of Finance',
+                totalModules: 12,
+                source: 'NYU Stern'
+            },
+            'nyu-valuation': {
+                name: 'Valuation',
+                totalModules: 25,
+                source: 'NYU Stern'
+            },
+            'nyu-investment-philosophies': {
+                name: 'Investment Philosophies',
+                totalModules: 15,
+                source: 'NYU Stern'
             }
         };
 
@@ -931,12 +1936,21 @@
         function getCourseIdFromCard(card, index) {
             const title = card.querySelector('.course-title')?.textContent || '';
 
+            if (title.includes('Financial Markets (Updated)')) return 'yale-financial-markets-coursera';
+            if (title.includes('Financial Markets')) return 'yale-financial-markets';
             if (title.includes('Present Value')) return 'mit-finance-theory-1';
             if (title.includes('Portfolio Theory')) return 'mit-finance-theory-2';
             if (title.includes('FinTech')) return 'mit-fintech';
             if (title.includes('Global Financial Markets')) return 'rice-global-markets';
             if (title.includes('Behavioral Finance')) return 'rice-behavioral';
             if (title.includes('Investment Strategies')) return 'rice-investment';
+            if (title.includes('Stocks and Bonds')) return 'stanford-stocks-bonds';
+            if (title.includes('Mind Over Money')) return 'stanford-mind-over-money';
+            if (title.includes('Introduction to Corporate')) return 'wharton-corporate-finance';
+            if (title.includes('Financial Modeling')) return 'wharton-financial-modeling';
+            if (title.includes('Foundations of Finance')) return 'nyu-foundations';
+            if (title.includes('Valuation')) return 'nyu-valuation';
+            if (title.includes('Investment Philosophies')) return 'nyu-investment-philosophies';
 
             return `course-${index}`;
         }
