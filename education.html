@@ -751,6 +751,95 @@
 
         .module-link:hover { gap: 12px; }
 
+        /* Full lesson content */
+        .lesson-full {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            margin-top: 4px;
+        }
+
+        .lesson-full p {
+            margin-bottom: 12px;
+        }
+
+        .concept-box {
+            background: rgba(37, 99, 235, 0.04);
+            border-left: 3px solid var(--accent-blue);
+            padding: 12px 16px;
+            border-radius: 0 8px 8px 0;
+            margin: 12px 0;
+            font-size: 13px;
+        }
+
+        .concept-box strong {
+            color: var(--accent-blue);
+            display: block;
+            margin-bottom: 4px;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .example-box {
+            background: rgba(0, 179, 104, 0.04);
+            border-left: 3px solid var(--accent-green);
+            padding: 12px 16px;
+            border-radius: 0 8px 8px 0;
+            margin: 12px 0;
+            font-size: 13px;
+        }
+
+        .example-box strong {
+            color: var(--accent-green);
+            display: block;
+            margin-bottom: 4px;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .vocab-list {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin: 12px 0;
+        }
+
+        .vocab-item {
+            background: rgba(0,0,0,0.02);
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 13px;
+        }
+
+        .vocab-item span {
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .module-complete-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            background: var(--accent-green);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: 8px;
+        }
+
+        .module-complete-btn:hover {
+            background: var(--accent-green-dim);
+            transform: translateY(-2px);
+        }
+
         /* Credits Section */
         .credits-section {
             padding: 40px 0;
@@ -979,7 +1068,7 @@
                         <div class="module-number">1</div>
                         <div class="module-info">
                             <h3>What Are Financial Markets?</h3>
-                            <div class="module-source yale-source">Sourced from Yale — Prof. Robert Shiller (ECON 252)</div>
+                            <div class="module-source yale-source">Based on concepts from Yale ECON 252</div>
                             <p class="module-desc">Understand why financial markets exist, who participates in them, and how stocks, bonds, and other securities actually work.</p>
                             <div class="module-meta">
                                 <span>📚 5 lessons</span>
@@ -995,35 +1084,90 @@
                                 <span class="lesson-num">1.1</span>
                                 <div class="lesson-detail">
                                     <strong>Why Financial Markets Exist</strong>
-                                    <span>Markets let people trade risk, raise capital, and invest savings. This lesson covers how markets channel money from savers to companies that need it — and why that matters for the economy.</span>
+                                    <div class="lesson-full">
+                                        <p>Financial markets solve a fundamental problem: some people have money they want to grow, and other people (or companies) need money to build things. Markets connect these two groups.</p>
+                                        <p>When Apple needed cash to build the first iPhone, it didn't knock on doors asking for loans — it sold shares of the company to investors. Those investors gave Apple capital in exchange for a piece of future profits. That transaction happened through financial markets.</p>
+                                        <div class="concept-box">
+                                            <strong>Key Concept</strong>
+                                            Capital allocation is the process of directing money toward its most productive use. Markets do this automatically — companies with good ideas attract investment, while poorly-run businesses lose funding.
+                                        </div>
+                                        <p>Without markets, your savings would sit in a bank earning almost nothing. With markets, that same money can fund innovation, earn returns, and grow over time. This is why every major economy in the world has a stock market.</p>
+                                    </div>
                                 </div>
                             </li>
                             <li>
                                 <span class="lesson-num">1.2</span>
                                 <div class="lesson-detail">
                                     <strong>Stocks: Owning a Piece of a Company</strong>
-                                    <span>When you buy a share, you own a fraction of that company. Learn what stock prices represent, how companies issue shares through IPOs, and how supply and demand drive price changes.</span>
+                                    <div class="lesson-full">
+                                        <p>A stock (or "share") represents fractional ownership of a company. If a company has 1 million shares outstanding and you own 1,000, you own 0.1% of that company — its profits, its assets, and its future growth.</p>
+                                        <div class="example-box">
+                                            <strong>Example</strong>
+                                            If you bought 10 shares of NVIDIA at $20 in 2015 ($200 total), those same shares would be worth over $1,400 today. Your ownership stake didn't change — but the company became far more valuable.
+                                        </div>
+                                        <p>Stock prices move based on supply and demand. When more people want to buy a stock than sell it, the price goes up. When more want to sell, the price drops. This happens every second of every trading day.</p>
+                                        <p>Companies first sell stock to the public through an IPO (Initial Public Offering). After that, shares trade between investors on exchanges — the company doesn't get money from those trades. You're buying from another investor, not from the company itself.</p>
+                                        <div class="vocab-list">
+                                            <div class="vocab-item"><span>Share:</span> One unit of ownership</div>
+                                            <div class="vocab-item"><span>IPO:</span> First time a company sells stock publicly</div>
+                                            <div class="vocab-item"><span>Market Cap:</span> Total value of all shares (price x shares)</div>
+                                            <div class="vocab-item"><span>Dividend:</span> Cash payment to shareholders from profits</div>
+                                        </div>
+                                    </div>
                                 </div>
                             </li>
                             <li>
                                 <span class="lesson-num">1.3</span>
                                 <div class="lesson-detail">
                                     <strong>Bonds: Lending Money for Interest</strong>
-                                    <span>Bonds are loans you make to companies or governments. Understand face value, coupon rates, maturity dates, and why bonds are considered less risky than stocks.</span>
+                                    <div class="lesson-full">
+                                        <p>When you buy a bond, you're lending money to a company or government. In return, they promise to pay you back on a specific date (the maturity date) plus regular interest payments along the way (the coupon).</p>
+                                        <div class="example-box">
+                                            <strong>Example</strong>
+                                            A $1,000 US Treasury bond with a 4% coupon and 10-year maturity pays you $40 per year for 10 years, then returns your $1,000. Total earned: $400 in interest on top of your original investment.
+                                        </div>
+                                        <p>Bonds are generally less risky than stocks because you have a legal right to get your money back. If a company goes bankrupt, bondholders get paid before stockholders. The tradeoff: lower risk means lower returns.</p>
+                                        <div class="concept-box">
+                                            <strong>Key Concept</strong>
+                                            Bond prices move inversely to interest rates. When rates rise, existing bonds become less attractive (their prices fall). When rates drop, existing bonds become more valuable (their prices rise). This is the most important rule in bond investing.
+                                        </div>
+                                        <div class="vocab-list">
+                                            <div class="vocab-item"><span>Face Value:</span> Amount repaid at maturity (usually $1,000)</div>
+                                            <div class="vocab-item"><span>Coupon:</span> Annual interest payment</div>
+                                            <div class="vocab-item"><span>Yield:</span> Your actual return based on price paid</div>
+                                            <div class="vocab-item"><span>Maturity:</span> Date you get your principal back</div>
+                                        </div>
+                                    </div>
                                 </div>
                             </li>
                             <li>
                                 <span class="lesson-num">1.4</span>
                                 <div class="lesson-detail">
                                     <strong>Market Participants & Exchanges</strong>
-                                    <span>Who's trading? Retail investors, institutional investors, market makers, and brokers. Learn how orders flow through exchanges like NYSE and NASDAQ to match buyers with sellers.</span>
+                                    <div class="lesson-full">
+                                        <p>Every trade has a buyer and a seller. But the market is made up of very different types of participants, each with different goals and different amounts of power.</p>
+                                        <p><strong>Retail investors</strong> are individual people like you. You might buy 50 shares of Apple through an app like Robinhood or Fidelity. <strong>Institutional investors</strong> — pension funds, mutual funds, hedge funds — move billions of dollars and account for about 80% of all trading volume.</p>
+                                        <p><strong>Market makers</strong> are firms that always offer to both buy and sell a stock. They profit from the tiny spread between the buy price and sell price. Without them, you might place an order and wait hours for someone to take the other side.</p>
+                                        <div class="concept-box">
+                                            <strong>Key Concept</strong>
+                                            The NYSE and NASDAQ are the two major U.S. stock exchanges. The NYSE is a physical exchange on Wall Street. NASDAQ is fully electronic. Both match buy orders with sell orders in milliseconds. When you tap "Buy" on your phone, your order routes through brokers to one of these exchanges.
+                                        </div>
+                                    </div>
                                 </div>
                             </li>
                             <li>
                                 <span class="lesson-num">1.5</span>
                                 <div class="lesson-detail">
                                     <strong>Market Efficiency & Behavioral Finance</strong>
-                                    <span>Are markets rational? Shiller's Nobel Prize-winning research shows how human psychology — overconfidence, herd behavior, and fear — creates bubbles and crashes.</span>
+                                    <div class="lesson-full">
+                                        <p>The <strong>Efficient Market Hypothesis</strong> says that stock prices reflect all available information at all times. If that were perfectly true, nobody could consistently beat the market — prices would always be "correct."</p>
+                                        <p>But research in behavioral finance — pioneered by Nobel laureate Robert Shiller — shows that humans are not rational. We're predictably irrational in ways that create real opportunities and real dangers.</p>
+                                        <div class="example-box">
+                                            <strong>Common Behavioral Biases</strong>
+                                            <strong>Herd behavior:</strong> Buying because everyone else is buying (think meme stocks). <strong>Loss aversion:</strong> The pain of losing $100 feels twice as bad as the pleasure of gaining $100. <strong>Overconfidence:</strong> Believing you can pick winners better than professionals. <strong>Recency bias:</strong> Assuming recent trends will continue forever.
+                                        </div>
+                                        <p>These biases are why markets form bubbles (the dot-com crash of 2000, the housing crisis of 2008) and why panics cause prices to overshoot downward. Understanding your own psychology is just as important as understanding financial statements.</p>
+                                    </div>
                                 </div>
                             </li>
                         </ol>
@@ -1031,12 +1175,12 @@
                             <h4>Key Takeaways</h4>
                             <ul>
                                 <li>Markets exist to connect people who have capital with people who need it</li>
-                                <li>Stocks represent ownership; bonds represent debt</li>
-                                <li>Prices are set by supply and demand on exchanges</li>
-                                <li>Human psychology plays a major role in market movements</li>
+                                <li>Stocks represent ownership and potential for growth; bonds represent loans with fixed returns</li>
+                                <li>Prices are set by supply and demand across millions of participants</li>
+                                <li>Human psychology — not just math — drives market movements</li>
                             </ul>
                         </div>
-                        <a href="https://oyc.yale.edu/economics/econ-252" target="_blank" class="module-link">Start this module on Yale OCW →</a>
+                        <button class="module-complete-btn" onclick="this.textContent='✓ Module Complete'; this.style.background='#555566'; this.disabled=true;">Mark Module Complete</button>
                     </div>
                 </div>
 
@@ -1046,7 +1190,7 @@
                         <div class="module-number">2</div>
                         <div class="module-info">
                             <h3>The Time Value of Money</h3>
-                            <div class="module-source mit-source">Sourced from MIT — Prof. Andrew Lo (15.401) &amp; Wharton Corporate Finance</div>
+                            <div class="module-source mit-source">Based on concepts from MIT 15.401 &amp; Wharton Corporate Finance</div>
                             <p class="module-desc">A dollar today is worth more than a dollar tomorrow. Master the single most important concept in finance — and the math behind every investment decision.</p>
                             <div class="module-meta">
                                 <span>📚 4 lessons</span>
@@ -1062,41 +1206,85 @@
                                 <span class="lesson-num">2.1</span>
                                 <div class="lesson-detail">
                                     <strong>Present Value & Future Value</strong>
-                                    <span>If someone offers you $1,000 today or $1,000 in a year, which do you take? Learn why money has a time dimension and how to calculate what future cash flows are worth right now.</span>
+                                    <div class="lesson-full">
+                                        <p>If someone offers you $1,000 today or $1,000 in a year, you should always take the money today. Why? Because you can invest that $1,000 now and have more than $1,000 in a year.</p>
+                                        <div class="concept-box">
+                                            <strong>The Core Formula</strong>
+                                            <strong>Future Value = Present Value × (1 + r)^n</strong><br>
+                                            Where r = interest rate per period, n = number of periods.<br><br>
+                                            $1,000 invested at 8% for 10 years = $1,000 × (1.08)^10 = <strong>$2,159</strong>
+                                        </div>
+                                        <p>Present value works in reverse: what is a future payment worth today? If someone promises you $10,000 in 5 years, that's not worth $10,000 now. At an 8% discount rate, it's worth $10,000 ÷ (1.08)^5 = <strong>$6,806 today</strong>.</p>
+                                        <p>This is the foundation of all financial valuation. Every stock, bond, business, and investment is worth the present value of the cash it will generate in the future. Period.</p>
+                                    </div>
                                 </div>
                             </li>
                             <li>
                                 <span class="lesson-num">2.2</span>
                                 <div class="lesson-detail">
                                     <strong>Compound Interest: The Eighth Wonder</strong>
-                                    <span>Einstein supposedly called it the most powerful force in the universe. Understand how compounding turns small, consistent investments into large sums over time — and how it works against you with debt.</span>
+                                    <div class="lesson-full">
+                                        <p>Simple interest earns returns only on your original investment. Compound interest earns returns on your returns — and the difference over time is enormous.</p>
+                                        <div class="example-box">
+                                            <strong>The Power of Compounding</strong>
+                                            Invest $500/month starting at age 22 at 8% annual return:<br>
+                                            <strong>At age 32:</strong> $91,473 (you invested $60,000)<br>
+                                            <strong>At age 42:</strong> $294,510 (you invested $120,000)<br>
+                                            <strong>At age 62:</strong> $1,745,504 (you invested $240,000)<br><br>
+                                            Over $1.5 million of that came from compounding — not from money you put in.
+                                        </div>
+                                        <p>This is why starting early matters more than investing large amounts later. A 22-year-old investing $300/month will likely have more at retirement than a 35-year-old investing $600/month — despite investing less total money. Time is the most powerful variable in the compounding equation.</p>
+                                        <div class="concept-box">
+                                            <strong>Rule of 72</strong>
+                                            Divide 72 by your annual return to estimate how many years it takes to double your money. At 8% return: 72 ÷ 8 = 9 years to double. At 12%: 6 years. At 4%: 18 years.
+                                        </div>
+                                    </div>
                                 </div>
                             </li>
                             <li>
                                 <span class="lesson-num">2.3</span>
                                 <div class="lesson-detail">
                                     <strong>Discount Rates & Net Present Value</strong>
-                                    <span>How do companies decide which projects to invest in? NPV analysis compares the present value of all future cash flows against today's cost. If NPV is positive, the investment creates value.</span>
+                                    <div class="lesson-full">
+                                        <p>The discount rate is the return you could earn on an alternative investment of similar risk. It's the "opportunity cost" of putting your money somewhere. If you can earn 10% in the stock market, you'd need a potential investment to clear that bar to be worth your money.</p>
+                                        <div class="concept-box">
+                                            <strong>Net Present Value (NPV)</strong>
+                                            NPV = (Present Value of all future cash inflows) − (Cost of the investment today)<br><br>
+                                            <strong>If NPV > 0:</strong> The investment creates value — take it.<br>
+                                            <strong>If NPV < 0:</strong> The investment destroys value — skip it.<br>
+                                            <strong>If NPV = 0:</strong> You're indifferent — the returns just match your required return.
+                                        </div>
+                                        <p>NPV is the gold standard for investment decisions at every major corporation. When Amazon decides whether to build a new warehouse, when a startup decides whether to launch a new product — they run NPV analysis. The logic is simple: convert all future cash flows to today's dollars, subtract what it costs, and see if you come out ahead.</p>
+                                    </div>
                                 </div>
                             </li>
                             <li>
                                 <span class="lesson-num">2.4</span>
                                 <div class="lesson-detail">
                                     <strong>Applying TVM: Loans, Mortgages & Retirement</strong>
-                                    <span>Use time value of money to evaluate real decisions: How much do you need to save monthly to retire at 65? What does a 30-year mortgage really cost? These formulas have daily practical value.</span>
+                                    <div class="lesson-full">
+                                        <p>Time value of money isn't abstract — it governs the biggest financial decisions of your life.</p>
+                                        <div class="example-box">
+                                            <strong>Real-World Applications</strong>
+                                            <strong>Mortgage:</strong> A $300,000 home at 7% over 30 years costs $718,527 total — you pay $418,527 in interest alone. At 5%, the total drops to $579,767. That 2% rate difference costs $138,760.<br><br>
+                                            <strong>Student Loans:</strong> $50,000 at 6% over 10 years means $66,612 total paid. Paying an extra $100/month saves you $4,862 in interest and pays it off 2 years early.<br><br>
+                                            <strong>Retirement:</strong> To have $1M at 65, you need to save $286/month starting at 25 (at 8% return) — or $671/month starting at 35. Waiting 10 years more than doubles the required savings.
+                                        </div>
+                                        <p>Every time you see an interest rate on a loan, a mortgage, or a savings account, you're looking at time value of money in action. Understanding this concept turns financial decisions from guesswork into math.</p>
+                                    </div>
                                 </div>
                             </li>
                         </ol>
                         <div class="key-takeaways">
                             <h4>Key Takeaways</h4>
                             <ul>
-                                <li>Money today is worth more than the same amount in the future due to earning potential</li>
-                                <li>Compound interest accelerates growth exponentially over time</li>
-                                <li>NPV is the standard tool for evaluating any investment or project</li>
-                                <li>These formulas apply directly to mortgages, retirement, and everyday decisions</li>
+                                <li>Money today is always worth more than the same amount in the future</li>
+                                <li>Compound interest turns small, early investments into enormous sums over time</li>
+                                <li>NPV is the standard framework for evaluating any investment or project</li>
+                                <li>These formulas directly apply to mortgages, student loans, and retirement planning</li>
                             </ul>
                         </div>
-                        <a href="https://ocw.mit.edu/courses/15-401-finance-theory-i-fall-2008/" target="_blank" class="module-link">Start this module on MIT OCW →</a>
+                        <button class="module-complete-btn" onclick="this.textContent='✓ Module Complete'; this.style.background='#555566'; this.disabled=true;">Mark Module Complete</button>
                     </div>
                 </div>
 
@@ -1106,7 +1294,7 @@
                         <div class="module-number">3</div>
                         <div class="module-info">
                             <h3>Reading Financial Statements</h3>
-                            <div class="module-source nyu-source">Sourced from NYU Stern — Prof. Aswath Damodaran (Foundations of Finance)</div>
+                            <div class="module-source nyu-source">Based on concepts from NYU Stern Foundations of Finance</div>
                             <p class="module-desc">Every public company tells its financial story through three documents. Learn to read them — and spot the difference between a healthy business and a risky one.</p>
                             <div class="module-meta">
                                 <span>📚 4 lessons</span>
@@ -1122,41 +1310,91 @@
                                 <span class="lesson-num">3.1</span>
                                 <div class="lesson-detail">
                                     <strong>The Income Statement</strong>
-                                    <span>Revenue, expenses, and profit — the income statement shows how much a company earned over a period. Learn to read revenue growth, operating margins, and net income to gauge profitability.</span>
+                                    <div class="lesson-full">
+                                        <p>The income statement answers one question: <strong>how much money did the company make (or lose) during this period?</strong> It covers a span of time — usually a quarter or a year.</p>
+                                        <p>It flows top-down: start with total revenue (all money coming in), subtract costs of goods sold to get gross profit, subtract operating expenses (salaries, rent, R&D) to get operating income, then subtract taxes and interest to get net income — the bottom line.</p>
+                                        <div class="example-box">
+                                            <strong>Reading Apple's Income Statement (Simplified)</strong>
+                                            Revenue: $383B → Cost of Goods: $214B → <strong>Gross Profit: $169B (44% margin)</strong> → Operating Expenses: $55B → <strong>Operating Income: $114B</strong> → Taxes & Interest → <strong>Net Income: $97B</strong>
+                                        </div>
+                                        <div class="vocab-list">
+                                            <div class="vocab-item"><span>Revenue:</span> Total money from sales</div>
+                                            <div class="vocab-item"><span>Gross Margin:</span> (Revenue − Cost) ÷ Revenue</div>
+                                            <div class="vocab-item"><span>Operating Income:</span> Profit from core business</div>
+                                            <div class="vocab-item"><span>Net Income:</span> Final profit after all expenses</div>
+                                        </div>
+                                    </div>
                                 </div>
                             </li>
                             <li>
                                 <span class="lesson-num">3.2</span>
                                 <div class="lesson-detail">
                                     <strong>The Balance Sheet</strong>
-                                    <span>Assets = Liabilities + Equity. The balance sheet is a snapshot of what a company owns and owes. Learn to assess financial health by examining debt levels, cash reserves, and shareholder equity.</span>
+                                    <div class="lesson-full">
+                                        <p>The balance sheet is a snapshot of what a company <strong>owns</strong> (assets), what it <strong>owes</strong> (liabilities), and the difference — what belongs to shareholders (equity). It always balances: Assets = Liabilities + Equity.</p>
+                                        <div class="concept-box">
+                                            <strong>The Accounting Equation</strong>
+                                            <strong>Assets = Liabilities + Shareholders' Equity</strong><br><br>
+                                            Assets: Cash, inventory, equipment, patents, buildings — anything of value the company controls.<br>
+                                            Liabilities: Loans, bonds, accounts payable — money the company owes others.<br>
+                                            Equity: What's left for shareholders after paying all debts. Think of it as the company's "net worth."
+                                        </div>
+                                        <p>A company with $500M in assets and $400M in liabilities has $100M in equity. If those liabilities grow to $600M, equity goes negative — a red flag that the company may be in financial distress.</p>
+                                        <p>Look at the <strong>debt-to-equity ratio</strong> to judge financial health. Under 1.0 is generally conservative. Over 2.0 means the company is heavily leveraged — more risk for stockholders.</p>
+                                    </div>
                                 </div>
                             </li>
                             <li>
                                 <span class="lesson-num">3.3</span>
                                 <div class="lesson-detail">
                                     <strong>The Cash Flow Statement</strong>
-                                    <span>Profit isn't the same as cash. A company can be profitable on paper and still run out of money. Learn how operating, investing, and financing cash flows reveal the true financial picture.</span>
+                                    <div class="lesson-full">
+                                        <p>A company can report profit on the income statement and still run out of cash. That's because accounting profit includes non-cash items (like depreciation) and doesn't track when cash actually changes hands. The cash flow statement fixes this.</p>
+                                        <p>It has three sections:</p>
+                                        <div class="concept-box">
+                                            <strong>Three Types of Cash Flow</strong>
+                                            <strong>Operating Cash Flow:</strong> Cash generated from the actual business — selling products, collecting payments. This is the most important number. If operating cash flow is consistently negative, the business model might be broken.<br><br>
+                                            <strong>Investing Cash Flow:</strong> Cash spent on long-term assets — buying equipment, acquiring companies. Usually negative (companies invest to grow).<br><br>
+                                            <strong>Financing Cash Flow:</strong> Cash from borrowing, issuing stock, or paying dividends. Shows how the company funds itself.
+                                        </div>
+                                        <div class="example-box">
+                                            <strong>Why It Matters</strong>
+                                            WeWork reported growing revenue for years. But its operating cash flow was deeply negative — it was burning cash faster than it earned it. Investors who only looked at revenue missed the warning sign. Cash flow told the real story.
+                                        </div>
+                                    </div>
                                 </div>
                             </li>
                             <li>
                                 <span class="lesson-num">3.4</span>
                                 <div class="lesson-detail">
                                     <strong>Key Ratios & Red Flags</strong>
-                                    <span>P/E ratio, debt-to-equity, return on equity, free cash flow yield. These ratios let you compare companies at a glance — and spot warning signs like unsustainable debt or declining margins.</span>
+                                    <div class="lesson-full">
+                                        <p>Financial ratios let you compare companies of different sizes and industries on equal footing. Here are the ones every investor should know:</p>
+                                        <div class="vocab-list">
+                                            <div class="vocab-item"><span>P/E Ratio:</span> Price ÷ Earnings per share. Higher = investors expect more growth. S&P 500 average is ~20.</div>
+                                            <div class="vocab-item"><span>Debt-to-Equity:</span> Total Debt ÷ Equity. Below 1 = conservative. Above 2 = highly leveraged.</div>
+                                            <div class="vocab-item"><span>ROE:</span> Net Income ÷ Equity. How efficiently the company uses shareholder money. 15%+ is strong.</div>
+                                            <div class="vocab-item"><span>Free Cash Flow:</span> Operating Cash Flow − Capital Expenditures. Money available to shareholders.</div>
+                                        </div>
+                                        <div class="example-box">
+                                            <strong>Red Flags to Watch For</strong>
+                                            Revenue growing but cash flow shrinking (possible aggressive accounting). Debt-to-equity spiking suddenly (the company is borrowing heavily). Net income dependent on one-time gains, not recurring business. Inventory growing faster than sales (products aren't selling).
+                                        </div>
+                                        <p>No single ratio tells the whole story. Always look at all three financial statements together, over multiple periods, and compare against competitors in the same industry.</p>
+                                    </div>
                                 </div>
                             </li>
                         </ol>
                         <div class="key-takeaways">
                             <h4>Key Takeaways</h4>
                             <ul>
-                                <li>The income statement shows profitability; the balance sheet shows financial position</li>
-                                <li>Cash flow is more important than accounting profit for assessing real health</li>
-                                <li>Financial ratios let you compare companies across industries and sizes</li>
-                                <li>Always look at all three statements together — no single one tells the full story</li>
+                                <li>The income statement shows profitability; the balance sheet shows financial health</li>
+                                <li>Cash flow is more important than accounting profit — it shows whether the business actually generates money</li>
+                                <li>Financial ratios (P/E, D/E, ROE, FCF) let you compare companies at a glance</li>
+                                <li>Always look at all three statements together over multiple periods</li>
                             </ul>
                         </div>
-                        <a href="https://pages.stern.nyu.edu/~adamodar/New_Home_Page/webcastfoundationsonline.htm" target="_blank" class="module-link">Start this module on NYU Stern →</a>
+                        <button class="module-complete-btn" onclick="this.textContent='✓ Module Complete'; this.style.background='#555566'; this.disabled=true;">Mark Module Complete</button>
                     </div>
                 </div>
 
@@ -1182,35 +1420,123 @@
                                 <span class="lesson-num">4.1</span>
                                 <div class="lesson-detail">
                                     <strong>The Risk-Return Tradeoff</strong>
-                                    <span>Historically, stocks return ~10% per year but can drop 30%+ in a bad year. Bonds return ~5% but rarely lose more than 10%. Learn why higher expected returns always come with more volatility.</span>
+                                    <div class="lesson-full">
+                                        <p>In investing, risk and return are inseparable. Every investment sits somewhere on the risk-return spectrum: higher potential returns always come packaged with higher potential losses. There is no way around this — it's a fundamental law of financial markets.</p>
+                                        <div class="concept-box">
+                                            <strong>Historical Returns by Asset Class (annualized, 1926–2024)</strong>
+                                            <strong>U.S. Large-Cap Stocks:</strong> ~10% average return, but annual swings from −37% (2008) to +54% (1933).<br>
+                                            <strong>U.S. Government Bonds:</strong> ~5% average return, with much smaller annual swings (rarely worse than −10%).<br>
+                                            <strong>Treasury Bills (Cash):</strong> ~3% average return, virtually no risk of loss in any single year.<br><br>
+                                            The extra return you earn for taking on more risk is called the <strong>risk premium</strong>. Stocks have historically delivered a ~5% premium over bonds — that's the reward for stomaching the volatility.
+                                        </div>
+                                        <p>Why does this relationship hold? Because investors are risk-averse by nature. If a risky asset offered the same return as a safe one, nobody would buy it. So risky assets must offer higher expected returns to attract buyers. This is the logic behind the entire stock market — you're being compensated for accepting uncertainty.</p>
+                                        <div class="example-box">
+                                            <strong>Putting It in Perspective</strong>
+                                            If you invested $10,000 in the S&P 500 in 1990, it would be worth roughly $210,000 by 2024. The same $10,000 in Treasury bonds would be worth about $50,000. But along the way, the stock portfolio lost 37% of its value in 2008, 20% in 2022, and had many other gut-wrenching drops. The bond portfolio never had a year nearly that bad. The extra $160,000 in returns was the reward for enduring those drops without panic selling.
+                                        </div>
+                                    </div>
                                 </div>
                             </li>
                             <li>
                                 <span class="lesson-num">4.2</span>
                                 <div class="lesson-detail">
                                     <strong>Measuring Risk: Volatility & Standard Deviation</strong>
-                                    <span>Risk isn't a gut feeling — it's measurable. Standard deviation quantifies how much an investment's returns swing around its average. Higher standard deviation means more uncertainty.</span>
+                                    <div class="lesson-full">
+                                        <p>Risk isn't a gut feeling — it's quantifiable. The most common measure is <strong>standard deviation</strong>, which tells you how much an investment's returns swing around its average. A higher standard deviation means wider swings and more uncertainty about what you'll actually earn.</p>
+                                        <div class="concept-box">
+                                            <strong>How Standard Deviation Works</strong>
+                                            If a stock has an average annual return of 10% and a standard deviation of 20%, then in roughly two-thirds of all years, its return will fall between −10% and +30% (the average plus or minus one standard deviation).<br><br>
+                                            In roughly 95% of years, the return will fall between −30% and +50% (plus or minus two standard deviations).<br><br>
+                                            <strong>Low volatility:</strong> Treasury bonds — standard deviation ~5%<br>
+                                            <strong>Medium volatility:</strong> S&P 500 — standard deviation ~15-16%<br>
+                                            <strong>High volatility:</strong> Individual tech stocks — standard deviation ~30-50%+
+                                        </div>
+                                        <p>There's another dimension to risk: <strong>drawdown</strong> — the peak-to-trough decline during a specific period. The S&P 500's worst drawdown was −51% during the 2007-2009 financial crisis. Drawdown captures the real psychological pain of investing: it tells you the worst-case loss you would have experienced if you bought at the top.</p>
+                                        <div class="vocab-list">
+                                            <div class="vocab-item"><span>Volatility:</span> How much returns fluctuate over time</div>
+                                            <div class="vocab-item"><span>Standard Deviation:</span> Statistical measure of return dispersion</div>
+                                            <div class="vocab-item"><span>Drawdown:</span> Peak-to-trough decline in value</div>
+                                            <div class="vocab-item"><span>Sharpe Ratio:</span> Return per unit of risk (higher = better)</div>
+                                        </div>
+                                        <p>The <strong>Sharpe Ratio</strong> combines return and risk into one number: (Return − Risk-Free Rate) ÷ Standard Deviation. A Sharpe Ratio above 1.0 is good. Above 2.0 is excellent. It lets you compare investments on a risk-adjusted basis — is this extra return worth the extra volatility?</p>
+                                    </div>
                                 </div>
                             </li>
                             <li>
                                 <span class="lesson-num">4.3</span>
                                 <div class="lesson-detail">
                                     <strong>Diversification: Don't Put All Eggs in One Basket</strong>
-                                    <span>Owning 30 different stocks is less risky than owning 1 — even if each individual stock is equally risky. Diversification works because stocks don't all move together at the same time.</span>
+                                    <div class="lesson-full">
+                                        <p>Diversification is the closest thing to a "free lunch" in investing. By owning many different investments, you can reduce your overall risk without reducing your expected return. This works because individual stocks don't all move in the same direction at the same time.</p>
+                                        <div class="example-box">
+                                            <strong>Why Diversification Works</strong>
+                                            Imagine you own only Airline stock. If oil prices spike, your portfolio gets crushed. Now add Oil company stock. When oil prices spike, airlines drop but oil companies surge — your portfolio is more stable.<br><br>
+                                            <strong>1 stock:</strong> Average volatility of ~40-50% per year<br>
+                                            <strong>10 stocks:</strong> Volatility drops to ~25%<br>
+                                            <strong>30 stocks:</strong> Volatility drops to ~20%<br>
+                                            <strong>500 stocks (S&P 500):</strong> Volatility of ~15-16%<br><br>
+                                            Notice the biggest drop happens with the first 10-20 stocks. After about 30 stocks across different sectors, adding more provides diminishing benefits.
+                                        </div>
+                                        <p>There are two types of risk. <strong>Unsystematic risk</strong> (also called diversifiable or company-specific risk) is the risk that affects individual companies — a CEO resigns, a product fails, a factory burns down. This risk can be virtually eliminated by holding a diversified portfolio. <strong>Systematic risk</strong> (market risk) affects the entire economy — recessions, interest rate changes, geopolitical crises. This risk cannot be diversified away.</p>
+                                        <div class="concept-box">
+                                            <strong>The Key Insight</strong>
+                                            Diversification eliminates unsystematic risk for free. Since you're not being compensated for taking risk that could be diversified away, holding a concentrated portfolio means you're taking on uncompensated risk — all downside, no extra expected return.
+                                        </div>
+                                    </div>
                                 </div>
                             </li>
                             <li>
                                 <span class="lesson-num">4.4</span>
                                 <div class="lesson-detail">
                                     <strong>Correlation & the Efficient Frontier</strong>
-                                    <span>The magic of diversification depends on correlation. When assets aren't perfectly correlated, combining them creates portfolios with better risk-return profiles — the efficient frontier.</span>
+                                    <div class="lesson-full">
+                                        <p>How well diversification works depends on <strong>correlation</strong> — the degree to which two investments move together. Correlation ranges from +1 (perfectly in sync) to −1 (perfectly opposite).</p>
+                                        <div class="concept-box">
+                                            <strong>Correlation Scale</strong>
+                                            <strong>+1.0:</strong> Assets move in perfect lockstep. No diversification benefit.<br>
+                                            <strong>+0.5:</strong> Assets somewhat move together. Moderate diversification benefit.<br>
+                                            <strong>0.0:</strong> Assets are unrelated. Good diversification benefit.<br>
+                                            <strong>−0.5:</strong> Assets tend to move opposite. Strong diversification benefit.<br>
+                                            <strong>−1.0:</strong> Assets move perfectly opposite. Maximum diversification benefit (risk can be eliminated entirely).<br><br>
+                                            <strong>Real-world correlations:</strong> U.S. stocks and international stocks ~0.7. Stocks and bonds ~0.0 to −0.3. Stocks and gold ~0.0.
+                                        </div>
+                                        <p>In 1952, economist Harry Markowitz introduced <strong>Modern Portfolio Theory</strong>. He showed that for any given level of risk, there exists an optimal combination of assets that maximizes expected return. Plot all these optimal portfolios on a graph (risk on the x-axis, return on the y-axis), and you get the <strong>efficient frontier</strong> — a curve representing the best possible risk-return tradeoffs.</p>
+                                        <div class="example-box">
+                                            <strong>The 60/40 Portfolio</strong>
+                                            The classic "60% stocks, 40% bonds" portfolio demonstrates the frontier in action. Historically, adding 40% bonds to an all-stock portfolio reduced volatility by roughly one-third while only giving up about 1.5% in annual return. The portfolio sits closer to the efficient frontier than either all-stocks or all-bonds alone.
+                                        </div>
+                                        <p>Portfolios below the efficient frontier are suboptimal — you could get more return for the same risk, or less risk for the same return, just by changing your asset mix. The goal of portfolio construction is to get as close to the frontier as possible.</p>
+                                    </div>
                                 </div>
                             </li>
                             <li>
                                 <span class="lesson-num">4.5</span>
                                 <div class="lesson-detail">
                                     <strong>Beta & Systematic Risk</strong>
-                                    <span>You can diversify away company-specific risk, but you can't diversify away market risk. Beta measures how sensitive a stock is to overall market movements — the risk that gets rewarded.</span>
+                                    <div class="lesson-full">
+                                        <p>Since diversifiable risk can be eliminated, the market only compensates you for <strong>systematic risk</strong> — the risk you can't avoid. <strong>Beta</strong> measures how sensitive a stock is to overall market movements. It answers the question: when the market moves 1%, how much does this stock move?</p>
+                                        <div class="concept-box">
+                                            <strong>Interpreting Beta</strong>
+                                            <strong>Beta = 1.0:</strong> The stock moves exactly with the market. (Example: the S&P 500 index itself)<br>
+                                            <strong>Beta = 1.5:</strong> The stock is 50% more volatile than the market. If the market rises 10%, this stock tends to rise 15%. If the market drops 10%, it drops 15%. (Example: high-growth tech stocks)<br>
+                                            <strong>Beta = 0.5:</strong> The stock is half as volatile as the market. Moves only 5% when the market moves 10%. (Example: utility companies, consumer staples)<br>
+                                            <strong>Beta = 0:</strong> No correlation to the market. (Example: Treasury bills)
+                                        </div>
+                                        <p>Beta is the foundation of the <strong>Capital Asset Pricing Model (CAPM)</strong>, one of the most important formulas in finance:</p>
+                                        <div class="concept-box">
+                                            <strong>CAPM Formula</strong>
+                                            <strong>Expected Return = Risk-Free Rate + Beta × (Market Return − Risk-Free Rate)</strong><br><br>
+                                            If the risk-free rate is 4%, the expected market return is 10%, and a stock has a beta of 1.3:<br>
+                                            Expected Return = 4% + 1.3 × (10% − 4%) = 4% + 7.8% = <strong>11.8%</strong><br><br>
+                                            CAPM says you should only expect higher returns if you take on more systematic risk (higher beta). Any return above what CAPM predicts is called <strong>alpha</strong> — the holy grail of active investing.
+                                        </div>
+                                        <div class="vocab-list">
+                                            <div class="vocab-item"><span>Beta:</span> Sensitivity of a stock to market movements</div>
+                                            <div class="vocab-item"><span>Systematic Risk:</span> Market-wide risk that can't be diversified</div>
+                                            <div class="vocab-item"><span>Alpha:</span> Excess return above what the market risk predicts</div>
+                                            <div class="vocab-item"><span>CAPM:</span> Model linking expected return to systematic risk</div>
+                                        </div>
+                                    </div>
                                 </div>
                             </li>
                         </ol>
@@ -1223,7 +1549,7 @@
                                 <li>Only systematic (market) risk is rewarded — diversifiable risk is not</li>
                             </ul>
                         </div>
-                        <a href="https://www.gsb.stanford.edu/newsroom/school-news/learn-about-stocks-bonds-investing-free-online-course" target="_blank" class="module-link">Start this module on Stanford GSB →</a>
+                        <button class="module-complete-btn" onclick="this.textContent='✓ Module Complete'; this.style.background='#555566'; this.disabled=true;">Mark Module Complete</button>
                     </div>
                 </div>
 
@@ -1249,28 +1575,106 @@
                                 <span class="lesson-num">5.1</span>
                                 <div class="lesson-detail">
                                     <strong>Setting Investment Goals & Time Horizons</strong>
-                                    <span>Are you saving for retirement in 30 years or a house in 5? Your time horizon determines how much risk you can take. Learn to define clear, measurable goals before choosing any investment.</span>
+                                    <div class="lesson-full">
+                                        <p>Before you invest a single dollar, answer two questions: <strong>what are you investing for</strong>, and <strong>when do you need the money?</strong> Your time horizon — the number of years until you need to withdraw — is the single most important factor in determining the right investment strategy.</p>
+                                        <div class="concept-box">
+                                            <strong>Time Horizon Determines Risk Tolerance</strong>
+                                            <strong>Short-term (0–3 years):</strong> Emergency fund, upcoming big purchase. Keep this in cash, savings accounts, or money market funds. You can't afford a 30% stock market drop right before you need the money.<br><br>
+                                            <strong>Medium-term (3–10 years):</strong> House down payment, starting a business. A balanced mix of stocks and bonds. You have time to recover from a dip, but not a full-blown crash.<br><br>
+                                            <strong>Long-term (10+ years):</strong> Retirement, wealth building. Mostly stocks. History shows that over any 20-year period, the stock market has never lost money. Time heals volatility.
+                                        </div>
+                                        <p>Your goals should be <strong>specific and measurable</strong>. "I want to be rich" is not a goal. "I want $500,000 in my retirement account by age 50" is a goal — you can work backwards from that number to calculate how much you need to invest each month at a given return rate.</p>
+                                        <div class="example-box">
+                                            <strong>Working Backwards from a Goal</strong>
+                                            Goal: $100,000 for a house down payment in 7 years.<br>
+                                            Assuming a 7% annual return in a balanced portfolio:<br>
+                                            You need to invest roughly <strong>$940/month</strong>.<br><br>
+                                            If you can only afford $600/month, you either extend the timeline to ~10 years, or save more aggressively by cutting expenses. The math doesn't lie — but it gives you a clear target to hit.
+                                        </div>
+                                    </div>
                                 </div>
                             </li>
                             <li>
                                 <span class="lesson-num">5.2</span>
                                 <div class="lesson-detail">
                                     <strong>Index Funds vs. Individual Stocks</strong>
-                                    <span>Warren Buffett recommends index funds for most people — and the data backs him up. Learn why broad market index funds outperform the majority of professional fund managers over the long run.</span>
+                                    <div class="lesson-full">
+                                        <p>An <strong>index fund</strong> is a fund that owns every stock in a market index (like the S&P 500), weighted by size. Instead of trying to pick winners, it simply buys the whole market. This seemingly boring strategy beats most professionals.</p>
+                                        <div class="concept-box">
+                                            <strong>The Case for Index Funds</strong>
+                                            Over any 15-year period, approximately <strong>90% of professional fund managers fail to beat the S&P 500 index</strong>. These are highly educated, well-resourced professionals with teams of analysts — and they still can't consistently outperform a fund that simply buys everything.<br><br>
+                                            Why? Three reasons:<br>
+                                            <strong>1. Fees:</strong> Active funds charge 0.5–1.5% per year. Index funds charge 0.03–0.10%. That fee difference compounds dramatically over decades.<br>
+                                            <strong>2. Trading costs:</strong> Frequent buying and selling generates transaction costs and tax consequences.<br>
+                                            <strong>3. Markets are efficient:</strong> Stock prices already reflect most available information, making it extremely difficult to find consistently mispriced stocks.
+                                        </div>
+                                        <p>So when should you consider individual stocks? Only when you understand the company deeply, have a clear thesis for why the market is wrong, and are willing to accept the possibility of significant losses. Even then, individual stock picks should be a small portion of your total portfolio — never bet everything on one company.</p>
+                                        <div class="vocab-list">
+                                            <div class="vocab-item"><span>Index Fund:</span> Fund that tracks a market index (S&P 500, total market)</div>
+                                            <div class="vocab-item"><span>Expense Ratio:</span> Annual fee charged as % of assets (lower = better)</div>
+                                            <div class="vocab-item"><span>ETF:</span> Exchange-traded fund — index fund that trades like a stock</div>
+                                            <div class="vocab-item"><span>Active Fund:</span> Fund where a manager picks stocks (usually higher fees)</div>
+                                        </div>
+                                        <div class="example-box">
+                                            <strong>The Fee Difference Over 30 Years</strong>
+                                            Invest $500/month for 30 years at 10% gross market return:<br>
+                                            <strong>Index fund (0.05% fee):</strong> Final balance = $1,021,000. Total fees paid: ~$15,000<br>
+                                            <strong>Active fund (1.00% fee):</strong> Final balance = $849,000. Total fees paid: ~$187,000<br><br>
+                                            The 0.95% fee difference cost you <strong>$172,000</strong> — money that went to the fund company, not to you.
+                                        </div>
+                                    </div>
                                 </div>
                             </li>
                             <li>
                                 <span class="lesson-num">5.3</span>
                                 <div class="lesson-detail">
                                     <strong>Asset Allocation & Dollar-Cost Averaging</strong>
-                                    <span>Deciding how much to put in stocks vs. bonds vs. cash is the single biggest driver of returns. Dollar-cost averaging — investing a fixed amount regularly — removes the pressure of market timing.</span>
+                                    <div class="lesson-full">
+                                        <p><strong>Asset allocation</strong> — how you divide your money among stocks, bonds, and cash — is the single most important investment decision you'll make. Research shows it accounts for roughly 90% of the variation in portfolio returns over time. Not stock picking. Not market timing. Asset allocation.</p>
+                                        <div class="concept-box">
+                                            <strong>Sample Asset Allocations by Age</strong>
+                                            <strong>Aggressive (age 20-35):</strong> 90% stocks / 10% bonds. Long time horizon can handle volatility. Maximize growth.<br><br>
+                                            <strong>Moderate (age 35-50):</strong> 70% stocks / 25% bonds / 5% cash. Still growth-oriented but adding stability as you get closer to needing the money.<br><br>
+                                            <strong>Conservative (age 50-65):</strong> 50% stocks / 40% bonds / 10% cash. Protecting what you've built while still keeping pace with inflation.<br><br>
+                                            A common rule of thumb: <strong>"110 minus your age = stock percentage."</strong> Age 25? About 85% stocks. Age 55? About 55% stocks. This is a starting point, not a law — your personal risk tolerance and goals matter too.
+                                        </div>
+                                        <p><strong>Dollar-cost averaging (DCA)</strong> means investing a fixed dollar amount at regular intervals — say $500 every month — regardless of what the market is doing. When prices are high, your $500 buys fewer shares. When prices are low, it buys more. Over time, this averages out your cost per share and removes the impossible task of trying to time the market.</p>
+                                        <div class="example-box">
+                                            <strong>Dollar-Cost Averaging in Action</strong>
+                                            You invest $400/month in an S&P 500 index fund:<br>
+                                            <strong>January:</strong> Price = $400/share → buy 1.00 shares<br>
+                                            <strong>February:</strong> Market drops. Price = $320/share → buy 1.25 shares<br>
+                                            <strong>March:</strong> Market drops more. Price = $280/share → buy 1.43 shares<br>
+                                            <strong>April:</strong> Market recovers. Price = $380/share → buy 1.05 shares<br><br>
+                                            Total invested: $1,600. Total shares: 4.73. Average cost: <strong>$338/share</strong>.<br>
+                                            If you had invested $1,600 all at once in January, you'd own exactly 4.00 shares at $400/share — a worse deal. DCA naturally buys more when prices are cheap.
+                                        </div>
+                                    </div>
                                 </div>
                             </li>
                             <li>
                                 <span class="lesson-num">5.4</span>
                                 <div class="lesson-detail">
                                     <strong>Common Mistakes & Behavioral Traps</strong>
-                                    <span>Panic selling in downturns, chasing hot stocks, overtrading — these behavioral mistakes destroy more wealth than bad stock picks. Learn to recognize and avoid the most common investor errors.</span>
+                                    <div class="lesson-full">
+                                        <p>The biggest threat to your investment returns isn't a bad stock pick or a market crash — it's <strong>your own behavior</strong>. Studies consistently show that the average investor earns significantly less than the funds they invest in, because they buy high (after excitement) and sell low (after panic).</p>
+                                        <div class="concept-box">
+                                            <strong>The Big Five Behavioral Traps</strong>
+                                            <strong>1. Panic Selling:</strong> The market drops 20% and you sell everything to "stop the bleeding." But the market recovers, and you locked in losses. The S&P 500 has recovered from every single crash in history. Selling turns a temporary drop into a permanent loss.<br><br>
+                                            <strong>2. Chasing Performance:</strong> A stock or fund gained 80% last year, so you pile in. But past performance doesn't predict future returns. By the time everyone's talking about a hot stock, the easy gains are gone.<br><br>
+                                            <strong>3. Overtrading:</strong> Buying and selling frequently feels productive but generates fees and taxes that eat into returns. The most profitable accounts at most brokerages belong to people who either forgot they had them or died — they literally did nothing.<br><br>
+                                            <strong>4. Anchoring:</strong> You bought a stock at $50. It drops to $30, but you refuse to sell because you're "waiting to get back to even." The stock doesn't know (or care) what you paid. Evaluate it on where it's going, not where you bought it.<br><br>
+                                            <strong>5. Confirmation Bias:</strong> Once you buy a stock, you only seek information that confirms your decision and ignore red flags. Challenge your own thesis. Actively look for reasons you might be wrong.
+                                        </div>
+                                        <div class="example-box">
+                                            <strong>The Cost of Panic Selling</strong>
+                                            An investor with $100,000 in the S&P 500 panics during the March 2020 COVID crash and sells when the market is down 34%. They wait for the "all-clear" and reinvest in August when the market has already recovered most losses.<br><br>
+                                            <strong>Buy-and-hold investor:</strong> $100,000 → temporary drop to $66,000 → recovered to $100,000+ by August → $160,000+ by end of 2021.<br>
+                                            <strong>Panic seller:</strong> $100,000 → sold at $66,000 → bought back at ~$93,000 (got 0.71× their original shares) → $113,600 by end of 2021.<br><br>
+                                            The panic seller permanently lost nearly <strong>$46,000</strong> compared to doing nothing.
+                                        </div>
+                                        <p>The antidote to all of these traps: <strong>have a written investment plan and stick to it.</strong> Decide in advance what your asset allocation will be, set up automatic monthly contributions, and rebalance once a year. Remove emotion from the equation entirely. The less you check your portfolio, the better you'll do.</p>
+                                    </div>
                                 </div>
                             </li>
                         </ol>
@@ -1278,12 +1682,12 @@
                             <h4>Key Takeaways</h4>
                             <ul>
                                 <li>Define your goal and time horizon before choosing any investment</li>
-                                <li>Index funds offer broad diversification at minimal cost</li>
+                                <li>Index funds offer broad diversification at minimal cost — and beat 90% of professionals</li>
                                 <li>Asset allocation matters more than individual stock selection</li>
-                                <li>The biggest enemy of investment returns is your own emotions</li>
+                                <li>The biggest enemy of investment returns is your own emotions — have a plan and stick to it</li>
                             </ul>
                         </div>
-                        <a href="https://online.rice.edu/courses/investment-strategies-portfolio-analysis" target="_blank" class="module-link">Start this module on Rice Online →</a>
+                        <button class="module-complete-btn" onclick="this.textContent='✓ Module Complete'; this.style.background='#555566'; this.disabled=true;">Mark Module Complete</button>
                     </div>
                 </div>
 
