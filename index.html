@@ -980,16 +980,6 @@
                     <p>Start Playing Now.</p>
                 </div>
                 <form class="auth-form" onsubmit="handleSignup(event)">
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label>First Name</label>
-                            <input type="text" id="signupFirstName" required>
-                        </div>
-                        <div class="form-group">
-                            <label>Last Name</label>
-                            <input type="text" id="signupLastName" required>
-                        </div>
-                    </div>
                     <div class="form-group">
                         <label>Email</label>
                         <input type="email" id="signupEmail" required>
@@ -1067,16 +1057,13 @@
         // SUPABASE AUTH HANDLERS
         // ============================================
 
-        async function handleSignup(e) {
-            console.log('handleSignup called');
+        function handleSignup(e) {
             e.preventDefault();
 
-            const firstName = document.getElementById('signupFirstName').value.trim();
-            const lastName = document.getElementById('signupLastName').value.trim();
-            const email = document.getElementById('signupEmail').value.trim();
-            const password = document.getElementById('signupPassword').value;
+            var email = document.getElementById('signupEmail').value.trim();
+            var password = document.getElementById('signupPassword').value;
 
-            if (!firstName || !lastName || !email || !password) {
+            if (!email || !password) {
                 alert('Please fill in all fields.');
                 return;
             }
@@ -1086,26 +1073,15 @@
                 return;
             }
 
-            // Best-effort Supabase signup
-            try {
-                if (typeof signUp === 'function') {
-                    const { error } = await signUp(email, password, { firstName, lastName });
-                    if (error) console.warn('Supabase signup failed:', error);
-                }
-            } catch (err) {
-                console.warn('Supabase signup threw:', err);
-            }
-
-            // Seed the localStorage user that app.html expects
-            const localUser = {
-                id: (crypto.randomUUID && crypto.randomUUID()) || ('u_' + Date.now()),
-                firstName,
-                lastName,
-                email,
+            var localUser = {
+                id: 'u_' + Date.now(),
+                firstName: email.split('@')[0],
+                lastName: '',
+                email: email,
                 portfolio: { cash: 100000, holdings: [] },
                 createdAt: new Date().toISOString()
             };
-            const users = JSON.parse(localStorage.getItem('fantasyTraderUsers') || '[]');
+            var users = JSON.parse(localStorage.getItem('fantasyTraderUsers') || '[]');
             users.push(localUser);
             localStorage.setItem('fantasyTraderUsers', JSON.stringify(users));
             localStorage.setItem('fantasyTraderCurrentUser', JSON.stringify(localUser));
