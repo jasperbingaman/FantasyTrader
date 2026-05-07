@@ -404,7 +404,62 @@
 
         /* How It Works */
         .how-it-works {
-            padding: 120px 0;
+            padding: 80px 0;
+        }
+
+        .social-proof {
+            padding: 60px 0;
+        }
+
+        .social-proof-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .social-proof-header h2 {
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+
+        .social-proof-header p {
+            color: var(--text-secondary);
+            font-size: 15px;
+        }
+
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+
+        .testimonial-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 16px;
+            padding: 32px;
+        }
+
+        .testimonial-stars {
+            color: #d97706;
+            font-size: 16px;
+            margin-bottom: 16px;
+        }
+
+        .testimonial-text {
+            color: var(--text-secondary);
+            font-size: 15px;
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+
+        .testimonial-author {
+            font-weight: 700;
+            font-size: 15px;
+        }
+
+        .testimonial-role {
+            font-size: 13px;
+            color: var(--text-muted);
         }
 
         .section-header {
@@ -478,7 +533,7 @@
 
         /* Pillars Section */
         .pillars {
-            padding: 120px 0;
+            padding: 80px 0;
             background: var(--bg-card);
         }
 
@@ -542,7 +597,7 @@
 
         /* CTA */
         .cta-section {
-            padding: 120px 0;
+            padding: 80px 0;
             text-align: center;
             position: relative;
         }
@@ -963,6 +1018,36 @@
         </div>
     </section>
 
+    <!-- Social Proof -->
+    <section class="social-proof">
+        <div class="container">
+            <div class="social-proof-header">
+                <h2>What Beta Players Are Saying</h2>
+                <p>Real feedback from our early community</p>
+            </div>
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+                    <div class="testimonial-text">"I never understood stocks until I started treating them like fantasy football picks. Now I actually look forward to learning about the market every week."</div>
+                    <div class="testimonial-author">Alex M.</div>
+                    <div class="testimonial-role">College Junior, Business Major</div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+                    <div class="testimonial-text">"My friends and I have a league going and it's honestly the most fun way to learn investing. Way better than reading a textbook."</div>
+                    <div class="testimonial-author">Jordan T.</div>
+                    <div class="testimonial-role">Recent Grad, First-Time Investor</div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+                    <div class="testimonial-text">"The courses combined with hands-on practice finally made investing click for me. I went from knowing nothing to confidently building a real portfolio."</div>
+                    <div class="testimonial-author">Sam K.</div>
+                    <div class="testimonial-role">Graduate Student, Engineering</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- CTA -->
     <section class="cta-section">
         <div class="container cta-content">
@@ -1108,7 +1193,7 @@
             localStorage.setItem('fantasyTraderUsers', JSON.stringify(users));
             localStorage.setItem('fantasyTraderCurrentUser', JSON.stringify(localUser));
 
-            window.location.href = 'app.html';
+            window.location.replace('app.html');
         }
 
         function handleLogin(e) {
@@ -1131,7 +1216,7 @@
             }
 
             localStorage.setItem('fantasyTraderCurrentUser', JSON.stringify(found));
-            window.location.href = 'app.html';
+            window.location.replace('app.html');
         }
 
         // ============================================
@@ -1161,14 +1246,14 @@
                 const heroCTA = document.querySelector('.hero-buttons .btn-primary');
                 if (heroCTA) {
                     heroCTA.textContent = 'Go to App';
-                    heroCTA.onclick = () => window.location.href = 'app.html';
+                    heroCTA.onclick = () => window.location.replace('app.html');
                 }
 
                 // Update bottom CTA
                 const ctaCTA = document.querySelector('.cta-section .btn-primary');
                 if (ctaCTA) {
                     ctaCTA.textContent = 'Go to App';
-                    ctaCTA.onclick = () => window.location.href = 'app.html';
+                    ctaCTA.onclick = () => window.location.replace('app.html');
                 }
             }
         });
