@@ -1089,67 +1089,27 @@
             window.location.href = 'app.html';
         }
 
-        async function handleLogin(e) {
-            console.log('handleLogin called');
+        function handleLogin(e) {
             e.preventDefault();
-            console.log('Form submission prevented, processing...');
 
-            const submitBtn = e.target.querySelector('button[type="submit"]');
-            const formContainer = document.getElementById('loginForm');
+            var email = document.getElementById('loginEmail').value.trim();
+            var password = document.getElementById('loginPassword').value;
 
-            // Get form values
-            const email = document.getElementById('loginEmail').value.trim();
-            const password = document.getElementById('loginPassword').value;
-
-            console.log('Login form values:', { email, password: '***' });
-
-            // Validate
             if (!email || !password) {
-                console.log('Validation failed: missing email or password');
-                showError('Please enter your email and password.', formContainer);
+                alert('Please enter your email and password.');
                 return;
             }
 
-            // Show loading state
-            console.log('Setting button to loading state...');
-            setButtonLoading(submitBtn, true);
+            var users = JSON.parse(localStorage.getItem('fantasyTraderUsers') || '[]');
+            var found = users.find(function(u) { return u.email === email; });
 
-            try {
-                console.log('Attempting sign in with Supabase...');
-                const { user, session, error } = await signIn(email, password);
-
-                if (error) {
-                    console.error('Sign in error:', error);
-                    setButtonLoading(submitBtn, false);
-                    
-                    if (error.message.includes('Invalid login')) {
-                        showError('Invalid email or password.', formContainer);
-                    } else if (error.message.includes('Email not confirmed')) {
-                        showError('Please verify your email before signing in.', formContainer);
-                    } else {
-                        showError(error.message || 'Sign in failed. Please try again.', formContainer);
-                    }
-                    return;
-                }
-
-                // Success!
-                console.log('Sign in successful, redirecting...');
-                showSuccess('Welcome back! Redirecting...', formContainer);
-
-                // Keep loading spinner active during redirect
-                setTimeout(() => {
-                    closeAuth();
-                    updateNavigation(user);
-                    // Redirect to app
-                    console.log('Redirecting to app.html');
-                    window.location.href = 'app.html';
-                }, 1000);
-
-            } catch (err) {
-                console.error('Unexpected login error:', err);
-                setButtonLoading(submitBtn, false);
-                showError('An unexpected error occurred. Please try again.', formContainer);
+            if (!found) {
+                alert('No account found with that email. Please sign up first.');
+                return;
             }
+
+            localStorage.setItem('fantasyTraderCurrentUser', JSON.stringify(found));
+            window.location.href = 'app.html';
         }
 
         // ============================================
