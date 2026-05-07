@@ -1070,72 +1070,47 @@
         async function handleSignup(e) {
             console.log('handleSignup called');
             e.preventDefault();
-            console.log('Form submission prevented, processing...');
 
-            const submitBtn = e.target.querySelector('button[type="submit"]');
-            const formContainer = document.getElementById('signupForm');
-
-            // Get form values
             const firstName = document.getElementById('signupFirstName').value.trim();
             const lastName = document.getElementById('signupLastName').value.trim();
             const email = document.getElementById('signupEmail').value.trim();
             const password = document.getElementById('signupPassword').value;
 
-            console.log('Form values:', { firstName, lastName, email, password: '***' });
-
-            // Validate
             if (!firstName || !lastName || !email || !password) {
-                console.log('Validation failed: missing fields');
-                showError('Please fill in all fields.', formContainer);
+                alert('Please fill in all fields.');
                 return;
             }
 
             if (password.length < 6) {
-                console.log('Validation failed: password too short');
-                showError('Password must be at least 6 characters.', formContainer);
+                alert('Password must be at least 6 characters.');
                 return;
             }
 
-            // Show loading state
-            console.log('Setting button to loading state...');
-            setButtonLoading(submitBtn, true);
-
+            // Best-effort Supabase signup
             try {
-                console.log('Attempting sign up with Supabase...');
-                const { user, error } = await signUp(email, password, {
-                    firstName,
-                    lastName
-                });
-
-                if (error) {
-                    console.error('Sign up error:', error);
-                    setButtonLoading(submitBtn, false);
-                    
-                    if (error.message.includes('already registered')) {
-                        showError('This email is already registered. Please sign in.', formContainer);
-                        setTimeout(() => switchAuth('login'), 2000);
-                    } else {
-                        showError(error.message || 'Sign up failed. Please try again.', formContainer);
-                    }
-                    return;
+                if (typeof signUp === 'function') {
+                    const { error } = await signUp(email, password, { firstName, lastName });
+                    if (error) console.warn('Supabase signup failed:', error);
                 }
-
-                // Success!
-                console.log('Sign up successful, redirecting...');
-                showSuccess('Account created! Redirecting to get started...', formContainer);
-
-                // Keep loading spinner active during redirect
-                setTimeout(() => {
-                    closeAuth();
-                    console.log('Redirecting to app.html');
-                    window.location.href = 'app.html';
-                }, 1500);
-
             } catch (err) {
-                console.error('Unexpected signup error:', err);
-                setButtonLoading(submitBtn, false);
-                showError('An unexpected error occurred. Please try again.', formContainer);
+                console.warn('Supabase signup threw:', err);
             }
+
+            // Seed the localStorage user that app.html expects
+            const localUser = {
+                id: (crypto.randomUUID && crypto.randomUUID()) || ('u_' + Date.now()),
+                firstName,
+                lastName,
+                email,
+                portfolio: { cash: 100000, holdings: [] },
+                createdAt: new Date().toISOString()
+            };
+            const users = JSON.parse(localStorage.getItem('fantasyTraderUsers') || '[]');
+            users.push(localUser);
+            localStorage.setItem('fantasyTraderUsers', JSON.stringify(users));
+            localStorage.setItem('fantasyTraderCurrentUser', JSON.stringify(localUser));
+
+            window.location.href = 'app.html';
         }
 
         async function handleLogin(e) {

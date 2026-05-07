@@ -4,8 +4,13 @@
 const SUPABASE_URL = 'https://oasyyceulftunknbpgjs.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9hc3l5Y2V1bGZ0dW5rbmJwZ2pzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg0MDU2MjYsImV4cCI6MjA4Mzk4MTYyNn0.aikrlue_VK3n5GnvCCOR1HbxoQZRehD9Hf2yjk4XOKA';
 
-// Initialize Supabase client
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+// Initialize Supabase client (guarded so helper functions still load if CDN is unavailable)
+let supabase;
+try {
+    supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+} catch (e) {
+    console.warn('Supabase client failed to initialize — auth will fall back to local-only:', e);
+}
 
 // ============================================
 // AUTH FUNCTIONS
