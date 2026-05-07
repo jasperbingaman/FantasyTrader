@@ -397,6 +397,16 @@
             border-radius: 16px;
             padding: 32px;
             text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .path-card:hover {
+            border-color: var(--border-accent);
+            transform: translateY(-4px);
         }
 
         .path-icon {
@@ -547,6 +557,9 @@
             padding: 8px 16px;
             font-size: 12px;
         }
+
+        /* Scroll offset for fixed nav */
+        [id] { scroll-margin-top: 100px; }
 
         /* Beginner Curriculum Modules */
         .module-list {
@@ -924,30 +937,33 @@
             </div>
 
             <div class="paths-grid">
-                <div class="path-card">
+                <a href="#beginner-curriculum" class="path-card">
                     <div class="path-icon">🌱</div>
                     <h3>Beginner Path</h3>
                     <p>Master the fundamentals of markets, investing basics, and reading financial statements.</p>
-                    <div class="path-courses">5 courses • 10 hours</div>
-                </div>
-                <div class="path-card">
+                    <div class="path-courses">5 modules • 10 hours</div>
+                    <div style="margin-top:16px;"><span class="btn btn-primary" style="padding:10px 20px;font-size:13px;">Start Learning →</span></div>
+                </a>
+                <a href="#intermediate-courses" class="path-card">
                     <div class="path-icon">📊</div>
                     <h3>Intermediate Path</h3>
                     <p>Learn technical and fundamental analysis, sector strategies, and portfolio construction.</p>
-                    <div class="path-courses">6 courses • 40 hours</div>
-                </div>
-                <div class="path-card">
+                    <div class="path-courses">6 university courses • 40 hours</div>
+                    <div style="margin-top:16px;"><span class="btn btn-primary" style="padding:10px 20px;font-size:13px;">Browse Courses →</span></div>
+                </a>
+                <a href="#advanced-courses" class="path-card">
                     <div class="path-icon">🚀</div>
                     <h3>Advanced Path</h3>
                     <p>Master options strategies, algorithmic trading, and advanced portfolio management.</p>
-                    <div class="path-courses">5 courses • 50 hours</div>
-                </div>
+                    <div class="path-courses">5 university courses • 50 hours</div>
+                    <div style="margin-top:16px;"><span class="btn btn-primary" style="padding:10px 20px;font-size:13px;">Browse Courses →</span></div>
+                </a>
             </div>
         </div>
     </section>
 
     <!-- Beginner Curriculum -->
-    <section class="section">
+    <section class="section" id="beginner-curriculum">
         <div class="container">
             <div class="section-header">
                 <div class="section-label">Beginner Curriculum</div>
@@ -958,7 +974,7 @@
             <div class="module-list">
 
                 <!-- Module 1 -->
-                <div class="module-card">
+                <div class="module-card open">
                     <div class="module-top" onclick="this.parentElement.classList.toggle('open')">
                         <div class="module-number">1</div>
                         <div class="module-info">
@@ -1276,7 +1292,7 @@
     </section>
 
     <!-- Yale Courses -->
-    <section class="section">
+    <section class="section" id="intermediate-courses">
         <div class="container">
             <div class="section-header">
                 <div class="section-label">Yale University</div>
@@ -1629,7 +1645,7 @@
     </section>
 
     <!-- NYU Stern Courses -->
-    <section class="section">
+    <section class="section" id="advanced-courses">
         <div class="container">
             <div class="section-header">
                 <div class="section-label">NYU Stern School of Business</div>
